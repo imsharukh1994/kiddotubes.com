@@ -5,45 +5,154 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-// Twilio credentials - commented out for now
+// Twilio credentials - uncommented for OTP functionality
 // In a production environment, these should be stored as environment variables
-// const twilio = require('twilio');
-// const accountSid = process.env.TWILIO_ACCOUNT_SID || 'YOUR_TWILIO_ACCOUNT_SID';
-// const authToken = process.env.TWILIO_AUTH_TOKEN || 'YOUR_TWILIO_AUTH_TOKEN';
-// const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER || 'YOUR_TWILIO_PHONE_NUMBER';
-// const client = twilio(accountSid, authToken);
+const twilio = require('twilio');
+const accountSid = process.env.TWILIO_ACCOUNT_SID || 'ACedd93a2a7a28036852c1a742dc573755';
+const authToken = process.env.TWILIO_AUTH_TOKEN || '25fb257aa463a404b90be9f5217b6e80';
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER || '+16203250194';
+
+// Initialize Twilio client if credentials are available
+let client;
+try {
+    client = twilio(accountSid, authToken);
+} catch (error) {
+    console.warn('Twilio client initialization failed:', error.message);
+    console.warn('SMS functionality will be simulated');
+}
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('.'));
 
-// Route to send PIN via SMS
-app.post('/api/send-pin', async (req, res) => {
+// In-memory OTP storage (in production, use a database)
+const otpStore = new Map();
+
+// Generate a random 6-digit OTP
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Route to generate and send OTP via SMS
+app.post('/api/generate-otp', async (req, res) => {
     try {
-        const { phoneNumber, pin, childName } = req.body;
+        const { phoneNumber, childName } = req.body;
         
-        if (!phoneNumber || !pin) {
-            return res.status(400).json({ error: 'Phone number and PIN are required' });
+        if (!phoneNumber) {
+            return res.status(400).json({ error: 'Phone number is required' });
         }
         
-        const message = `Your Kiddotubes PIN for ${childName || 'your child'} is: ${pin}. Use this PIN to allow your child to watch videos.`;
+        // Generate a new OTP
+        const otp = generateOTP();
         
-        // In a production environment, this would send an SMS via Twilio
-        // For now, we'll simulate a successful SMS send
-        console.log(`[SIMULATED SMS] To: ${phoneNumber}, Message: ${message}`);
+        // Store OTP with expiration time (30 minutes)
+        const expiresAt = new Date();
+        expiresAt.setMinutes(expiresAt.getMinutes() + 30);
         
-        // Simulate a slight delay as if we're actually sending an SMS
-        await new Promise(resolve => setTimeout(resolve, 500));
+        otpStore.set(phoneNumber, {
+            otp,
+            expiresAt: expiresAt.getTime(),
+            attempts: 0
+        });
+        
+        const message = `Your Kiddotubes access code for ${childName || 'your child'} is: ${otp}. Enter this code to allow your child to watch videos. This code will expire in 30 minutes.`;
+        
+        // Try to send SMS via Twilio if client is available
+        if (client) {
+            try {
+                const twilioMessage = await client.messages.create({
+                    body: message,
+                    from: twilioPhoneNumber,
+                    to: phoneNumber
+                });
+                
+                console.log(`SMS sent with SID: ${twilioMessage.sid}`);
+                
+                res.json({
+                    success: true,
+                    sid: twilioMessage.sid,
+                    message: 'OTP sent successfully'
+                });
+            } catch (twilioError) {
+                console.error('Twilio error:', twilioError);
+                // Fall back to simulation if Twilio fails
+                simulateOtpSend(phoneNumber, message, res);
+            }
+        } else {
+            // Simulate SMS if Twilio client is not available
+            simulateOtpSend(phoneNumber, message, res);
+        }
+    } catch (error) {
+        console.error('Error generating OTP:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Helper function to simulate OTP sending
+function simulateOtpSend(phoneNumber, message, res) {
+    console.log(`[SIMULATED SMS] To: ${phoneNumber}, Message: ${message}`);
+    
+    // Simulate a slight delay
+    setTimeout(() => {
+        res.json({
+            success: true,
+            sid: 'SIMULATED_SID_' + Math.random().toString(36).substring(2, 15),
+            message: 'OTP would be sent via SMS in production environment',
+            simulated: true
+        });
+    }, 500);
+}
+
+// Route to verify OTP
+app.post('/api/verify-otp', (req, res) => {
+    try {
+        const { phoneNumber, otp } = req.body;
+        
+        if (!phoneNumber || !otp) {
+            return res.status(400).json({ error: 'Phone number and OTP are required' });
+        }
+        
+        const otpData = otpStore.get(phoneNumber);
+        
+        // Check if OTP exists for this phone number
+        if (!otpData) {
+            return res.status(400).json({ error: 'No OTP found for this phone number. Please request a new OTP.' });
+        }
+        
+        // Check if OTP has expired
+        if (Date.now() > otpData.expiresAt) {
+            otpStore.delete(phoneNumber);
+            return res.status(400).json({ error: 'OTP has expired. Please request a new OTP.' });
+        }
+        
+        // Increment attempt counter
+        otpData.attempts += 1;
+        
+        // Check if max attempts reached (3 attempts)
+        if (otpData.attempts > 3) {
+            otpStore.delete(phoneNumber);
+            return res.status(400).json({ error: 'Too many failed attempts. Please request a new OTP.' });
+        }
+        
+        // Check if OTP matches
+        if (otpData.otp !== otp) {
+            return res.status(400).json({ 
+                error: 'Invalid OTP. Please try again.',
+                attemptsLeft: 3 - otpData.attempts
+            });
+        }
+        
+        // OTP is valid, remove it from store
+        otpStore.delete(phoneNumber);
         
         // Return success response
-        res.json({ 
-            success: true, 
-            sid: 'SIMULATED_SID_' + Math.random().toString(36).substring(2, 15),
-            message: 'PIN would be sent via SMS in production environment'
+        res.json({
+            success: true,
+            message: 'OTP verified successfully'
         });
     } catch (error) {
-        console.error('Error sending SMS:', error);
+        console.error('Error verifying OTP:', error);
         res.status(500).json({ error: error.message });
     }
 });

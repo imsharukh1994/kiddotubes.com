@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiddotubes - Safe Videos for Kids</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5507783627988593" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="ads.css">
@@ -41,23 +42,24 @@
                 </button>
             </div>
             <div class="user-actions">
-                <div class="profile-container">
+                <div id="auth-buttons" style="display: flex; gap: 10px;">
+                    <a href="login.html" class="login-btn">Login</a>
+                    <a href="login.html#register" class="register-btn">Register</a>
+                </div>
+                <div class="profile-container" id="profile-container" style="display: none;">
                     <i class="fas fa-user-circle profile-icon"></i>
                     <div class="profile-dropdown">
                         <div class="dropdown-item" id="account-option">
                             <i class="fas fa-user"></i> Account
+                        </div>
+                        <div class="dropdown-item" id="parental-controls-option">
+                            <i class="fas fa-shield-alt"></i> Parental Controls
                         </div>
                         <div class="dropdown-item" id="settings-option">
                             <i class="fas fa-cog"></i> Settings
                         </div>
                         <div class="dropdown-item" id="logout-option">
                             <i class="fas fa-sign-out-alt"></i> Logout
-                        </div>
-                        <div class="dropdown-item" id="login-option">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </div>
-                        <div class="dropdown-item" id="register-option">
-                            <i class="fas fa-user-plus"></i> Register
                         </div>
                     </div>
                 </div>
@@ -420,7 +422,77 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="auth.js"></script>
     <script src="app.js"></script>
     <script src="ad-fallback.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle auth UI based on login status
+            const authButtons = document.getElementById('auth-buttons');
+            const profileContainer = document.getElementById('profile-container');
+            
+            function updateAuthUI() {
+                if (Auth.isLoggedIn()) {
+                    authButtons.style.display = 'none';
+                    profileContainer.style.display = 'block';
+                } else {
+                    authButtons.style.display = 'flex';
+                    profileContainer.style.display = 'none';
+                }
+            }
+            
+            // Initial UI update
+            updateAuthUI();
+            
+            // Add click handlers for video cards to check authentication
+            const videoCards = document.querySelectorAll('.video-card');
+            videoCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Check if user is logged in before allowing video playback
+                    if (!Auth.isLoggedIn()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Ask if they want to login or register
+                        if (confirm('You need to log in or register to watch videos. Go to login page?')) {
+                            window.location.href = 'login.html';
+                        }
+                        return false;
+                    }
+                });
+            });
+            
+            // Set up dropdown menu item links
+            document.getElementById('account-option').addEventListener('click', function() {
+                window.location.href = 'profile.html';
+            });
+            
+            document.getElementById('parental-controls-option').addEventListener('click', function() {
+                window.location.href = 'parental-controls.html';
+            });
+            
+            document.getElementById('settings-option').addEventListener('click', function() {
+                window.location.href = 'profile.html#security';
+            });
+            
+            document.getElementById('logout-option').addEventListener('click', function() {
+                if (confirm('Are you sure you want to log out?')) {
+                    Auth.logout();
+                    alert('You have been logged out successfully.');
+                    window.location.reload();
+                }
+            });
+            
+            // Check session expiry periodically
+            setInterval(function() {
+                const wasLoggedIn = profileContainer.style.display === 'block';
+                if (wasLoggedIn && !Auth.isLoggedIn()) {
+                    // Update UI
+                    updateAuthUI();
+                    // Notify user
+                    alert('Your session has expired. You will need to log in again to watch videos.');
+                }
+            }, 60000); // Check every minute
+        });
+    </script>
 </body>
 </html>

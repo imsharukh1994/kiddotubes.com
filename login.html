@@ -7,17 +7,30 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5507783627988593"
+     crossorigin="anonymous"></script>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="3" fill="%236c63ff" opacity="0.15"/></pattern></defs><rect width="100%" height="100%" fill="%23f0f8ff"/><rect width="100%" height="100%" fill="url(%23pattern)"/></svg>');
-            background-color: #f0f8ff;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f0ff 100%);
             font-family: 'Nunito', sans-serif;
             position: relative;
             overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Background elements */
+        body:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="3" fill="%236c63ff" opacity="0.15"/></pattern></defs><rect width="100%" height="100%" fill="transparent"/><rect width="100%" height="100%" fill="url(%23pattern)"/></svg>');
+            z-index: -1;
         }
         
         body:before, body:after {
@@ -219,6 +232,30 @@
             animation: containerPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
+        .login-container .login-card {
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(108, 99, 255, 0.15);
+            width: 100%;
+            max-width: 450px;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border: 1px solid rgba(108, 99, 255, 0.1);
+        }
+        
+        .login-container .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #6c63ff, #5a52d5);
+        }
+        
         @keyframes containerPop {
             0% { transform: scale(0.9); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
@@ -384,47 +421,75 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin: 30px 0;
+            margin: 24px 0;
         }
         
         .pin-input {
-            width: 55px;
-            height: 65px;
-            font-size: 2rem;
-            font-weight: bold;
+            width: 50px;
+            height: 60px;
             text-align: center;
-            border: 2px solid #e0e0ff;
-            border-radius: 15px;
-            outline: none;
-            transition: all 0.3s;
-            background-color: #f9f9ff;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            color: #6c63ff;
+            font-size: 28px;
+            font-weight: bold;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            caret-color: #6c63ff;
         }
         
         .pin-input:focus {
             border-color: #6c63ff;
-            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.2);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .pin-instruction {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 500;
             transform: translateY(-3px);
             background-color: #fff;
         }
         
-        .login-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #6c63ff, #5a52d5);
+        .submit-btn {
+            background-color: #6c63ff;
             color: white;
             border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            border-radius: 30px;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            width: 100%;
             margin-top: 25px;
-            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #5a52d5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        }
+        
+        .btn-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .submit-btn:hover .btn-icon {
+            transform: translateX(5px);
+        }
+        
+        .login-btn {
+            width: 100%;
         }
         
         .login-btn:before {
@@ -489,17 +554,32 @@
             opacity: 1;
         }
         
+        .forgot-pin-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
         .forgot-pin {
-            display: block;
-            margin-top: 15px;
-            color: #2196F3;
+            color: #6c63ff;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: rgba(108, 99, 255, 0.08);
         }
         
         .forgot-pin:hover {
-            text-decoration: underline;
+            color: #5a52d5;
+            background-color: rgba(108, 99, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .forgot-pin svg {
+            opacity: 0.8;
         }
         
         .back-to-home {
@@ -561,18 +641,35 @@
         </div>
         
         <div class="login-content active" id="login-content">
-            <p>Enter your 6-digit PIN to access parent controls</p>
-            <div class="pin-container">
-                <input type="password" maxlength="1" class="pin-input" data-index="0">
-                <input type="password" maxlength="1" class="pin-input" data-index="1">
-                <input type="password" maxlength="1" class="pin-input" data-index="2">
-                <input type="password" maxlength="1" class="pin-input" data-index="3">
-                <input type="password" maxlength="1" class="pin-input" data-index="4">
-                <input type="password" maxlength="1" class="pin-input" data-index="5">
+                <div class="login-form" id="login-form">
+                    <p class="pin-instruction">Enter your 6-digit PIN to access parent controls</p>
+                    <div class="pin-container">
+                        <input type="password" maxlength="1" class="pin-input" data-index="0" autofocus>
+                        <input type="password" maxlength="1" class="pin-input" data-index="1">
+                        <input type="password" maxlength="1" class="pin-input" data-index="2">
+                        <input type="password" maxlength="1" class="pin-input" data-index="3">
+                        <input type="password" maxlength="1" class="pin-input" data-index="4">
+                        <input type="password" maxlength="1" class="pin-input" data-index="5">
+                    </div>
+                    <p class="error-message" id="login-error"></p>
+                    <button class="submit-btn" id="login-submit">
+                        <span class="btn-text">Login</span>
+                        <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
             </div>
-            <p id="login-error" class="error-message"></p>
-            <button id="login-submit" class="login-btn">Login</button>
-            <a href="#" class="forgot-pin">Forgot PIN?</a>
+            <div class="forgot-pin-container">
+                <a href="#" class="forgot-pin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Forgot PIN?
+                </a>
+            </div>
         </div>
         
         <div class="login-content" id="register-content">
@@ -617,62 +714,95 @@
                 const tab = document.querySelector(`.login-tab[data-tab="${tabName}"]`);
                 if (!tab) return;
                 
-                // Update active tab
-                document.querySelector('.login-tab.active').classList.remove('active');
-                tab.classList.add('active');
-                
-                // Show corresponding content
-                document.querySelector('.login-content.active').classList.remove('active');
-                document.getElementById(`${tabName}-content`).classList.add('active');
             };
             
-            // Check if URL has a hash fragment
-            if (window.location.hash) {
-                const tabName = window.location.hash.substring(1); // Remove the # character
-                showTab(tabName);
-            }
+            const loginTab = document.querySelector('.login-tab[data-tab="login"]');
+            const registerTab = document.querySelector('.login-tab[data-tab="register"]');
+            const loginContent = document.querySelector('.login-content#login-content');
+            const registerContent = document.querySelector('.login-content#register-content');
             
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabName = tab.getAttribute('data-tab');
-                    showTab(tabName);
-                    // Update URL hash without page reload
-                    history.pushState(null, null, `#${tabName}`);
-                });
+            loginTab.addEventListener('click', function() {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginContent.classList.add('active');
+                registerContent.classList.remove('active');
             });
             
-            // PIN input behavior
+            registerTab.addEventListener('click', function() {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerContent.classList.add('active');
+                loginContent.classList.remove('active');
+            });
+            
+            // Handle PIN input for OTP
             const pinInputs = document.querySelectorAll('.pin-input');
             
             pinInputs.forEach((input, index) => {
-                input.addEventListener('input', (e) => {
-                    if (e.target.value && index < pinInputs.length - 1) {
-                        pinInputs[index + 1].focus();
+                input.addEventListener('keyup', function(e) {
+                    // If a number is entered, move to the next input
+                    if (e.key >= 0 && e.key <= 9) {
+                        if (index < pinInputs.length - 1) {
+                            pinInputs[index + 1].focus();
+                        }
                     }
-                });
-                
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                        pinInputs[index - 1].focus();
+                    // If backspace is pressed, move to the previous input
+                    else if (e.key === 'Backspace') {
+                        if (index > 0) {
+                            pinInputs[index - 1].focus();
+                        }
                     }
                 });
             });
             
-            // Login form submission
-            const loginForm = document.getElementById('login-form');
+            // PIN Login Implementation
             const loginSubmit = document.getElementById('login-submit');
             const loginError = document.getElementById('login-error');
             
-            // Add event listener to both the form and the button
-            loginSubmit.addEventListener('click', (e) => {
-                e.preventDefault();
+            // Handle PIN input auto-focus and navigation
+            
+            pinInputs.forEach((input, index) => {
+                // Focus on input when clicked
+                input.addEventListener('click', function() {
+                    this.select();
+                });
                 
+                // Handle input changes
+                input.addEventListener('input', function() {
+                    if (this.value.length === 1) {
+                        // Move to next input if available
+                        if (index < pinInputs.length - 1) {
+                            pinInputs[index + 1].focus();
+                            pinInputs[index + 1].select();
+                        }
+                    }
+                });
+                
+                // Handle backspace key
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                        // Move to previous input if current is empty
+                        pinInputs[index - 1].focus();
+                        pinInputs[index - 1].select();
+                    }
+                });
+            });
+            
+            // Login button click handler
+            loginSubmit.addEventListener('click', function() {
                 // Get entered PIN
                 let enteredPin = '';
                 pinInputs.forEach(input => {
                     enteredPin += input.value;
                 });
                 
+                // Check if PIN is complete
+                if (enteredPin.length !== 6) {
+                    loginError.textContent = 'Please enter all 6 digits of your PIN.';
+                    return;
+                }
+                
+                // Get stored PIN from localStorage
                 const storedPin = localStorage.getItem('parentPin');
                 
                 if (!storedPin) {
@@ -680,17 +810,16 @@
                     return;
                 }
                 
-                console.log('Entered PIN:', enteredPin);
-                console.log('Stored PIN:', storedPin);
+                // Show loading state
+                loginSubmit.disabled = true;
+                loginSubmit.textContent = 'Verifying...';
+                loginError.textContent = '';
                 
+                // Check if PIN matches
                 if (enteredPin === storedPin) {
-                    console.log('PIN matched! Logging in...');
                     // Set access timeout (30 minutes)
                     const expiryTime = new Date().getTime() + (30 * 60 * 1000);
                     localStorage.setItem('accessExpiry', expiryTime);
-                    
-                    // Set login status to true
-                    localStorage.setItem('isRegistered', 'true');
                     localStorage.setItem('isLoggedIn', 'true');
                     
                     // Show success message
@@ -702,14 +831,41 @@
                     loginError.textContent = 'Incorrect PIN. Please try again.';
                     pinInputs.forEach(input => input.value = '');
                     pinInputs[0].focus();
+                    
+                    // Reset button state
+                    loginSubmit.disabled = false;
+                    loginSubmit.textContent = 'Login';
                 }
             });
+            
+            // Handle forgot PIN link
+            const forgotPinLink = document.querySelector('.forgot-pin');
+            forgotPinLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const parentInfo = JSON.parse(localStorage.getItem('parentInfo')) || {};
+                
+                if (!parentInfo.phone) {
+                    loginError.textContent = 'No account found. Please register first.';
+                    return;
+                }
+                
+                // Generate a new PIN
+                const newPin = Math.floor(100000 + Math.random() * 900000).toString();
+                localStorage.setItem('parentPin', newPin);
+                
+                // Alert the user
+                alert(`Your new PIN is: ${newPin}
+
+Please save this PIN to access the app.`);
+            });
+
             
             // Registration form submission
             const registerForm = document.getElementById('register-form');
             const registerError = document.getElementById('register-error');
             
-            registerForm.addEventListener('submit', (e) => {
+            registerForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 const parentName = document.getElementById('parent-name').value.trim();
@@ -723,8 +879,17 @@
                     return;
                 }
                 
-                // Generate a random 6-digit PIN
-                const pin = Math.floor(100000 + Math.random() * 900000).toString();
+                // Validate phone number
+                if (!parentPhone) {
+                    registerError.textContent = 'Phone number is required for verification';
+                    return;
+                }
+                
+                // Show loading state
+                const registerSubmit = document.querySelector('#register-form button[type="submit"]');
+                registerSubmit.disabled = true;
+                registerSubmit.textContent = 'Processing...';
+                registerError.textContent = '';
                 
                 // Save parent information to localStorage
                 const parentInfo = {
@@ -735,16 +900,27 @@
                     registrationDate: new Date().toISOString()
                 };
                 
+                // Generate a random 6-digit PIN
+                const pin = Math.floor(100000 + Math.random() * 900000).toString();
+                
+                // Save parent information to localStorage
                 localStorage.setItem('parentInfo', JSON.stringify(parentInfo));
                 localStorage.setItem('parentPin', pin);
                 localStorage.setItem('isRegistered', 'true');
                 
-                // Always show the PIN directly to the user first
+                // Show success message with PIN
                 alert(`Registration successful! Your PIN is: ${pin}
 
 Please save this PIN to access the app.`);
                 
-                // Also try to send PIN via SMS (for demonstration purposes)
+                // Reset form state
+                registerSubmit.disabled = false;
+                registerSubmit.textContent = 'Register';
+                
+                // Switch to login tab
+                loginTab.click();
+                
+                // Simulate sending PIN via SMS (for demonstration purposes)
                 fetch('http://localhost:3000/api/send-pin', {
                     method: 'POST',
                     headers: {
@@ -759,13 +935,9 @@ Please save this PIN to access the app.`);
                 .then(response => response.json())
                 .then(data => {
                     console.log('SMS simulation response:', data);
-                    // Redirect to index page after showing the PIN
-                    window.location.href = 'index.html';
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // Redirect to index page after showing the PIN
-                    window.location.href = 'index.html';
                 });
             });
         });

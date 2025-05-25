@@ -2,9 +2,9 @@
 const API_KEY = 'AIzaSyArSm2Ls9hs2KVYtKiZ53FLujCNXf-y7Us';
 
 // Twilio API configuration - Replace with your own credentials
-const TWILIO_ACCOUNT_SID = 'YOUR_TWILIO_ACCOUNT_SID';
-const TWILIO_AUTH_TOKEN = 'YOUR_TWILIO_AUTH_TOKEN';
-const TWILIO_PHONE_NUMBER = 'YOUR_TWILIO_PHONE_NUMBER';
+const TWILIO_ACCOUNT_SID = 'ACedd93a2a7a28036852c1a742dc573755';
+const TWILIO_AUTH_TOKEN = '25fb257aa463a404b90be9f5217b6e80';
+const TWILIO_PHONE_NUMBER = '+16203250194';
 
 // DOM Elements
 const searchInput = document.getElementById('search-input');

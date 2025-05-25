@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiddotubes - My Profile</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5507783627988593"
+     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .profile-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #6c63ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 30px;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .profile-info h1 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: #777;
+            margin-bottom: 15px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            background-color: #f5f5ff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-item i {
+            color: #6c63ff;
+            margin-right: 10px;
+        }
+        
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        .profile-sidebar {
+            background-color: #f9f9ff;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover {
+            background-color: #eeeeff;
+            color: #6c63ff;
+        }
+        
+        .sidebar-menu a.active {
+            background-color: #6c63ff;
+            color: white;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .profile-main {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            color: #6c63ff;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eeeeff;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #6c63ff, #5a52d5);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: #f5f5ff;
+            color: #6c63ff;
+            border: 1px solid #eeeeff;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #eeeeff;
+        }
+        
+        .pin-section {
+            background-color: #fffaf0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px dashed #ffd166;
+        }
+        
+        .pin-display {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            font-weight: 700;
+            color: #6c63ff;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .pin-hidden {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #6c63ff;
+            margin: 0 5px;
+        }
+        
+        .premium-banner {
+            background: linear-gradient(45deg, #FF6B6B, #FF9E53);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-banner h3 {
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .premium-banner p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .premium-banner .btn {
+            background-color: white;
+            color: #FF6B6B;
+        }
+        
+        .premium-banner::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>Kiddotubes</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search kid-friendly videos">
+                <button id="search-button">
+                    <i class="fas fa-search search-icon"></i>
+                </button>
+            </div>
+            <div class="user-actions">
+                <div class="profile-container">
+                    <i class="fas fa-user-circle profile-icon"></i>
+                    <div class="profile-dropdown">
+                        <div class="dropdown-item" id="account-option">
+                            <i class="fas fa-user"></i> Account
+                        </div>
+                        <div class="dropdown-item" id="settings-option">
+                            <i class="fas fa-cog"></i> Settings
+                        </div>
+                        <div class="dropdown-item" id="logout-option">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="parent-name-display">Parent Name</h1>
+                        <p id="parent-email-display">parent@example.com</p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-child"></i>
+                                <span id="child-name-display">Child Name</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="join-date-display">Joined May 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-sidebar">
+                        <ul class="sidebar-menu">
+                            <li>
+                                <a href="#" class="active" data-section="account-info">
+                                    <i class="fas fa-user"></i> Account Information
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-section="security">
+                                    <i class="fas fa-lock"></i> Security
+                                </a>
+                            </li>
+                            <li>
+                                <a href="parental-controls.html">
+                                    <i class="fas fa-shield-alt"></i> Parental Controls
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-section="subscription">
+                                    <i class="fas fa-crown"></i> Subscription
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html">
+                                    <i class="fas fa-home"></i> Back to Home
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="premium-banner">
+                            <h3>Upgrade to Premium</h3>
+                            <p>Ad-free experience, exclusive content, and more!</p>
+                            <button class="btn">Try Free for 30 Days</button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-main">
+                        <!-- Account Information Section -->
+                        <div class="profile-section" id="account-info-section">
+                            <h2 class="section-title">Account Information</h2>
+                            <form id="account-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="parent-name">Parent Name</label>
+                                        <input type="text" id="parent-name" placeholder="Your name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="parent-email">Email Address</label>
+                                        <input type="email" id="parent-email" placeholder="Your email">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="parent-phone">Phone Number</label>
+                                        <input type="tel" id="parent-phone" placeholder="Your phone number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="child-name">Child's Name</label>
+                                        <input type="text" id="child-name" placeholder="Child's name">
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Security Section -->
+                        <div class="profile-section" id="security-section" style="display: none;">
+                            <h2 class="section-title">Security</h2>
+                            <div class="pin-section">
+                                <h3>Your Access PIN</h3>
+                                <p>This PIN is required to access the app. Keep it secure and don't share it with your child.</p>
+                                <div class="pin-display" id="pin-hidden">
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                </div>
+                                <div class="pin-display" id="pin-visible" style="display: none;"></div>
+                                <div class="action-buttons">
+                                    <button type="button" class="btn btn-secondary" id="toggle-pin">Show PIN</button>
+                                    <button type="button" class="btn btn-primary" id="reset-pin">Reset PIN</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Subscription Section -->
+                        <div class="profile-section" id="subscription-section" style="display: none;">
+                            <h2 class="section-title">Subscription</h2>
+                            <div class="current-plan">
+                                <h3>Current Plan: <span id="current-plan">Free</span></h3>
+                                <p>Enjoy basic access to kid-friendly videos with ads.</p>
+                            </div>
+                            <div class="premium-features">
+                                <h3>Premium Features</h3>
+                                <ul>
+                                    <li>Ad-free viewing experience</li>
+                                    <li>Exclusive premium content</li>
+                                    <li>Download videos for offline viewing</li>
+                                    <li>Enhanced parental controls</li>
+                                    <li>Multiple child profiles</li>
+                                </ul>
+                                <div class="action-buttons">
+                                    <button type="button" class="btn btn-primary">Upgrade to Premium</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>About Kiddotubes</h3>
+                    <p>A safe video platform designed specifically for children, providing educational and entertaining content with parental controls.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="parental-controls.html">Parental Controls</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@kiddotubes.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!Auth.isLoggedIn()) {
+                alert('Please log in to access your profile.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get parent info
+            const parentInfo = Auth.getParentInfo();
+            if (!parentInfo) {
+                alert('Parent information not found. Please register again.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Populate profile information
+            document.getElementById('parent-name-display').textContent = parentInfo.name;
+            document.getElementById('parent-email-display').textContent = parentInfo.email;
+            document.getElementById('child-name-display').textContent = parentInfo.childName;
+            
+            // Format join date
+            const joinDate = new Date(parentInfo.registrationDate);
+            const options = { year: 'numeric', month: 'long' };
+            document.getElementById('join-date-display').textContent = 'Joined ' + joinDate.toLocaleDateString('en-US', options);
+            
+            // Populate form fields
+            document.getElementById('parent-name').value = parentInfo.name;
+            document.getElementById('parent-email').value = parentInfo.email;
+            document.getElementById('parent-phone').value = parentInfo.phone;
+            document.getElementById('child-name').value = parentInfo.childName;
+            
+            // Handle section navigation
+            const sectionLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
+            const sections = document.querySelectorAll('.profile-section');
+            
+            sectionLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    sectionLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => section.style.display = 'none');
+                    
+                    // Show selected section
+                    const sectionId = this.getAttribute('data-section') + '-section';
+                    document.getElementById(sectionId).style.display = 'block';
+                });
+            });
+            
+            // Handle PIN visibility toggle
+            const togglePinBtn = document.getElementById('toggle-pin');
+            const pinHidden = document.getElementById('pin-hidden');
+            const pinVisible = document.getElementById('pin-visible');
+            const storedPin = localStorage.getItem('parentPin');
+            
+            if (storedPin) {
+                pinVisible.textContent = storedPin;
+            }
+            
+            togglePinBtn.addEventListener('click', function() {
+                if (pinHidden.style.display !== 'none') {
+                    pinHidden.style.display = 'none';
+                    pinVisible.style.display = 'block';
+                    togglePinBtn.textContent = 'Hide PIN';
+                } else {
+                    pinHidden.style.display = 'block';
+                    pinVisible.style.display = 'none';
+                    togglePinBtn.textContent = 'Show PIN';
+                }
+            });
+            
+            // Handle PIN reset
+            const resetPinBtn = document.getElementById('reset-pin');
+            resetPinBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset your PIN? You will need to use the new PIN to access the app.')) {
+                    // Generate a new PIN
+                    const newPin = Math.floor(100000 + Math.random() * 900000).toString();
+                    localStorage.setItem('parentPin', newPin);
+                    pinVisible.textContent = newPin;
+                    
+                    // Show the PIN
+                    pinHidden.style.display = 'none';
+                    pinVisible.style.display = 'block';
+                    togglePinBtn.textContent = 'Hide PIN';
+                    
+                    alert(`Your PIN has been reset. Your new PIN is: ${newPin}`);
+                }
+            });
+            
+            // Handle account form submission
+            const accountForm = document.getElementById('account-form');
+            accountForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update parent info
+                const updatedInfo = {
+                    name: document.getElementById('parent-name').value.trim(),
+                    email: document.getElementById('parent-email').value.trim(),
+                    phone: document.getElementById('parent-phone').value.trim(),
+                    childName: document.getElementById('child-name').value.trim(),
+                    registrationDate: parentInfo.registrationDate
+                };
+                
+                localStorage.setItem('parentInfo', JSON.stringify(updatedInfo));
+                
+                // Update displayed info
+                document.getElementById('parent-name-display').textContent = updatedInfo.name;
+                document.getElementById('parent-email-display').textContent = updatedInfo.email;
+                document.getElementById('child-name-display').textContent = updatedInfo.childName;
+                
+                alert('Account information updated successfully!');
+            });
+        });
+    </script>
+</body>
+</html>
