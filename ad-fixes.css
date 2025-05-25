@@ -1,0 +1,90 @@
+/* Ad Section Visibility Fixes */
+.ad-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 300px;
+    margin: 30px auto !important;
+    padding: 20px !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.ad-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 20px !important;
+    margin-top: 20px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.ad-card {
+    display: flex !important;
+    flex-direction: column !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 300px !important;
+    height: auto !important;
+    min-height: 250px !important;
+    margin: 10px !important;
+}
+
+.ad-image {
+    display: block !important;
+    width: 100% !important;
+    height: 160px !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.ad-content {
+    padding: 15px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Banner Ad Fixes */
+.banner-ad {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 30px auto !important;
+    max-width: 970px !important;
+    text-align: center !important;
+}
+
+.banner-ad-image {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Sidebar Ad Fixes */
+.sidebar-ad {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 20px 0 !important;
+    padding: 15px !important;
+}
+
+/* Footer Ad Fixes */
+.footer-ad {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: 970px !important;
+    margin: 30px auto !important;
+    text-align: center !important;
+}

@@ -1,0 +1,207 @@
+/* Advertisement Styles */
+.ad-section {
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.ad-section h3 {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 15px;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.ad-section h3:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #FF4081;
+    border-radius: 2px;
+}
+
+.ad-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.ad-card {
+    width: 300px;
+    height: 250px;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.ad-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.ad-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ad-content {
+    padding: 15px;
+    text-align: left;
+}
+
+.ad-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.ad-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.ad-button {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #FF4081;
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.ad-button:hover {
+    background-color: #e03070;
+    transform: scale(1.05);
+}
+
+.ad-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 64, 129, 0.9);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* Responsive Ads */
+@media (max-width: 768px) {
+    .ad-container {
+        gap: 15px;
+    }
+    
+    .ad-card {
+        width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 480px) {
+    .ad-card {
+        width: 100%;
+    }
+}
+
+/* Banner Ads */
+.banner-ad {
+    margin: 30px auto;
+    max-width: 970px;
+    position: relative;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.banner-ad .ad-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 64, 129, 0.9);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.banner-ad-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.banner-ad-link {
+    display: block;
+    transition: all 0.3s;
+}
+
+.banner-ad-link:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Sidebar Ads */
+.sidebar-ad {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-ad-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.sidebar-ad-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.sidebar-ad-button {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #FF4081;
+    color: white;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.sidebar-ad-button:hover {
+    background-color: #e03070;
+}

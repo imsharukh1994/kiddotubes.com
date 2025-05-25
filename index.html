@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiddotubes - Safe Videos for Kids</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="ads.css">
+    <link rel="stylesheet" href="ad-fixes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544" crossorigin="anonymous"></script>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-836763755"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-836763755');
+    </script>
+</head>
+<body style="background-color: #ffffff !important;">
+    <div class="app-container">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>Kiddotubes</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search kid-friendly videos">
+                <button id="search-button">
+                    <i class="fas fa-search search-icon"></i>
+                </button>
+            </div>
+            <div class="user-actions">
+                <div class="profile-container">
+                    <i class="fas fa-user-circle profile-icon"></i>
+                    <div class="profile-dropdown">
+                        <div class="dropdown-item" id="account-option">
+                            <i class="fas fa-user"></i> Account
+                        </div>
+                        <div class="dropdown-item" id="settings-option">
+                            <i class="fas fa-cog"></i> Settings
+                        </div>
+                        <div class="dropdown-item" id="logout-option">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </div>
+                        <div class="dropdown-item" id="login-option">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </div>
+                        <div class="dropdown-item" id="register-option">
+                            <i class="fas fa-user-plus"></i> Register
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Menu -->
+        <nav>
+            <div class="nav-item active" data-category="shows">
+                <div class="nav-icon shows-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <span>SHOWS</span>
+            </div>
+            <div class="nav-item" data-category="music">
+                <div class="nav-icon music-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <span>MUSIC</span>
+            </div>
+            <div class="nav-item" data-category="explore">
+                <div class="nav-icon explore-icon">
+                    <i class="fas fa-compass"></i>
+                </div>
+                <span>EXPLORE</span>
+            </div>
+            <div class="nav-item" data-category="movies">
+                <div class="nav-icon movies-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <span>MOVIES</span>
+            </div>
+            <div class="nav-item" data-category="shorts">
+                <div class="nav-icon shorts-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <span>SHORTS</span>
+            </div>
+            <!-- Channels tab removed as requested -->
+        </nav>
+        
+        <!-- Fallback Sidebar Ad -->
+        <div class="sidebar-ad">
+            <h4 class="sidebar-ad-title">Premium Membership</h4>
+            <img src="https://via.placeholder.com/200x120?text=Premium+Membership" alt="Premium Membership" class="sidebar-ad-image">
+            <p>Unlock ad-free videos and exclusive content!</p>
+            <a href="#" class="sidebar-ad-button">Try Free</a>
+        </div>
+
+        <!-- Category Title -->
+        <div class="category-title">
+            <h2 id="current-category">SHOWS</h2>
+        </div>
+
+        <!-- Sponsored Content Section -->
+        <section class="ad-section" id="sponsored-content">
+            <h3>Sponsored Content</h3>
+            <div class="ad-container" id="ad-container">
+                <!-- Fallback Ad - Card 1 -->
+                <div class="ad-card">
+                    <span class="ad-badge">Ad</span>
+                    <img src="https://via.placeholder.com/300x160?text=Educational+Toys" alt="Advertisement" class="ad-image">
+                    <div class="ad-content">
+                        <h4 class="ad-title">Educational Toys</h4>
+                        <p class="ad-description">Discover our collection of educational toys that make learning fun.</p>
+                        <a href="#" class="ad-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <!-- Fallback Ad - Card 2 -->
+                <div class="ad-card">
+                    <span class="ad-badge">Ad</span>
+                    <img src="https://via.placeholder.com/300x160?text=Kids+Books" alt="Advertisement" class="ad-image">
+                    <div class="ad-content">
+                        <h4 class="ad-title">Children's Books</h4>
+                        <p class="ad-description">Explore our library of children's books that inspire imagination.</p>
+                        <a href="#" class="ad-button">Shop Now</a>
+                    </div>
+                </div>
+                
+                <!-- Fallback Ad - Card 3 -->
+                <div class="ad-card">
+                    <span class="ad-badge">Ad</span>
+                    <img src="https://via.placeholder.com/300x160?text=Learning+App" alt="Advertisement" class="ad-image">
+                    <div class="ad-content">
+                        <h4 class="ad-title">Learning App</h4>
+                        <p class="ad-description">Download our award-winning learning app for children aged 3-12.</p>
+                        <a href="#" class="ad-button">Download</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Grid Container -->
+        <main>
+            <div id="videos-container" class="videos-container">
+                <!-- Videos will be loaded here -->
+            </div>
+            
+            <!-- Fallback Banner Ad -->
+            <div class="banner-ad">
+                <span class="ad-badge">Advertisement</span>
+                <a href="#" class="banner-ad-link">
+                    <img src="https://via.placeholder.com/970x90?text=Kid-Friendly+Content+Banner+Ad" alt="Banner Advertisement" class="banner-ad-image">
+                </a>
+            </div>
+            <!-- Channels containers removed as requested -->
+        </main>
+
+        <!-- Video Player Modal -->
+        <div id="video-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <div id="video-player"></div>
+                <h3 id="video-title"></h3>
+            </div>
+        </div>
+
+        <!-- Parent Control Modal -->
+        <div id="parent-control-modal" class="modal">
+            <div class="modal-content parent-control">
+                <h2>Parent Control</h2>
+                <p>Please enter the 6-digit parent code to continue:</p>
+                <p class="timer-note">Access will be granted for 30 minutes only</p>
+                <div class="pin-container">
+                    <input type="password" maxlength="1" class="pin-input" data-index="0">
+                    <input type="password" maxlength="1" class="pin-input" data-index="1">
+                    <input type="password" maxlength="1" class="pin-input" data-index="2">
+                    <input type="password" maxlength="1" class="pin-input" data-index="3">
+                    <input type="password" maxlength="1" class="pin-input" data-index="4">
+                    <input type="password" maxlength="1" class="pin-input" data-index="5">
+                </div>
+                <div class="button-container">
+                    <button id="submit-pin">Submit</button>
+                    <button id="setup-pin" class="secondary">Setup PIN</button>
+                </div>
+                <p id="pin-error" class="error-message"></p>
+            </div>
+        </div>
+
+        <!-- Setup PIN Modal -->
+        <div id="setup-pin-modal" class="modal">
+            <div class="modal-content parent-control">
+                <h2>Setup Parent PIN</h2>
+                <p>Create a new 6-digit parent code:</p>
+                <div class="pin-container">
+                    <input type="password" maxlength="1" class="new-pin-input" data-index="0">
+                    <input type="password" maxlength="1" class="new-pin-input" data-index="1">
+                    <input type="password" maxlength="1" class="new-pin-input" data-index="2">
+                    <input type="password" maxlength="1" class="new-pin-input" data-index="3">
+                    <input type="password" maxlength="1" class="new-pin-input" data-index="4">
+                    <input type="password" maxlength="1" class="new-pin-input" data-index="5">
+                </div>
+                <p>Confirm your 6-digit parent code:</p>
+                <div class="pin-container">
+                    <input type="password" maxlength="1" class="confirm-pin-input" data-index="0">
+                    <input type="password" maxlength="1" class="confirm-pin-input" data-index="1">
+                    <input type="password" maxlength="1" class="confirm-pin-input" data-index="2">
+                    <input type="password" maxlength="1" class="confirm-pin-input" data-index="3">
+                    <input type="password" maxlength="1" class="confirm-pin-input" data-index="4">
+                    <input type="password" maxlength="1" class="confirm-pin-input" data-index="5">
+                </div>
+                <div class="button-container">
+                    <button id="save-pin">Save PIN</button>
+                    <button id="cancel-setup" class="secondary">Cancel</button>
+                </div>
+                <p id="setup-error" class="error-message"></p>
+            </div>
+        </div>
+
+        <!-- Watch History Modal -->
+        <div id="history-modal" class="modal">
+            <div class="modal-content history-content">
+                <span class="close-history-button">&times;</span>
+                <h2>Watch History</h2>
+                <div id="history-container">
+                    <!-- Watch history will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Parent Registration Modal -->
+        <div id="parent-registration-modal" class="modal">
+            <div class="modal-content registration-content">
+                <span class="close-registration-button">&times;</span>
+                <h2>Parent Registration</h2>
+                <p class="registration-info">Register to allow your child to watch kid-friendly videos. A verification code will be sent to your phone.</p>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="parent-name">Parent's Name</label>
+                        <input type="text" id="parent-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent-email">Email Address</label>
+                        <input type="email" id="parent-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent-phone">Phone Number (for verification)</label>
+                        <input type="tel" id="parent-phone" placeholder="+1234567890" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="child-name">Child's Name</label>
+                        <input type="text" id="child-name" required>
+                    </div>
+                    <div class="form-group terms-group">
+                        <input type="checkbox" id="terms-checkbox" required>
+                        <label for="terms-checkbox">I agree to the <a href="#" class="terms-link">Terms and Conditions</a></label>
+                    </div>
+                    <button type="submit" id="register-submit" class="register-btn">Register</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Parent Dashboard Modal -->
+        <div id="parent-dashboard-modal" class="modal">
+            <div class="modal-content dashboard-content">
+                <span class="close-dashboard-button">&times;</span>
+                <h2>Parent Dashboard</h2>
+                <div class="dashboard-tabs">
+                    <div class="tab active" data-tab="profile">Child Profile</div>
+                    <div class="tab" data-tab="history">Watch History</div>
+                    <div class="tab" data-tab="activity">Activity Reports</div>
+                    <div class="tab" data-tab="settings">Time Controls</div>
+                </div>
+                <div class="dashboard-content-container">
+                    <div class="tab-content active" id="profile-tab">
+                        <h3>Child Profile</h3>
+                        <div class="child-profile-container">
+                            <div class="profile-photo-section">
+                                <div class="profile-photo" id="profile-photo">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <button id="upload-photo-btn" class="profile-btn">
+                                    <i class="fas fa-camera"></i> Change Photo
+                                </button>
+                                <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="profile-details-section">
+                                <div class="profile-info">
+                                    <label>Child's Name:</label>
+                                    <div id="child-name-display" class="profile-value"></div>
+                                </div>
+                                <div class="profile-info">
+                                    <label>Parent's Name:</label>
+                                    <div id="parent-name-display" class="profile-value"></div>
+                                </div>
+                                <div class="profile-info">
+                                    <label>Age Group:</label>
+                                    <select id="child-age-group" class="profile-select">
+                                        <option value="3-5">3-5 years</option>
+                                        <option value="6-8">6-8 years</option>
+                                        <option value="9-12">9-12 years</option>
+                                    </select>
+                                </div>
+                                <div class="profile-info">
+                                    <label>Interests:</label>
+                                    <div class="interests-container">
+                                        <div class="interest-tag">
+                                            <input type="checkbox" id="interest-cartoons" checked>
+                                            <label for="interest-cartoons">Cartoons</label>
+                                        </div>
+                                        <div class="interest-tag">
+                                            <input type="checkbox" id="interest-music" checked>
+                                            <label for="interest-music">Music</label>
+                                        </div>
+                                        <div class="interest-tag">
+                                            <input type="checkbox" id="interest-learning">
+                                            <label for="interest-learning">Learning</label>
+                                        </div>
+                                        <div class="interest-tag">
+                                            <input type="checkbox" id="interest-stories">
+                                            <label for="interest-stories">Stories</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="save-profile-btn" class="profile-btn save-btn">Save Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="history-tab">
+                        <h3>Watch History</h3>
+                        <div id="dashboard-history-container">
+                            <!-- Watch history will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="tab-content" id="activity-tab">
+                        <h3>Activity Reports</h3>
+                        <div class="activity-chart">
+                            <div class="chart-placeholder">
+                                <p>Activity chart will be displayed here</p>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-section">
+                        <h3>Security</h3>
+                        <button id="change-pin" class="dashboard-button">Change PIN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h2>Kiddotubes</h2>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>About</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Parents</h3>
+                    <ul>
+                        <li><a href="#">Safety Guide</a></li>
+                        <li><a href="#">Parental Controls</a></li>
+                        <li><a href="#">Content Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Feedback</a></li>
+                        <li><a href="#">Report Content</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-ad">
+            <!-- Fallback Footer Ad -->
+            <span class="ad-badge">Advertisement</span>
+            <a href="#" class="banner-ad-link">
+                <img src="https://via.placeholder.com/728x90?text=Family+Friendly+Content" alt="Footer Advertisement" class="banner-ad-image">
+            </a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="ad-fallback.js"></script>
+</body>
+</html>

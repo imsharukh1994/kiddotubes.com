@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiddotubes - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="3" fill="%236c63ff" opacity="0.15"/></pattern></defs><rect width="100%" height="100%" fill="%23f0f8ff"/><rect width="100%" height="100%" fill="url(%23pattern)"/></svg>');
+            background-color: #f0f8ff;
+            font-family: 'Nunito', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body:before, body:after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        body:before {
+            background: radial-gradient(circle, rgba(255,105,180,0.2) 0%, rgba(255,105,180,0) 70%);
+            top: -100px;
+            left: -100px;
+        }
+        
+        body:after {
+            background: radial-gradient(circle, rgba(108,99,255,0.2) 0%, rgba(108,99,255,0) 70%);
+            bottom: -100px;
+            right: -100px;
+        }
+        
+        /* Cartoon Characters */
+        .cartoon-character {
+            position: absolute;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        
+        .cartoon-1 {
+            top: 10%;
+            left: 5%;
+            width: 120px;
+            height: 120px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FFD166" /><circle cx="35" cy="40" r="8" fill="white" /><circle cx="35" cy="40" r="4" fill="black" /><circle cx="65" cy="40" r="8" fill="white" /><circle cx="65" cy="40" r="4" fill="black" /><path d="M 40 65 Q 50 75 60 65" stroke="black" stroke-width="3" fill="transparent" /></svg>');
+            animation-delay: 0.5s;
+        }
+        
+        .cartoon-2 {
+            top: 15%;
+            right: 5%;
+            width: 100px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%236C63FF" /><circle cx="35" cy="40" r="8" fill="white" /><circle cx="35" cy="40" r="4" fill="black" /><circle cx="65" cy="40" r="8" fill="white" /><circle cx="65" cy="40" r="4" fill="black" /><path d="M 30 60 Q 50 80 70 60" stroke="white" stroke-width="3" fill="transparent" /></svg>');
+            animation-delay: 1s;
+        }
+        
+        .cartoon-3 {
+            bottom: 15%;
+            left: 10%;
+            width: 80px;
+            height: 80px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FF6B6B" /><circle cx="35" cy="40" r="8" fill="white" /><circle cx="35" cy="40" r="4" fill="black" /><circle cx="65" cy="40" r="8" fill="white" /><circle cx="65" cy="40" r="4" fill="black" /><path d="M 40 70 Q 50 60 60 70" stroke="white" stroke-width="3" fill="transparent" /></svg>');
+            animation-delay: 1.5s;
+        }
+        
+        .cartoon-4 {
+            bottom: 10%;
+            right: 10%;
+            width: 90px;
+            height: 90px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%2306D6A0" /><circle cx="35" cy="40" r="8" fill="white" /><circle cx="35" cy="40" r="4" fill="black" /><circle cx="65" cy="40" r="8" fill="white" /><circle cx="65" cy="40" r="4" fill="black" /><path d="M 30 50 Q 50 70 70 50" stroke="white" stroke-width="3" fill="transparent" /></svg>');
+            animation-delay: 2s;
+        }
+        
+        /* Animal Characters */
+        .cartoon-animal {
+            position: absolute;
+            z-index: -1;
+            background-repeat: no-repeat;
+            background-size: contain;
+            animation: bounce 8s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .animal-1 {
+            top: 25%;
+            left: 3%;
+            width: 150px;
+            height: 150px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23FFB347" /><circle cx="30" cy="40" r="7" fill="white" /><circle cx="30" cy="40" r="3" fill="black" /><circle cx="70" cy="40" r="7" fill="white" /><circle cx="70" cy="40" r="3" fill="black" /><circle cx="50" cy="60" r="8" fill="black" /><path d="M 25 25 L 35 15 M 75 25 L 65 15" stroke="black" stroke-width="2" /><path d="M 25 25 Q 50 0 75 25" stroke="black" fill="%23FFB347" stroke-width="2" /></svg>');
+            animation-delay: 0.2s;
+        }
+        
+        .animal-2 {
+            bottom: 25%;
+            right: 3%;
+            width: 130px;
+            height: 130px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23B19CD9" /><circle cx="35" cy="40" r="6" fill="white" /><circle cx="35" cy="40" r="3" fill="black" /><circle cx="65" cy="40" r="6" fill="white" /><circle cx="65" cy="40" r="3" fill="black" /><path d="M 40 60 Q 50 70 60 60" stroke="black" stroke-width="2" fill="transparent" /><ellipse cx="50" cy="20" rx="15" ry="10" fill="%23B19CD9" /><ellipse cx="30" cy="20" rx="10" ry="15" fill="%23B19CD9" /><ellipse cx="70" cy="20" rx="10" ry="15" fill="%23B19CD9" /></svg>');
+            animation-delay: 1.5s;
+        }
+        
+        /* Clouds */
+        .cloud {
+            position: absolute;
+            z-index: -2;
+            background-repeat: no-repeat;
+            background-size: contain;
+            animation: drift 30s linear infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes drift {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100vw); }
+        }
+        
+        .cloud-1 {
+            top: 15%;
+            width: 200px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><path d="M 30 70 Q 30 80 40 80 Q 40 100 60 90 Q 70 110 90 90 Q 110 100 130 90 Q 150 100 160 80 Q 180 80 170 70 Q 190 60 170 50 Q 180 30 160 40 Q 150 20 130 40 Q 110 10 100 40 Q 80 0 60 40 Q 40 20 30 40 Q 10 30 20 50 Q 0 60 30 70" fill="white" /></svg>');
+            animation-duration: 60s;
+        }
+        
+        .cloud-2 {
+            top: 35%;
+            width: 150px;
+            height: 75px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><path d="M 30 70 Q 30 80 40 80 Q 40 100 60 90 Q 70 110 90 90 Q 110 100 130 90 Q 150 100 160 80 Q 180 80 170 70 Q 190 60 170 50 Q 180 30 160 40 Q 150 20 130 40 Q 110 10 100 40 Q 80 0 60 40 Q 40 20 30 40 Q 10 30 20 50 Q 0 60 30 70" fill="white" /></svg>');
+            animation-duration: 75s;
+            animation-delay: 10s;
+        }
+        
+        /* Stars */
+        .star {
+            position: absolute;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M25,2 L31,17 L47,17 L34,26 L39,42 L25,33 L11,42 L16,26 L3,17 L19,17 Z" fill="gold" stroke="orange" stroke-width="1" /></svg>');
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: -1;
+            animation: twinkle 5s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .star-1 {
+            top: 10%;
+            right: 15%;
+            width: 30px;
+            height: 30px;
+            animation-delay: 0.5s;
+        }
+        
+        .star-2 {
+            top: 20%;
+            right: 30%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 1.5s;
+        }
+        
+        .star-3 {
+            top: 15%;
+            left: 20%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 2.5s;
+        }
+        
+        .star-4 {
+            bottom: 20%;
+            left: 15%;
+            width: 35px;
+            height: 35px;
+            animation-delay: 3.5s;
+        }
+        
+        .star-5 {
+            bottom: 30%;
+            right: 20%;
+            width: 28px;
+            height: 28px;
+            animation-delay: 4.5s;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(108, 99, 255, 0.2);
+            text-align: center;
+            border: 3px solid rgba(108, 99, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: containerPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes containerPop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #6c63ff, #ff6b6b);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
+            border: 6px solid #fff;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .login-logo:before {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.3; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        
+        .login-logo i {
+            font-size: 50px;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-container h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #6c63ff, #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        
+        .login-container h2 {
+            font-size: 1.5rem;
+            color: #6c63ff;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .login-container h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, #6c63ff, #ff6b6b);
+            border-radius: 3px;
+        }
+        
+        .login-form {
+            margin-top: 30px;
+        }
+        
+        .login-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-radius: 50px;
+            background-color: rgba(108, 99, 255, 0.1);
+            padding: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .login-tab {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #555;
+            border-radius: 50px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .login-tab.active {
+            background: linear-gradient(45deg, #6c63ff, #5a52d5);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+        
+        .login-tab:hover:not(.active) {
+            background-color: rgba(108, 99, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .login-content {
+            display: none;
+        }
+        
+        .login-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0ff;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9f9ff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+        
+        .form-group input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 15px rgba(108, 99, 255, 0.2);
+            outline: none;
+            background-color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        .pin-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px 0;
+        }
+        
+        .pin-input {
+            width: 55px;
+            height: 65px;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid #e0e0ff;
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s;
+            background-color: #f9f9ff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            color: #6c63ff;
+        }
+        
+        .pin-input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.2);
+            transform: translateY(-3px);
+            background-color: #fff;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #6c63ff, #5a52d5);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 25px;
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .login-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #5a52d5, #4a44c4);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(108, 99, 255, 0.4);
+        }
+        
+        .login-btn:hover:before {
+            opacity: 1;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 25px;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .register-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff5252, #ff7b26);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .register-btn:hover:before {
+            opacity: 1;
+        }
+        
+        .forgot-pin {
+            display: block;
+            margin-top: 15px;
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-pin:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-home {
+            display: inline-block;
+            margin-top: 30px;
+            color: #555;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-to-home i {
+            margin-right: 5px;
+        }
+        
+        .back-to-home:hover {
+            color: #2196F3;
+        }
+        
+        .error-message {
+            color: #f44336;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cartoon Characters -->
+    <div class="cartoon-character cartoon-1"></div>
+    <div class="cartoon-character cartoon-2"></div>
+    <div class="cartoon-character cartoon-3"></div>
+    <div class="cartoon-character cartoon-4"></div>
+    
+    <!-- Animal Characters -->
+    <div class="cartoon-animal animal-1"></div>
+    <div class="cartoon-animal animal-2"></div>
+    
+    <!-- Clouds -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    
+    <!-- Stars -->
+    <div class="star star-1"></div>
+    <div class="star star-2"></div>
+    <div class="star star-3"></div>
+    <div class="star star-4"></div>
+    <div class="star star-5"></div>
+    
+    <div class="login-container">
+        <div class="login-logo">
+            <i class="fas fa-robot"></i>
+        </div>
+        <h1>Kiddotubes</h1>
+        <h2>Parent Access</h2>
+        
+        <div class="login-tabs">
+            <div class="login-tab active" data-tab="login">Login</div>
+            <div class="login-tab" data-tab="register">Register</div>
+        </div>
+        
+        <div class="login-content active" id="login-content">
+            <p>Enter your 6-digit PIN to access parent controls</p>
+            <div class="pin-container">
+                <input type="password" maxlength="1" class="pin-input" data-index="0">
+                <input type="password" maxlength="1" class="pin-input" data-index="1">
+                <input type="password" maxlength="1" class="pin-input" data-index="2">
+                <input type="password" maxlength="1" class="pin-input" data-index="3">
+                <input type="password" maxlength="1" class="pin-input" data-index="4">
+                <input type="password" maxlength="1" class="pin-input" data-index="5">
+            </div>
+            <p id="login-error" class="error-message"></p>
+            <button id="login-submit" class="login-btn">Login</button>
+            <a href="#" class="forgot-pin">Forgot PIN?</a>
+        </div>
+        
+        <div class="login-content" id="register-content">
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="parent-name">Parent's Name</label>
+                    <input type="text" id="parent-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="parent-email">Email Address</label>
+                    <input type="email" id="parent-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="parent-phone">Phone Number (for verification)</label>
+                    <input type="tel" id="parent-phone" placeholder="+1234567890" required>
+                </div>
+                <div class="form-group">
+                    <label for="child-name">Child's Name</label>
+                    <input type="text" id="child-name" required>
+                </div>
+                <div class="form-group terms-group">
+                    <input type="checkbox" id="terms-checkbox" required>
+                    <label for="terms-checkbox">I agree to the <a href="#" class="terms-link">Terms and Conditions</a></label>
+                </div>
+                <p id="register-error" class="error-message"></p>
+                <button type="submit" id="register-submit" class="register-btn">Register</button>
+            </form>
+        </div>
+        
+        <a href="index.html" class="back-to-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab switching
+            const tabs = document.querySelectorAll('.login-tab');
+            const contents = document.querySelectorAll('.login-content');
+            
+            // Check for hash fragment to determine which tab to show
+            const showTab = (tabName) => {
+                // Find the tab
+                const tab = document.querySelector(`.login-tab[data-tab="${tabName}"]`);
+                if (!tab) return;
+                
+                // Update active tab
+                document.querySelector('.login-tab.active').classList.remove('active');
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                document.querySelector('.login-content.active').classList.remove('active');
+                document.getElementById(`${tabName}-content`).classList.add('active');
+            };
+            
+            // Check if URL has a hash fragment
+            if (window.location.hash) {
+                const tabName = window.location.hash.substring(1); // Remove the # character
+                showTab(tabName);
+            }
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+                    showTab(tabName);
+                    // Update URL hash without page reload
+                    history.pushState(null, null, `#${tabName}`);
+                });
+            });
+            
+            // PIN input behavior
+            const pinInputs = document.querySelectorAll('.pin-input');
+            
+            pinInputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value && index < pinInputs.length - 1) {
+                        pinInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        pinInputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Login form submission
+            const loginForm = document.getElementById('login-form');
+            const loginSubmit = document.getElementById('login-submit');
+            const loginError = document.getElementById('login-error');
+            
+            // Add event listener to both the form and the button
+            loginSubmit.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Get entered PIN
+                let enteredPin = '';
+                pinInputs.forEach(input => {
+                    enteredPin += input.value;
+                });
+                
+                const storedPin = localStorage.getItem('parentPin');
+                
+                if (!storedPin) {
+                    loginError.textContent = 'No PIN found. Please register first.';
+                    return;
+                }
+                
+                console.log('Entered PIN:', enteredPin);
+                console.log('Stored PIN:', storedPin);
+                
+                if (enteredPin === storedPin) {
+                    console.log('PIN matched! Logging in...');
+                    // Set access timeout (30 minutes)
+                    const expiryTime = new Date().getTime() + (30 * 60 * 1000);
+                    localStorage.setItem('accessExpiry', expiryTime);
+                    
+                    // Set login status to true
+                    localStorage.setItem('isRegistered', 'true');
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    // Show success message
+                    alert('Login successful! You will now be redirected to the main page.');
+                    
+                    // Redirect to index page
+                    window.location.href = 'index.html';
+                } else {
+                    loginError.textContent = 'Incorrect PIN. Please try again.';
+                    pinInputs.forEach(input => input.value = '');
+                    pinInputs[0].focus();
+                }
+            });
+            
+            // Registration form submission
+            const registerForm = document.getElementById('register-form');
+            const registerError = document.getElementById('register-error');
+            
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const parentName = document.getElementById('parent-name').value.trim();
+                const parentEmail = document.getElementById('parent-email').value.trim();
+                const parentPhone = document.getElementById('parent-phone').value.trim();
+                const childName = document.getElementById('child-name').value.trim();
+                const termsChecked = document.getElementById('terms-checkbox').checked;
+                
+                if (!termsChecked) {
+                    registerError.textContent = 'Please agree to the Terms and Conditions';
+                    return;
+                }
+                
+                // Generate a random 6-digit PIN
+                const pin = Math.floor(100000 + Math.random() * 900000).toString();
+                
+                // Save parent information to localStorage
+                const parentInfo = {
+                    name: parentName,
+                    email: parentEmail,
+                    phone: parentPhone,
+                    childName: childName,
+                    registrationDate: new Date().toISOString()
+                };
+                
+                localStorage.setItem('parentInfo', JSON.stringify(parentInfo));
+                localStorage.setItem('parentPin', pin);
+                localStorage.setItem('isRegistered', 'true');
+                
+                // Always show the PIN directly to the user first
+                alert(`Registration successful! Your PIN is: ${pin}
+
+Please save this PIN to access the app.`);
+                
+                // Also try to send PIN via SMS (for demonstration purposes)
+                fetch('http://localhost:3000/api/send-pin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: parentPhone,
+                        pin: pin,
+                        childName: childName
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('SMS simulation response:', data);
+                    // Redirect to index page after showing the PIN
+                    window.location.href = 'index.html';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Redirect to index page after showing the PIN
+                    window.location.href = 'index.html';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
