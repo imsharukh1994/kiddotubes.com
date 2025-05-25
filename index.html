@@ -102,11 +102,26 @@
         </nav>
         
         <!-- Fallback Sidebar Ad -->
-        <div class="sidebar-ad">
+        <div class="sidebar-ad premium-ad">
+            <div class="premium-badge">Special Offer</div>
             <h4 class="sidebar-ad-title">Premium Membership</h4>
-            <img src="https://via.placeholder.com/200x120?text=Premium+Membership" alt="Premium Membership" class="sidebar-ad-image">
-            <p>Unlock ad-free videos and exclusive content!</p>
-            <a href="#" class="sidebar-ad-button">Try Free</a>
+            <div class="premium-image-container">
+                <img src="https://via.placeholder.com/200x120?text=Premium+Membership" alt="Premium Membership" class="sidebar-ad-image">
+                <div class="premium-overlay"></div>
+            </div>
+            <ul class="premium-features">
+                <li><span class="feature-icon">✓</span> Ad-free videos</li>
+                <li><span class="feature-icon">✓</span> Exclusive content</li>
+                <li><span class="feature-icon">✓</span> Parental controls</li>
+            </ul>
+            <div class="premium-price">
+                <span class="old-price">$9.99/mo</span>
+                <span class="new-price">$4.99/mo</span>
+            </div>
+            <a href="premium-membership.html" class="sidebar-ad-button">
+                <span>Try Free for 7 Days</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+            </a>
         </div>
 
         <!-- Category Title -->
@@ -155,6 +170,7 @@
 
         <!-- Video Grid Container -->
         <main>
+
             <div id="videos-container" class="videos-container">
                 <!-- Videos will be loaded here -->
             </div>
