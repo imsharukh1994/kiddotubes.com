@@ -29,11 +29,23 @@
     <div class="app-container">
         <!-- Header Section -->
         <header>
-            <div class="logo-container">
+            <div class="logo-container" style="display: flex; align-items: center; gap: 8px;">
                 <div class="logo">
-                    <img src="assets/logos.png" alt="Kiddotubes Logo" style="height:56px;width:auto;border-radius:12px;background:#fff;">
+                    <img src="assets/logos.png" alt="Kiddotubes Logo"
+                         style="height:72px;width:auto;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-right:0;">
                 </div>
-                <h1>Kiddotubes</h1>
+                <h1 style="font-size:2.2rem; margin:0; letter-spacing:-4.5px; font-family: 'Comic Sans MS', 'Comic Sans', cursive; font-weight: bold;">
+                  <span style="color:#ff5e5b;">K</span>
+                  <span style="color:#fbb13c;">i</span>
+                  <span style="color:#3ec300;">d</span>
+                  <span style="color:#00b2ff;">d</span>
+                  <span style="color:#ff5e5b;">o</span>
+                  <span style="color:#fbb13c;">t</span>
+                  <span style="color:#3ec300;">u</span>
+                  <span style="color:#00b2ff;">b</span>
+                  <span style="color:#ff5e5b;">e</span>
+                  <span style="color:#fbb13c;">s</span>
+                </h1>
             </div>
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="Search kid-friendly videos">
@@ -41,6 +53,16 @@
                     <i class="fas fa-search search-icon"></i>
                 </button>
             </div>
+            <!-- Hamburger and mobile nav go here -->
+            <div class="hamburger" id="hamburger-menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <nav class="mobile-nav" id="mobile-nav">
+              <a href="login.html" class="login-btn">Login</a>
+              <a href="login.html#register" class="register-btn">Register</a>
+            </nav>
             <div class="user-actions">
                 <div id="auth-buttons" style="display: flex; gap: 10px;">
                     <a href="login.html" class="login-btn">Login</a>
@@ -394,9 +416,10 @@
     <!-- Footer Section -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-logo">
-                <img src="assets/logos.png" alt="Kiddotubes Logo" style="height:48px;width:auto;border-radius:12px;background:#fff;">
-                <h2>Kiddotubes</h2>
+            <div class="footer-logo" style="display: flex; align-items: center; gap: 14px;">
+                <img src="assets/logos.png" alt="Kiddotubes Logo"
+                     style="height:56px;width:auto;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-right:0;">
+                <h2 style="font-size:1.7rem; margin:0; color:#2d3a4a; letter-spacing:1px;">Kiddotubes</h2>
             </div>
             <div class="footer-links">
                 <div class="footer-column">
@@ -518,6 +541,21 @@
                 }
             }, 60000); // Check every minute
         });
+    </script>
+
+    <!-- Mobile Navigation -->
+    <script>
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileNav = document.getElementById('mobile-nav');
+      hamburger.addEventListener('click', () => {
+        mobileNav.classList.toggle('active');
+      });
+      // Optional: close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+          mobileNav.classList.remove('active');
+        }
+      });
     </script>
 </body>
 </html>
