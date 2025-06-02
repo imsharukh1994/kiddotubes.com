@@ -34,7 +34,7 @@
                     <img src="assets/logos.png" alt="Kiddotubes Logo"
                          style="height:72px;width:auto;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-right:0;">
                 </div>
-                <h1 style="font-size:2.2rem; margin:0; letter-spacing:-4.5px; font-family: 'Comic Sans MS', 'Comic Sans', cursive; font-weight: bold;">
+                <h1 style="font-size:2.2rem; margin:0; letter-spacing:-0.5px; font-family: 'Comic Sans MS', 'Comic Sans', cursive; font-weight: bold;">
                   <span style="color:#ff5e5b;">K</span>
                   <span style="color:#fbb13c;">i</span>
                   <span style="color:#3ec300;">d</span>
@@ -60,8 +60,8 @@
               <span></span>
             </div>
             <nav class="mobile-nav" id="mobile-nav">
-              <a href="login.html" class="login-btn">Login</a>
-              <a href="login.html#register" class="register-btn">Register</a>
+              <a href="#" class="login-btn">Login</a>
+              <a href="#" class="register-btn">Register</a>
             </nav>
             <div class="user-actions">
                 <div id="auth-buttons" style="display: flex; gap: 10px;">
@@ -123,12 +123,12 @@
             <!-- Channels tab removed as requested -->
         </nav>
         
-        <!-- Fallback Sidebar Ad -->
+        <!-- Fallback Sidebar Ad 
         <div class="sidebar-ad premium-ad enhanced-premium-ad">
             <div class="premium-badge glow">🌟 Special Offer</div>
             <h4 class="sidebar-ad-title">Go <span class="highlight">Premium</span></h4>
             <div class="premium-image-container">
-                <img src="https://via.placeholder.com/220x130/ffe066/333?text=Premium+Membership" alt="Premium Membership" class="sidebar-ad-image">
+                <img src="assets/mascot-removebg.png" alt="Premium Membership" class="sidebar-ad-image">
                 <div class="premium-overlay"></div>
             </div>
             <ul class="premium-features">
@@ -155,18 +155,18 @@
                 <span>Try Free for 7 Days</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
             </a>
-        </div>
+        </div> -->
 
         <!-- Category Title -->
         <div class="category-title">
             <h2 id="current-category">SHOWS</h2>
         </div>
 
-        <!-- Sponsored Content Section -->
+        <!-- Sponsored Content Section 
         <section class="ad-section" id="sponsored-content">
             <h3>Sponsored Content</h3>
             <div class="ad-container" id="ad-container">
-                <!-- Fallback Ad - Card 1 -->
+                <!-- Fallback Ad - Card 1 
                 <div class="ad-card">
                     <span class="ad-badge">Ad</span>
                     <img src="https://via.placeholder.com/300x160?text=Educational+Toys" alt="Advertisement" class="ad-image">
@@ -175,9 +175,9 @@
                         <p class="ad-description">Discover our collection of educational toys that make learning fun.</p>
                         <a href="#" class="ad-button">Learn More</a>
                     </div>
-                </div>
+                </div> -->
                 
-                <!-- Fallback Ad - Card 2 -->
+                <!-- Fallback Ad - Card 2 
                 <div class="ad-card">
                     <span class="ad-badge">Ad</span>
                     <img src="https://via.placeholder.com/300x160?text=Kids+Books" alt="Advertisement" class="ad-image">
@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 
-                <!-- Fallback Ad - Card 3 -->
+                <!-- Fallback Ad - Card 3 
                 <div class="ad-card">
                     <span class="ad-badge">Ad</span>
                     <img src="https://via.placeholder.com/300x160?text=Learning+App" alt="Advertisement" class="ad-image">
@@ -199,7 +199,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <!-- Video Grid Container -->
         <main>
@@ -452,12 +452,12 @@
             </div>
         </div>
         <div class="footer-ad">
-            <!-- Fallback Footer Ad -->
+            <!-- Fallback Footer Ad 
             <span class="ad-badge">Advertisement</span>
             <a href="#" class="banner-ad-link">
                 <img src="https://via.placeholder.com/728x90?text=Family+Friendly+Content" alt="Footer Advertisement" class="banner-ad-image">
             </a>
-        </div>
+        </div> -->x
         <div class="footer-bottom">
             <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
             <div class="social-icons">
@@ -547,10 +547,16 @@
     <script>
       const hamburger = document.getElementById('hamburger-menu');
       const mobileNav = document.getElementById('mobile-nav');
-      hamburger.addEventListener('click', () => {
+
+      hamburger.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent document click from firing
         mobileNav.classList.toggle('active');
       });
-      // Optional: close menu when clicking outside
+
+      mobileNav.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent document click from firing when clicking inside nav
+      });
+
       document.addEventListener('click', (e) => {
         if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
           mobileNav.classList.remove('active');

@@ -168,6 +168,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.getElementById('hamburger-menu');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', function() {
+      mobileNav.classList.toggle('active');
+    });
+    // Optional: Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!mobileNav.contains(e.target) && !hamburger.contains(e.target)) {
+        mobileNav.classList.remove('active');
+      }
+    });
+  }
+});
+
 // Initialize dropdown menu visibility
 function initializeDropdownVisibility() {
     // Check if user is logged in (using both flags)
@@ -1288,6 +1304,45 @@ function resetSetupPinInputs() {
     });
     setupError.textContent = '';
 }
+
+// Example: Array of video objects (add more as needed)
+const allVideos = [
+  { title: "ABC Song | Nursery Rhymes", thumbnail: "https://via.placeholder.com/480x360?text=ABC+Song" },
+  { title: "Twinkle Twinkle Little Star", thumbnail: "https://via.placeholder.com/480x360?text=Twinkle+Star" },
+  { title: "Wheels on the Bus", thumbnail: "https://via.placeholder.com/480x360?text=Wheels+on+Bus" },
+  { title: "Baby Shark Dance", thumbnail: "https://via.placeholder.com/480x360?text=Baby+Shark" },
+  { title: "Five Little Monkeys", thumbnail: "https://via.placeholder.com/480x360?text=Five+Little+Monkeys" },
+  { title: "Old MacDonald Had a Farm", thumbnail: "https://via.placeholder.com/480x360?text=Old+MacDonald" },
+  { title: "Colors Song", thumbnail: "https://via.placeholder.com/480x360?text=Colors+Song" },
+  { title: "Numbers Song", thumbnail: "https://via.placeholder.com/480x360?text=Numbers+Song" },
+  { title: "Alphabet Phonics", thumbnail: "https://via.placeholder.com/480x360?text=Alphabet+Phonics" },
+  { title: "Dinosaur Dance", thumbnail: "https://via.placeholder.com/480x360?text=Dinosaur+Dance" },
+  { title: "Bedtime Lullabies", thumbnail: "https://via.placeholder.com/480x360?text=Bedtime+Lullabies" },
+  { title: "Animal Sounds", thumbnail: "https://via.placeholder.com/480x360?text=Animal+Sounds" },
+  { title: "Super Simple Songs", thumbnail: "https://via.placeholder.com/480x360?text=Super+Simple+Songs" },
+  { title: "Counting to 10", thumbnail: "https://via.placeholder.com/480x360?text=Counting+to+10" },
+  { title: "Shapes Song", thumbnail: "https://via.placeholder.com/480x360?text=Shapes+Song" },
+  { title: "Learning Colors", thumbnail: "https://via.placeholder.com/480x360?text=Learning+Colors" },
+  // --- Add these new videos below ---
+  { title: "The Finger Family", thumbnail: "https://via.placeholder.com/480x360?text=Finger+Family" },
+  { title: "Baa Baa Black Sheep", thumbnail: "https://via.placeholder.com/480x360?text=Baa+Baa+Black+Sheep" },
+  { title: "If You're Happy and You Know It", thumbnail: "https://via.placeholder.com/480x360?text=If+Youre+Happy" },
+  { title: "London Bridge is Falling Down", thumbnail: "https://via.placeholder.com/480x360?text=London+Bridge" },
+  { title: "Row Row Row Your Boat", thumbnail: "https://via.placeholder.com/480x360?text=Row+Your+Boat" },
+  { title: "Itsy Bitsy Spider", thumbnail: "https://via.placeholder.com/480x360?text=Itsy+Bitsy+Spider" },
+  { title: "Head Shoulders Knees and Toes", thumbnail: "https://via.placeholder.com/480x360?text=Head+Shoulders+Knees+Toes" },
+  { title: "Mary Had a Little Lamb", thumbnail: "https://via.placeholder.com/480x360?text=Mary+Had+a+Little+Lamb" },
+  { title: "Hickory Dickory Dock", thumbnail: "https://via.placeholder.com/480x360?text=Hickory+Dickory+Dock" },
+  { title: "Jack and Jill", thumbnail: "https://via.placeholder.com/480x360?text=Jack+and+Jill" },
+  { title: "Pat-a-Cake", thumbnail: "https://via.placeholder.com/480x360?text=Pat-a-Cake" },
+  { title: "Ring a Ring o' Roses", thumbnail: "https://via.placeholder.com/480x360?text=Ring+o+Roses" },
+  { title: "Humpty Dumpty", thumbnail: "https://via.placeholder.com/480x360?text=Humpty+Dumpty" },
+  { title: "Little Miss Muffet", thumbnail: "https://via.placeholder.com/480x360?text=Little+Miss+Muffet" },
+  { title: "Three Blind Mice", thumbnail: "https://via.placeholder.com/480x360?text=Three+Blind+Mice" }
+];
+
+// Show more videos per page if you want
+const videosPerPage = 8; // Increase to 10, 12, etc. if you want more at once
 
 // Channel-related functions removed as requested
 

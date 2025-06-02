@@ -77,6 +77,7 @@
     opacity: 1 !important;
     margin: 20px 0 !important;
     padding: 15px !important;
+    color: #000 !important; /* Make the text readable */
 }
 
 /* Footer Ad Fixes */
