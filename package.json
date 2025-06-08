@@ -1,6 +1,6 @@
 {
   "name": "kiddotubes",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A kid-friendly YouTube video platform with Twilio integration",
   "main": "server.js",
   "scripts": {
@@ -11,5 +11,6 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "twilio": "^4.11.0"
-  }
+  },
+  "type": "module"
 }

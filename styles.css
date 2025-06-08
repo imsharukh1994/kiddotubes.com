@@ -56,21 +56,24 @@ header {
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 0.5em;
+   gap: 0.5em;
   height: 56px;
   padding-left: 8px;
 }
 
 .logo-container .logo img {
-  height: 48px; /* Adjust as needed */
+  background: transparent !important;
+  border-radius: 8px;
+  height: clamp(32px, 6vw, 48px);
   width: auto;
   margin-right: 8px;
   vertical-align: middle;
   display: block;
+  object-fit: contain;
 }
 
 .logo-container h1 {
-  font-size: 2.2rem;
+  font-size: clamp(1.1rem, 4vw, 2.2rem);
   margin: 0;
   letter-spacing: 1px;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive;
@@ -78,6 +81,8 @@ header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  line-height: 1.1;
+  word-break: break-word;
 }
 
 /* Responsive adjustments */
@@ -95,16 +100,15 @@ header {
 
 @media (max-width: 480px) {
   .logo-container {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 0.3em;
+    height: 40px;
+    padding-left: 4px;
   }
   .logo-container .logo img {
-    height: 2em;
+    height: 28px;
   }
   .logo-container h1 {
     font-size: 1.1rem;
-    letter-spacing: 0.5px;
   }
 }
 
