@@ -2018,69 +2018,31 @@ flex-wrap: wrap;
     }
 }
 
-/* Hamburger styles */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  z-index: 2001;
-  margin-left: 10px;
-}
-.hamburger span {
-  height: 4px;
-  width: 100%;
-  background: #6c63ff;
-  margin: 4px 0;
-  border-radius: 2px;
-  transition: 0.3s;
-}
-
-/* Mobile nav styles */
-.mobile-nav {
-  display: none;
-  position: absolute;
-  top: 70px; /* adjust as needed */
-  right: 16px;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-  padding: 18px 16px;
-  z-index: 1000;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* Show mobile nav when active */
-.mobile-nav.active {
-  display: flex;
-}
-
-/* Only show hamburger and mobile nav on mobile */
-@media (max-width: 768px) {
-  .hamburger {
+/* Navbar styles */
+.navbar {
+    width: 100%;
+    background: #fff;
+    padding: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     display: flex;
-  }
-  .user-actions {
-    display: none !important;
-  }
-  .mobile-nav {
-    display: none;
-  }
-  .mobile-nav.active {
-    display: flex;
-  }
+    justify-content: center;
+    align-items: center;
 }
 
-/* Hide hamburger and mobile nav on desktop */
-@media (min-width: 769px) {
-  .hamburger,
-  .mobile-nav {
-    display: none !important;
-  }
-  .user-actions {
-    display: flex !important;
-  }
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+    margin-right: 12px;
+}
+
+.logo-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6c63ff; /* Change to your preferred color */
+    letter-spacing: 1px;
+    font-family: 'Nunito', sans-serif;
 }
