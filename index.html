@@ -26,61 +26,45 @@
     </script>
 </head>
 <body style="background-color: #ffffff !important;">
-    <!-- Add this inside your <body> tag at the top -->
-    <nav class="navbar">
-      <div class="logo-container">
-        <img src="assets/logos.png" alt="Kiddotubes Logo" class="logo" />
-        <span class="logo-text">Kiddotubes</span>
-      </div>
-    </nav>
     <div class="app-container">
         <!-- Header Section -->
         <header>
-            <div class="logo-container">
-              <span class="logo">
-                <img src="assets/logo-transparent.png" alt="Kiddotube Logo" />
-              </span>
-              <h1>Kiddotube</h1>
-            </div>
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search kid-friendly videos">
-                <button id="search-button">
-                    <i class="fas fa-search search-icon"></i>
-                </button>
-            </div>
-            <!-- Hamburger and mobile nav go here -->
-            <div class="hamburger" id="hamburger-menu">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <nav class="mobile-nav" id="mobile-nav">
-              <a href="#" class="login-btn">Login</a>
-              <a href="#" class="register-btn">Register</a>
-            </nav>
-            <div class="user-actions">
-                <div id="auth-buttons" style="display: flex; gap: 10px;">
-                    <a href="login.html" class="login-btn">Login</a>
-                    <a href="login.html#register" class="register-btn">Register</a>
+            <div class="header-flex">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <img src="assets/logo-transparent.png" alt="Kiddotube Logo" class="logo-img" />
+                        <span class="logo-text">Kiddotube</span>
+                    </div>
                 </div>
-                <div class="profile-container" id="profile-container" style="display: none;">
-                    <i class="fas fa-user-circle profile-icon"></i>
-                    <div class="profile-dropdown">
-                        <div class="dropdown-item" id="account-option">
-                            <i class="fas fa-user"></i> Account
-                        </div>
-                        <div class="dropdown-item" id="parental-controls-option">
-                            <i class="fas fa-shield-alt"></i> Parental Controls
-                        </div>
-                        <div class="dropdown-item" id="settings-option">
-                            <i class="fas fa-cog"></i> Settings
-                        </div>
-                        <div class="dropdown-item" id="logout-option">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </div>
+                <div class="header-center">
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search kid-friendly videos">
+                        <button id="search-button">
+                            <i class="fas fa-search search-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="auth-buttons">
+                        <a href="login.html" class="login-btn">Login</a>
+                        <a href="login.html#register" class="register-btn">Register</a>
                     </div>
                 </div>
             </div>
+            <!-- Mobile navigation drawer -->
+            <nav id="mobile-nav" class="mobile-nav">
+                <a href="#" class="mobile-nav-item" data-category="shows"><i class="fas fa-tv"></i> Shows</a>
+                <a href="#" class="mobile-nav-item" data-category="music"><i class="fas fa-music"></i> Music</a>
+                <a href="#" class="mobile-nav-item" data-category="explore"><i class="fas fa-compass"></i> Explore</a>
+                <a href="#" class="mobile-nav-item" data-category="movies"><i class="fas fa-film"></i> Movies</a>
+                <a href="#" class="mobile-nav-item" data-category="shorts"><i class="fas fa-video"></i> Shorts</a>
+                <hr>
+                <div class="mobile-auth-buttons">
+                    <a href="login.html" class="login-btn">Login</a>
+                    <a href="login.html#register" class="register-btn">Register</a>
+                </div>
+            </nav>
+            <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
         </header>
 
         <!-- Navigation Menu -->
@@ -236,13 +220,13 @@
                     <input type="password" maxlength="1" class="pin-input" data-index="4">
                     <input type="password" maxlength="1" class="pin-input" data-index="5">
                 </div>
-                <div class="button-container">
+                <!--<div class="button-container">
                     <button id="submit-pin">Submit</button>
                     <button id="setup-pin" class="secondary">Setup PIN</button>
                 </div>
                 <p id="pin-error" class="error-message"></p>
             </div>
-        </div>
+        </div> -->
 
         <!-- Setup PIN Modal -->
         <div id="setup-pin-modal" class="modal">
@@ -540,23 +524,41 @@
 
     <!-- Mobile Navigation -->
     <script>
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileNav = document.getElementById('mobile-nav');
+  const hamburger = document.getElementById('hamburger-menu');
+  const mobileNav = document.getElementById('mobile-nav');
+  const overlay = document.getElementById('mobile-nav-overlay');
 
-      hamburger.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent document click from firing
-        mobileNav.classList.toggle('active');
-      });
+  function openMobileNav() {
+    mobileNav.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    mobileNav.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-      mobileNav.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent document click from firing when clicking inside nav
-      });
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openMobileNav();
+  });
 
-      document.addEventListener('click', (e) => {
-        if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
-          mobileNav.classList.remove('active');
-        }
-      });
-    </script>
+  overlay.addEventListener('click', () => {
+    closeMobileNav();
+  });
+
+  mobileNav.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 700) closeMobileNav();
+  });
+</script>
 </body>
 </html>
