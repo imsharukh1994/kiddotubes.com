@@ -198,8 +198,8 @@ fetch('http://localhost:3000/api/generate-otp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-        phoneNumber: '+919920180194', // get this from your form
-        childName: 'zaki' // get this from your form
+        phoneNumber: document.getElementById('phone-input').value, // or your input field
+        childName: document.getElementById('child-name-input').value // or your input field
     })
 })
 .then(res => res.json())
@@ -213,9 +213,11 @@ fetch('http://localhost:3000/api/generate-otp', {
 */
 
 // For WhatsApp
+/*
 const whatsappMessage = `Your Kiddotubes access code for ${childName || 'your child'} is: ${otp}. Enter this code to allow your child to watch videos. This code will expire in 30 minutes.`;
 await client.messages.create({
     body: whatsappMessage,
     from: 'whatsapp:+14155238886', // Twilio WhatsApp sandbox number
     to: 'whatsapp:' + phoneNumber   // e.g., 'whatsapp:+919920180194'
 });
+*/
