@@ -41,13 +41,11 @@ body {
 /* Header Styles */
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 12px 24px;
     background: linear-gradient(90deg, #ffd6e0 0%, #c3dafe 50%, #e2f7d7 100%);
     border-radius: 0 0 16px 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 18px 18px 12px 18px;
     margin-bottom: 12px;
     position: sticky;
     top: 0;
@@ -69,7 +67,7 @@ header {
   height: clamp(32px, 6vw, 48px);
   width: auto;
   margin-right: 8px;
-  vertical-align: middle;
+
   display: block;
   object-fit: contain;
 }
@@ -88,19 +86,19 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0;
-  padding: 18px 18px 12px 18px;
+  width: 100%;
+  gap: 20px;
 }
 
 .header-left {
-  flex: 0 0 auto;
+  flex: 1;
   display: flex;
   align-items: center;
-  min-width: 200px;
+  justify-content: flex-start;
 }
 
 .header-center {
-  flex: 1 1 0;
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,9 +106,10 @@ header {
 }
 
 .header-right {
-  flex: 0 0 auto;
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 }
 
@@ -1595,54 +1594,4 @@ flex-wrap: wrap;
   }
 }
 
-/* Navbar CSS */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(90deg, #f8c6d8, #c6e0ff, #d6f5d6);
-  padding: 20px 32px;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  margin-bottom: 24px;
-}
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  height: 40px;
-  margin-right: 14px;
-}
-
-.navbar-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.navbar-right .btn {
-  margin-left: 16px;
-  padding: 10px 24px;
-  border: none;
-  border-radius: 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn.login {
-  background: #2196f3;
-  color: #fff;
-}
-
-.btn.register {
-  background: #43a047;
-  color: #fff;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
