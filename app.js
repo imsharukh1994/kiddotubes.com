@@ -14,7 +14,7 @@ const videoModal = document.getElementById('video-modal');
 const videoPlayer = document.getElementById('video-player');
 const videoTitle = document.getElementById('video-title');
 const closeButton = document.querySelector('.close-button');
-const navItems = document.querySelectorAll('.nav-item');
+
 const currentCategory = document.getElementById('current-category');
 const parentControlModal = document.getElementById('parent-control-modal');
 const pinInputs = document.querySelectorAll('.pin-input');
@@ -304,21 +304,46 @@ function setupEventListeners() {
     });
 
     // Navigation items click
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const category = item.getAttribute('data-category');
-            if (category !== activeCategory) {
-                // Update active class
-                document.querySelector('.nav-item.active').classList.remove('active');
-                item.classList.add('active');
-                
-                // Update category title
-                activeCategory = category;
+    // Handle category selection from main navigation
+    const mainNavItems = document.querySelectorAll('.main-nav-item');
+    mainNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const category = item.dataset.category;
+            if (category === activeCategory) return;
+
+            activeCategory = category;
+            loadVideos(DEFAULT_QUERIES[activeCategory]);
+
+            mainNavItems.forEach(nav => nav.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            
+            if (currentCategory) {
                 currentCategory.textContent = category.toUpperCase();
-                
-                // Load new videos for the selected category
-                videosContainer.style.display = 'grid';
-                loadVideos(DEFAULT_QUERIES[category]);
+            }
+        });
+    });
+
+    // Handle category selection from mobile navigation
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    const mobileNav = document.getElementById('mobile-nav');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const category = item.dataset.category;
+            
+            if (category !== activeCategory) {
+                activeCategory = category;
+                loadVideos(DEFAULT_QUERIES[activeCategory]);
+                if (currentCategory) {
+                    currentCategory.textContent = category.toUpperCase();
+                }
+            }
+
+            // Close mobile nav after selection
+            if (mobileNav) {
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
             }
         });
     });
