@@ -1,5 +1,5 @@
 // YouTube API Key - Replace with your own API key
-const API_KEY = 'AIzaSyArSm2Ls9hs2KVYtKiZ53FLujCNXf-y7Us';
+const API_KEY = process.env.YOUTUBE_API_KEY;
 
 // Twilio API configuration - Replace with your own credentials
 const TWILIO_ACCOUNT_SID = 'ACedd93a2a7a28036852c1a742dc573755';
@@ -713,7 +713,7 @@ async function loadVideos(query) {
         videosContainer.innerHTML = `<div class="error">Failed to load videos. Please try again later.</div>`;
         
         // If API key is not set, display sample videos
-        if (API_KEY === 'YOUR_YOUTUBE_API_KEY') {
+        if (!API_KEY) {
             displaySampleVideos();
         }
     }

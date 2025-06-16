@@ -73,7 +73,7 @@ header {
 }
 
 .logo-img {
-    height: 45px;
+    height: 55px;
     margin-right: 8px;
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -280,7 +280,7 @@ header {
     gap: 8px;
   }
   .logo-img {
-    height: 32px !important;
+    height: 40px !important;
   }
   .logo-text {
     font-size: 1.1rem !important;
