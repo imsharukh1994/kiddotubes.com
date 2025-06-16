@@ -14,7 +14,7 @@ const videoModal = document.getElementById('video-modal');
 const videoPlayer = document.getElementById('video-player');
 const videoTitle = document.getElementById('video-title');
 const closeButton = document.querySelector('.close-button');
-const navItems = document.querySelectorAll('.nav-item');
+
 const currentCategory = document.getElementById('current-category');
 const parentControlModal = document.getElementById('parent-control-modal');
 const pinInputs = document.querySelectorAll('.pin-input');
@@ -254,128 +254,163 @@ function updateUIBasedOnLoginStatus(isLoggedIn) {
 
 // Setup all event listeners
 function setupEventListeners() {
-    // Profile dropdown menu event listeners
-    setupProfileDropdownEvents();
-    
-    // Search button click
-    searchButton.addEventListener('click', () => {
-        const query = searchInput.value.trim();
-        if (query) {
-            loadVideos(query);
-        }
-    });
-
-    // Search input enter key
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
+    // Search functionality
+    if (searchButton) {
+        searchButton.addEventListener('click', () => {
             const query = searchInput.value.trim();
             if (query) {
                 loadVideos(query);
             }
-        }
-    });
+        });
+    }
 
-    // Close video modal
-    closeButton.addEventListener('click', () => {
-        videoModal.style.display = 'none';
-        videoPlayer.innerHTML = '';
-    });
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) {
+                    loadVideos(query);
+                }
+            }
+        });
+    }
 
-    // Close modal when clicking outside
+    // Modal close buttons
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            if (videoModal) videoModal.style.display = 'none';
+            if (videoPlayer) videoPlayer.innerHTML = '';
+        });
+    }
+
+    // Close modals when clicking outside
     window.addEventListener('click', (e) => {
-        if (e.target === videoModal) {
+        if (videoModal && e.target === videoModal) {
             videoModal.style.display = 'none';
-            videoPlayer.innerHTML = '';
+            if (videoPlayer) videoPlayer.innerHTML = '';
         }
-        if (e.target === parentControlModal) {
+        if (parentControlModal && e.target === parentControlModal) {
             parentControlModal.style.display = 'none';
-            resetPinInputs();
+            if (typeof resetPinInputs === 'function') resetPinInputs();
         }
-        if (e.target === setupPinModal) {
+        if (setupPinModal && e.target === setupPinModal) {
             setupPinModal.style.display = 'none';
-            resetSetupPinInputs();
+            if (typeof resetSetupPinInputs === 'function') resetSetupPinInputs();
         }
-        if (e.target === historyModal) {
+        if (historyModal && e.target === historyModal) {
             historyModal.style.display = 'none';
         }
-        if (e.target === parentDashboardModal) {
+        if (parentDashboardModal && e.target === parentDashboardModal) {
             parentDashboardModal.style.display = 'none';
         }
     });
 
-    // Navigation items click
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const category = item.getAttribute('data-category');
-            if (category !== activeCategory) {
-                // Update active class
-                document.querySelector('.nav-item.active').classList.remove('active');
-                item.classList.add('active');
-                
-                // Update category title
-                activeCategory = category;
+    // Main navigation
+    const mainNavItems = document.querySelectorAll('.main-nav-item');
+    mainNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const category = item.dataset.category;
+            if (category === activeCategory) return;
+
+            activeCategory = category;
+            loadVideos(DEFAULT_QUERIES[activeCategory]);
+
+            mainNavItems.forEach(nav => nav.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            
+            if (currentCategory) {
                 currentCategory.textContent = category.toUpperCase();
-                
-                // Load new videos for the selected category
-                videosContainer.style.display = 'grid';
-                loadVideos(DEFAULT_QUERIES[category]);
             }
         });
     });
 
-    // Submit PIN button
-    submitPinButton.addEventListener('click', validatePin);
+    // Mobile navigation
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    const mobileNav = document.getElementById('mobile-nav');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const category = item.dataset.category;
+            
+            if (category !== activeCategory) {
+                activeCategory = category;
+                loadVideos(DEFAULT_QUERIES[activeCategory]);
+                if (currentCategory) {
+                    currentCategory.textContent = category.toUpperCase();
+                }
+            }
 
-    // Setup PIN button
-    setupPinButton.addEventListener('click', () => {
-        parentControlModal.style.display = 'none';
-        setupPinModal.style.display = 'block';
+            if (mobileNav) {
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
     });
 
-    // Save PIN button
-    savePinButton.addEventListener('click', savePin);
+    // PIN management - these elements are on the login/modal pages
+    if (submitPinButton) {
+        submitPinButton.addEventListener('click', validatePin);
+    }
 
-    // Cancel setup button
-    cancelSetupButton.addEventListener('click', () => {
-        setupPinModal.style.display = 'none';
-        parentControlModal.style.display = 'block';
-    });
+    if (setupPinButton) {
+        setupPinButton.addEventListener('click', () => {
+            if (parentControlModal) parentControlModal.style.display = 'none';
+            if (setupPinModal) setupPinModal.style.display = 'block';
+        });
+    }
 
-    // Profile icon click (toggle dropdown)
-    profileIcon.addEventListener('click', () => {
-        const dropdown = document.querySelector('.profile-dropdown');
-        dropdown.classList.toggle('show');
-    });
+    if (savePinButton) {
+        savePinButton.addEventListener('click', savePin);
+    }
+
+    if (cancelSetupButton) {
+        cancelSetupButton.addEventListener('click', () => {
+            if (setupPinModal) setupPinModal.style.display = 'none';
+            if (parentControlModal) parentControlModal.style.display = 'block';
+        });
+    }
+
+    // Profile icon and dropdown
+    if (profileIcon) {
+        profileIcon.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the document click from firing immediately
+            const dropdown = document.querySelector('.profile-dropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        });
+    }
     
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
-        if (!e.target.matches('.profile-icon') && !e.target.closest('.profile-dropdown')) {
-            const dropdown = document.querySelector('.profile-dropdown');
-            if (dropdown.classList.contains('show')) {
+        const dropdown = document.querySelector('.profile-dropdown');
+        if (dropdown && dropdown.classList.contains('show')) {
+            if (!e.target.matches('.profile-icon') && !e.target.closest('.profile-dropdown')) {
                 dropdown.classList.remove('show');
             }
         }
     });
     
-    // Account option click
+    // Dropdown menu options
     const accountOption = document.getElementById('account-option');
     if (accountOption) {
         accountOption.addEventListener('click', () => {
-            document.querySelector('.profile-dropdown').classList.remove('show');
+            const dropdown = document.querySelector('.profile-dropdown');
+            if (dropdown) dropdown.classList.remove('show');
             showParentDashboard('profile');
         });
     }
     
-    // Settings option click
     const settingsOption = document.getElementById('settings-option');
     if (settingsOption) {
         settingsOption.addEventListener('click', () => {
-            document.querySelector('.profile-dropdown').classList.remove('show');
+            const dropdown = document.querySelector('.profile-dropdown');
+            if (dropdown) dropdown.classList.remove('show');
             showParentDashboard('settings');
         });
     }
     
-    // Logout option click
     const logoutOption = document.getElementById('logout-option');
     if (logoutOption) {
         logoutOption.addEventListener('click', () => {
@@ -938,6 +973,14 @@ function showToast(message) {
 
 // Play video
 function playVideo(video) {
+    const modalContent = videoModal.querySelector('.modal-content');
+
+    if (activeCategory === 'shorts') {
+        modalContent.classList.add('shorts-modal');
+    } else {
+        modalContent.classList.remove('shorts-modal');
+    }
+
     // Create embedded player
     videoPlayer.innerHTML = `
         <iframe 
@@ -963,6 +1006,14 @@ function playVideo(video) {
     // Send notification to parent (Twilio integration would go here)
     sendParentNotification(video.title);
 }
+
+// Close video modal
+closeVideoButton.addEventListener('click', () => {
+    videoModal.style.display = 'none';
+    videoPlayer.innerHTML = ''; // Stop video playback
+    const modalContent = videoModal.querySelector('.modal-content');
+    modalContent.classList.remove('shorts-modal');
+});
 
 // Log watched video to localStorage
 function logWatchedVideo(video) {
