@@ -72,6 +72,44 @@ header {
   object-fit: contain;
 }
 
+.logo-img {
+    height: 45px;
+    margin-right: 8px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.logo-container:hover .logo-img {
+    transform: scale(1.15) rotate(-8deg);
+}
+
+@keyframes rainbow-text-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.rainbow-text {
+    font-weight: 900;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, #ff5e5e, #ffb347, #fdfd96, #98fb98, #87cefa, #cf9fff, #f7b3f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 300% 300%;
+    animation: rainbow-text-animation 7s ease-in-out infinite;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+}
+
+#current-category {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 24px;
+    display: block;
+}
+
 .logo-container h1 {
     color: #6c63ff; /* Or any visible color you prefer */
     font-size: 2rem;
@@ -961,6 +999,43 @@ main {
     border-radius: 15px;
 }
 
+/* Styles for Shorts-like modal */
+.modal-content.shorts-modal {
+    width: auto;
+    max-width: 400px;
+    height: 80vh;
+    padding: 0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.modal-content.shorts-modal #video-player {
+    padding-bottom: 177.77%; /* 9:16 Aspect Ratio */
+    height: 100%;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.modal-content.shorts-modal #video-player iframe {
+    border-radius: 0;
+}
+
+.modal-content.shorts-modal .close-button {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+}
+
+.modal-content.shorts-modal #video-title {
+    display: none; /* Hide title for shorts view */
+}
+
 #video-title {
     font-size: 1.5rem;
     margin-top: 20px;
@@ -1459,9 +1534,9 @@ flex-wrap: wrap;
     padding: 12px 15px;
     border-radius: 12px;
     border: 2px solid #e0e0ff;
-    font-size: 16px;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 10px 30px;
+    background: linear-gradient(90deg, #ffdde1, #e4e8ff, #d9f7e8);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg fill="#6c63ff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
     background-repeat: no-repeat;
@@ -1627,7 +1702,6 @@ flex-wrap: wrap;
     opacity: 0.9;
     transform: scale(1.03);
   }
-}
 @media (min-width: 701px) {
   .mobile-nav,
   .hamburger,
