@@ -6,6 +6,8 @@
 
 A kid-friendly YouTube video platform built with vanilla HTML, CSS, and JavaScript.
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/imsharukh1994/kiddotubes.com?utm_source=oss&utm_medium=github&utm_campaign=imsharukh1994%2Fkiddotubes.com&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 ## Features
 
 - Kid-friendly interface with colorful design and large icons  
