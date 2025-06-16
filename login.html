@@ -408,15 +408,20 @@
         
         <div class="login-content active" id="login-content">
             <form id="login-form" novalidate>
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" placeholder="Enter your email">
+                <div class="form-group pin-container">
+                    <label for="pin-input">Enter Your 6-Digit PIN</label>
+                    <div class="pin-inputs">
+                        <input type="text" class="pin-input" maxlength="1" id="pin1">
+                        <input type="text" class="pin-input" maxlength="1" id="pin2">
+                        <input type="text" class="pin-input" maxlength="1" id="pin3">
+                        <input type="text" class="pin-input" maxlength="1" id="pin4">
+                        <input type="text" class="pin-input" maxlength="1" id="pin5">
+                        <input type="text" class="pin-input" maxlength="1" id="pin6">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="Enter your password">
-                </div>
-                <button type="submit" class="login-btn" id="login-btn">Login</button>
+                <div id="login-error" class="error-message"></div>
+                <button type="button" class="login-btn" id="login-submit">Login</button>
+                <a href="#" class="forgot-pin">Forgot PIN?</a>
             </form>
         </div>
         
@@ -439,9 +444,10 @@
                     <input type="text" id="child-name" placeholder="Enter your child's name">
                 </div>
                 <div class="form-group">
-                    <label for="terms-checkbox">Terms and Conditions</label>
                     <input type="checkbox" id="terms-checkbox">
+                    <label for="terms-checkbox">I agree to the <a href="/terms.html">Terms and Conditions</a></label>
                 </div>
+                <div id="register-error" class="error-message"></div>
                 <button type="submit" class="login-btn" id="register-btn">Register</button>
             </form>
         </div>
