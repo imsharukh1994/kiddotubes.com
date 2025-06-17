@@ -552,6 +552,117 @@ header {
     color: #7B1FA2;
 }
 
+/* Loading Indicator */
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.loading-indicator .loader-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading-indicator .loader-spinner.small {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Load More Button */
+.load-more-container {
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px 0;
+    width: 100%;
+}
+
+#load-more-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 10px auto;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+}
+
+#load-more-btn:hover:not(:disabled) {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#load-more-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#load-more-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+#load-more-btn .loader-spinner {
+    margin-left: 10px;
+    margin-right: 0;
+    display: none;
+}
+
+#load-more-btn.loading .loader-spinner {
+    display: inline-block;
+}
+
+#load-more-btn .loader-spinner.small {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+    margin-left: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .loading-indicator {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+    
+    #load-more-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
 /* Navigation Styles */
 nav {
     display: flex;

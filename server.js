@@ -2,6 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import twilio from 'twilio';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -103,6 +107,13 @@ function simulateOtpSend(phoneNumber, message, res) {
         });
     }, 500);
 }
+
+// Serve API configuration
+app.get('/api/config', (req, res) => {
+    res.json({
+        YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY
+    });
+});
 
 // Route to verify OTP
 app.post('/api/verify-otp', (req, res) => {

@@ -1,10 +1,47 @@
-// YouTube API Key - Replace with your own API key
-const API_KEY = process.env.YOUTUBE_API_KEY;
+// API Configuration
+let API_KEY = '';
+let nextPageToken = '';
+let currentQuery = '';
+let isLoading = false;
+const VIDEOS_PER_PAGE = 12;
 
-// Twilio API configuration - Replace with your own credentials
-const TWILIO_ACCOUNT_SID = 'ACedd93a2a7a28036852c1a742dc573755';
-const TWILIO_AUTH_TOKEN = '25fb257aa463a404b90be9f5217b6e80';
-const TWILIO_PHONE_NUMBER = '+16203250194';
+// Initialize the application
+function initializeApp() {
+    // Add scroll event listener for infinite scroll
+    window.addEventListener('scroll', checkScroll);
+    
+    // Add click handler for load more button
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMoreVideos);
+    }
+
+    // Try to load API key from server
+    fetch('/api/config')
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch config');
+            return response.json();
+        })
+        .then(config => {
+            if (config.YOUTUBE_API_KEY) {
+                API_KEY = config.YOUTUBE_API_KEY;
+                console.log('API configuration loaded');
+                // Load initial videos after getting the API key
+                const defaultQuery = DEFAULT_QUERIES[activeCategory] || 'kids videos';
+                loadVideos(defaultQuery);
+            } else {
+                throw new Error('No API key in config');
+            }
+        })
+        .catch(error => {
+            console.warn('Error loading API configuration, using sample videos:', error);
+            // Load sample videos if API key can't be loaded
+            displaySampleVideos();
+        });
+}
+
+// Start the application
+document.addEventListener('DOMContentLoaded', initializeApp);
 
 // DOM Elements
 const searchInput = document.getElementById('search-input');
@@ -649,14 +686,70 @@ function setupPinInputBehavior() {
     });
 }
 
-// Load videos from YouTube API
-async function loadVideos(query) {
-    // Show loading spinner
-    videosContainer.innerHTML = '<div class="loader"><div class="loader-spinner"></div></div>';
+// Load more videos
+function loadMoreVideos() {
+    if (!isLoading && nextPageToken) {
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const loadMoreText = loadMoreBtn ? loadMoreBtn.querySelector('span') : null;
+        const loadMoreSpinner = loadMoreBtn ? loadMoreBtn.querySelector('.loader-spinner') : null;
+        
+        if (loadMoreBtn && loadMoreText && loadMoreSpinner) {
+            loadMoreBtn.disabled = true;
+            loadMoreText.textContent = 'Loading...';
+            loadMoreSpinner.style.display = 'inline-block';
+        }
+        
+        loadVideos(currentQuery, nextPageToken).finally(() => {
+            if (loadMoreBtn && loadMoreText && loadMoreSpinner) {
+                loadMoreBtn.disabled = false;
+                loadMoreText.textContent = 'Load More';
+                loadMoreSpinner.style.display = 'none';
+            }
+        });
+    }
+}
+
+// Check if user has scrolled to bottom of page
+function checkScroll() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+        loadMoreVideos();
+    }
+}
+
+// Load videos from YouTube API or show sample videos
+async function loadVideos(query, pageToken = '') {
+    // If it's a new query, reset the container and show initial loader
+    if (query !== currentQuery) {
+        videosContainer.innerHTML = '<div class="loader"><div class="loader-spinner"></div></div>';
+        nextPageToken = '';
+        currentQuery = query;
+        
+        // Hide load more button when starting a new search
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'none';
+        }
+    } else if (pageToken) {
+        // Show loading indicator at bottom if loading more
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.id = 'bottom-loading-indicator';
+        loadingIndicator.className = 'loading-indicator';
+        loadingIndicator.innerHTML = '<div class="loader-spinner small"></div> Loading more videos...';
+        document.body.appendChild(loadingIndicator);
+        
+        // Scroll to show loading indicator
+        loadingIndicator.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Don't load if already loading or no more pages
+    if (isLoading || (pageToken === '' && nextPageToken !== '')) return;
+    
+    isLoading = true;
+
 
     try {
         // Add category-specific parameters and queries
-        let additionalParams = '';
+        let additionalParams = pageToken ? `&pageToken=${pageToken}` : '';
         let categorySpecificQuery = query;
         
         // Configure category-specific parameters and queries
@@ -688,7 +781,7 @@ async function loadVideos(query) {
         
         // Make API request to YouTube Data API
         const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&key=${API_KEY}`
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${VIDEOS_PER_PAGE}&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&key=${API_KEY}`
         );
 
         if (!response.ok) {
@@ -707,21 +800,66 @@ async function loadVideos(query) {
             });
         }
         
-        displayVideos(filteredItems.length > 0 ? filteredItems : data.items);
+        // Save next page token and update UI
+        nextPageToken = data.nextPageToken || '';
+        
+        // If it's a new query, replace the content, otherwise append
+        const append = pageToken !== '';
+        displayVideos(filteredItems.length > 0 ? filteredItems : data.items, append);
+        
+        // Update load more button visibility
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = nextPageToken ? 'inline-flex' : 'none';
+        }
+        
+        // Add scroll event listener for infinite scroll if there are more pages
+        if (nextPageToken) {
+            window.addEventListener('scroll', checkScroll);
+        } else {
+            window.removeEventListener('scroll', checkScroll);
+        }
     } catch (error) {
         console.error('Error fetching videos:', error);
-        videosContainer.innerHTML = `<div class="error">Failed to load videos. Please try again later.</div>`;
         
-        // If API key is not set, display sample videos
-        if (!API_KEY) {
+        // Remove loading indicator if it exists
+        const loadingIndicator = document.getElementById('bottom-loading-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
+        
+        if (pageToken === '') {
+            // Only show error and fallback for initial load
+            videosContainer.innerHTML = `
+                <div class="error">
+                    <p>Failed to load videos. Loading sample content instead.</p>
+                    <p><small>${error.message || 'Check console for details'}</small></p>
+                </div>`;
             displaySampleVideos();
+        } else {
+            // Show error toast for pagination failures
+            showToast('Failed to load more videos. Please try again.');
+            
+            // Re-enable load more button on error
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            if (loadMoreBtn) {
+                loadMoreBtn.disabled = false;
+                const loadMoreText = loadMoreBtn.querySelector('span');
+                const loadMoreSpinner = loadMoreBtn.querySelector('.loader-spinner');
+                if (loadMoreText && loadMoreSpinner) {
+                    loadMoreText.textContent = 'Load More';
+                    loadMoreSpinner.style.display = 'none';
+                }
+            }
         }
     }
 }
 
 // Display videos in the grid
-function displayVideos(videos) {
-    videosContainer.innerHTML = '';
+function displayVideos(videos, append = false) {
+    if (!append) {
+        videosContainer.innerHTML = '';
+    }
     
     // If no videos are available after filtering
     if (videos.length === 0) {
