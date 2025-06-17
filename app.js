@@ -7,35 +7,61 @@ const VIDEOS_PER_PAGE = 12;
 
 // Initialize the application
 function initializeApp() {
+    console.log('Initializing application...');
+    
     // Add scroll event listener for infinite scroll
     window.addEventListener('scroll', checkScroll);
     
     // Add click handler for load more button
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) {
+        console.log('Found load more button, adding event listener');
         loadMoreBtn.addEventListener('click', loadMoreVideos);
+    } else {
+        console.warn('Load more button not found');
+    }
+
+    // Show loading state
+    const videosContainer = document.getElementById('videos-container');
+    if (videosContainer) {
+        videosContainer.innerHTML = '<div class="loader"><div class="loader-spinner"></div>Loading videos...</div>';
     }
 
     // Try to load API key from server
+    console.log('Fetching API configuration from /api/config');
     fetch('/api/config')
         .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch config');
+            console.log('Config response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             return response.json();
         })
         .then(config => {
+            console.log('API config received:', config);
             if (config.YOUTUBE_API_KEY) {
                 API_KEY = config.YOUTUBE_API_KEY;
-                console.log('API configuration loaded');
+                console.log('YouTube API key loaded successfully');
                 // Load initial videos after getting the API key
                 const defaultQuery = DEFAULT_QUERIES[activeCategory] || 'kids videos';
+                console.log('Loading videos with query:', defaultQuery);
                 loadVideos(defaultQuery);
             } else {
-                throw new Error('No API key in config');
+                throw new Error('No YOUTUBE_API_KEY in config response');
             }
         })
         .catch(error => {
-            console.warn('Error loading API configuration, using sample videos:', error);
-            // Load sample videos if API key can't be loaded
+            console.error('Error loading API configuration:', error);
+            // Show error to user
+            if (videosContainer) {
+                videosContainer.innerHTML = `
+                    <div class="error">
+                        <p>Unable to load videos. Please try again later.</p>
+                        <p><small>${error.message || 'Check console for details'}</small></p>
+                    </div>`;
+            }
+            // Fall back to sample videos
+            console.warn('Falling back to sample videos');
             displaySampleVideos();
         });
 }
@@ -718,8 +744,11 @@ function checkScroll() {
 
 // Load videos from YouTube API or show sample videos
 async function loadVideos(query, pageToken = '') {
+    console.log('loadVideos called with query:', query, 'pageToken:', pageToken);
+    
     // If it's a new query, reset the container and show initial loader
     if (query !== currentQuery) {
+        console.log('New query detected, resetting container');
         videosContainer.innerHTML = '<div class="loader"><div class="loader-spinner"></div></div>';
         nextPageToken = '';
         currentQuery = query;
@@ -730,6 +759,7 @@ async function loadVideos(query, pageToken = '') {
             loadMoreBtn.style.display = 'none';
         }
     } else if (pageToken) {
+        console.log('Loading more videos with pageToken:', pageToken);
         // Show loading indicator at bottom if loading more
         const loadingIndicator = document.createElement('div');
         loadingIndicator.id = 'bottom-loading-indicator';
@@ -739,15 +769,27 @@ async function loadVideos(query, pageToken = '') {
         
         // Scroll to show loading indicator
         loadingIndicator.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        console.log('Continuing with existing query:', query);
     }
     
     // Don't load if already loading or no more pages
-    if (isLoading || (pageToken === '' && nextPageToken !== '')) return;
+    if (isLoading) {
+        console.log('Already loading, skipping request');
+        return;
+    }
     
+    if (pageToken === '' && nextPageToken !== '') {
+        console.log('No more pages to load');
+        return;
+    }
+    
+    console.log('Starting to load videos with API_KEY:', API_KEY ? 'Key exists' : 'No key');
     isLoading = true;
 
 
     try {
+        console.log('Building API request parameters');
         // Add category-specific parameters and queries
         let additionalParams = pageToken ? `&pageToken=${pageToken}` : '';
         let categorySpecificQuery = query;
@@ -780,20 +822,32 @@ async function loadVideos(query, pageToken = '') {
         }
         
         // Make API request to YouTube Data API
-        const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${VIDEOS_PER_PAGE}&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&key=${API_KEY}`
-        );
+        const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${VIDEOS_PER_PAGE}&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&key=${API_KEY}`;
+        console.log('Making API request to:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        console.log('API response status:', response.status);
 
         if (!response.ok) {
-            throw new Error('Failed to fetch videos');
+            const errorText = await response.text();
+            console.error('API Error Response:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
         }
 
         const data = await response.json();
+        console.log('API Response received, items count:', data.items ? data.items.length : 0);
+
+        // Filter out any videos that don't have thumbnails
+        const filteredItems = data.items ? data.items.filter(item => {
+            return item.snippet && item.snippet.thumbnails && item.snippet.thumbnails.medium;
+        }) : [];
         
+        console.log('Filtered items count:', filteredItems.length);
+
         // For non-shorts categories, filter out videos with 'short' in the title
-        let filteredItems = data.items;
+        let finalItems = filteredItems;
         if (activeCategory !== 'shorts') {
-            filteredItems = data.items.filter(item => {
+            finalItems = filteredItems.filter(item => {
                 const title = item.snippet.title.toLowerCase();
                 const description = item.snippet.description.toLowerCase();
                 return !title.includes('short') && !description.includes('short video');
