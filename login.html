@@ -699,6 +699,24 @@
             </form>
         </div>
         
+        <div style="display: flex; justify-content: center; margin-top: 1.2rem;">
+            <div id="g_id_onload"
+                data-client_id="571624784549-qllmlu720c5p1teo1tscde318lsfqd2h.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                data-type="standard"
+                data-shape="pill"
+                data-theme="outline"
+                data-text="sign_in_with"
+                data-size="large"
+                data-logo_alignment="left">
+            </div>
+        </div>
+        
         <a href="index.html" class="back-to-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
     </div>
     
@@ -941,6 +959,12 @@ Please save this PIN to access the app.`);
                 });
             });
         });
+        
+        function handleCredentialResponse(response) {
+            // Handle Google sign-in response here
+            console.log("Google ID Token:", response.credential);
+            // You can redirect or process the token as needed
+        }
     </script>
 </body>
 </html>
