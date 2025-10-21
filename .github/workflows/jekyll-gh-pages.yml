@@ -30,6 +30,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # If the repository doesn't yet have a Pages site configured,
+          # setting enablement to true allows the action to create/enable it.
+          # If you prefer to enable Pages manually in repository settings,
+          # remove this block.
+          enablement: true
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
