@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import twilio from 'twilio';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Twilio credentials - uncommented for OTP functionality
 // In a production environment, these should be stored as environment variables
