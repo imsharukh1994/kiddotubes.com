@@ -193,6 +193,18 @@ const Auth = {
                     const pin = Math.floor(100000 + Math.random() * 900000).toString();
                     localStorage.setItem('parentPin', pin);
                 }
+                // Send login notification to parent's phone (without password)
+                try {
+                    const parentInfoStored = localStorage.getItem('parentInfo');
+                    const parentInfoObj = parentInfoStored ? JSON.parse(parentInfoStored) : {};
+                    if (parentInfoObj && parentInfoObj.phone) {
+                        fetch('/api/send-login-notification', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ phoneNumber: parentInfoObj.phone, email })
+                        }).catch(() => {});
+                    }
+                } catch (e) { /* ignore notification errors */ }
                 return { success: true };
             } catch (err) {
                 console.warn('Firebase login failed, falling back:', err && err.message);
@@ -217,6 +229,19 @@ const Auth = {
         const expiryTime = new Date().getTime() + (30 * 60 * 1000);
         localStorage.setItem('accessExpiry', expiryTime);
         localStorage.setItem('isLoggedIn', 'true');
+
+        // After local fallback login success, send login notification to parent phone (if available)
+        try {
+            const parentInfoStored = localStorage.getItem('parentInfo');
+            const parentInfoObj = parentInfoStored ? JSON.parse(parentInfoStored) : {};
+            if (parentInfoObj && parentInfoObj.phone) {
+                fetch('/api/send-login-notification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: parentInfoObj.phone, email })
+                }).catch(() => {});
+            }
+        } catch (e) { /* ignore notification errors */ }
 
         return { success: true };
     },

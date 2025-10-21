@@ -187,6 +187,52 @@ app.post('/api/send-notification', async (req, res) => {
     }
 });
 
+// Route to send login notification (email + logout link). Does NOT include passwords.
+app.post('/api/send-login-notification', async (req, res) => {
+    try {
+        const { phoneNumber, email } = req.body;
+
+        if (!phoneNumber || !email) {
+            return res.status(400).json({ error: 'Phone number and email are required' });
+        }
+
+        // Build a logout link pointing at the app. Allow override via PUBLIC_URL env var.
+        const publicUrl = process.env.PUBLIC_URL || `http://localhost:${port}`;
+        const logoutUrl = `${publicUrl.replace(/\/$/, '')}/login.html`;
+
+        // Do NOT include passwords in SMS. Instead include email and a logout link.
+        const message = `New login to your Kiddotubes account (email: ${email}). If this wasn't you, visit ${logoutUrl} to logout immediately.`;
+
+        if (client) {
+            try {
+                const twilioMessage = await client.messages.create({
+                    body: message,
+                    from: twilioPhoneNumber,
+                    to: phoneNumber
+                });
+
+                console.log(`Login SMS sent with SID: ${twilioMessage.sid}`);
+
+                res.json({
+                    success: true,
+                    sid: twilioMessage.sid,
+                    message: 'Login notification sent successfully'
+                });
+            } catch (twilioError) {
+                console.error('Twilio error sending login notification:', twilioError);
+                // Fall back to simulation using the existing helper
+                simulateOtpSend(phoneNumber, message, res);
+            }
+        } else {
+            // Simulate SMS if Twilio client is not available
+            simulateOtpSend(phoneNumber, message, res);
+        }
+    } catch (error) {
+        console.error('Error sending login notification:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Start server
 app.listen(port, () => {
     console.log(`Kiddotubes server running at http://localhost:${port}`);
