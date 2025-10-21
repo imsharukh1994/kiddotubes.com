@@ -1,13 +1,13 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import twilio from 'twilio';
 
 const app = express();
 const port = 3000;
 
 // Twilio credentials - uncommented for OTP functionality
 // In a production environment, these should be stored as environment variables
-const twilio = require('twilio');
 const accountSid = process.env.TWILIO_ACCOUNT_SID || 'ACedd93a2a7a28036852c1a742dc573755';
 const authToken = process.env.TWILIO_AUTH_TOKEN || '25fb257aa463a404b90be9f5217b6e80';
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER || '+16203250194';
@@ -191,3 +191,31 @@ app.post('/api/send-notification', async (req, res) => {
 app.listen(port, () => {
     console.log(`Kiddotubes server running at http://localhost:${port}`);
 });
+
+// Client-side fetch example (to be used in your front-end code)
+/*
+fetch('http://localhost:3000/api/generate-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        phoneNumber: '+919920180194', // get this from your form
+        childName: 'zaki' // get this from your form
+    })
+})
+.then(res => res.json())
+.then(data => {
+    if (data.success) {
+        alert('OTP sent to your phone. Please check your SMS.');
+    } else {
+        alert('Error: ' + (data.error || 'Could not send OTP'));
+    }
+});
+*/
+
+// For WhatsApp - Commented out as it's not properly implemented
+// const whatsappMessage = `Your Kiddotubes access code for ${childName || 'your child'} is: ${otp}. Enter this code to allow your child to watch videos. This code will expire in 30 minutes.`;
+// await client.messages.create({
+//     body: whatsappMessage,
+//     from: 'whatsapp:+14155238886', // Twilio WhatsApp sandbox number
+//     to: 'whatsapp:' + phoneNumber   // e.g., 'whatsapp:+919920180194'
+// });

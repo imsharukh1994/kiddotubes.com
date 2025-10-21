@@ -1,0 +1,16 @@
+/* Rainbow Text Animation for Kiddotube Logo */
+@keyframes rainbow-text {
+  0% { color: #ff0000; } /* Red */
+  14% { color: #ff7f00; } /* Orange */
+  28% { color: #ffff00; } /* Yellow */
+  42% { color: #00ff00; } /* Green */
+  57% { color: #0000ff; } /* Blue */
+  71% { color: #4b0082; } /* Indigo */
+  85% { color: #9400d3; } /* Violet */
+  100% { color: #ff0000; } /* Back to Red */
+}
+
+.rainbow-text {
+  animation: rainbow-text 4s linear infinite;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
