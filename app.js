@@ -694,7 +694,10 @@ function displayVideos(videos) {
         return;
     }
 
-    videos.forEach(video => {
+    // Choose one random "new" video on each page load
+    const newIndex = Math.floor(Math.random() * videos.length);
+
+    videos.forEach((video, idx) => {
         const videoId = video.id.videoId;
         const title = video.snippet.title;
         const thumbnail = video.snippet.thumbnails.high?.url || video.snippet.thumbnails.default.url;
@@ -720,6 +723,19 @@ function displayVideos(videos) {
                 thumbnail: thumbnail,
                 channelTitle: channelTitle
             };
+
+            // Debug: log auth state to help diagnose unexpected redirects
+            try {
+                console.log('VIDEO CLICK auth-state', {
+                    isRegistered: localStorage.getItem('isRegistered'),
+                    isLoggedIn: localStorage.getItem('isLoggedIn'),
+                    parentPin: localStorage.getItem('parentPin'),
+                    accessExpiry: localStorage.getItem('accessExpiry'),
+                    checkAccessValidity: checkAccessValidity()
+                });
+            } catch (e) {
+                console.warn('Error reading auth state for debug', e);
+            }
 
             // Check if parent is registered
             const isRegistered = localStorage.getItem('isRegistered') === 'true';
@@ -749,7 +765,19 @@ function displayVideos(videos) {
             }
         });
 
-        videosContainer.appendChild(videoCard);
+        // If this is the randomly chosen new video, add badge and prepend later
+        if (idx === newIndex) {
+            const badge = document.createElement('div');
+            badge.className = 'new-badge';
+            badge.textContent = 'NEW';
+            // Position the badge inside the card
+            videoCard.style.position = 'relative';
+            videoCard.querySelector('.thumbnail-container').appendChild(badge);
+            // Prepend to top so it appears first
+            videosContainer.insertBefore(videoCard, videosContainer.firstChild);
+        } else {
+            videosContainer.appendChild(videoCard);
+        }
     });
 }
 

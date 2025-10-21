@@ -642,32 +642,31 @@
         
         <div class="login-content active" id="login-content">
                 <div class="login-form" id="login-form">
-                    <p class="pin-instruction">Enter your 6-digit PIN to access parent controls</p>
-                    <div class="pin-container">
-                        <input type="password" maxlength="1" class="pin-input" data-index="0" autofocus>
-                        <input type="password" maxlength="1" class="pin-input" data-index="1">
-                        <input type="password" maxlength="1" class="pin-input" data-index="2">
-                        <input type="password" maxlength="1" class="pin-input" data-index="3">
-                        <input type="password" maxlength="1" class="pin-input" data-index="4">
-                        <input type="password" maxlength="1" class="pin-input" data-index="5">
+                    <!-- Email & password login (preferred) -->
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="you@example.com">
                     </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Password (min 6 chars)">
+                    </div>
+                    <p class="or-separator">— or —</p>
+                    
+                    <!-- PIN inputs removed: email/password is the preferred login method -->
                     <p class="error-message" id="login-error"></p>
                     <button class="submit-btn" id="login-submit">
                         <span class="btn-text">Login</span>
-                        <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14"></path>
-                            <path d="M12 5l7 7-7 7"></path>
-                        </svg>
                     </button>
-            </div>
+                </div>
             <div class="forgot-pin-container">
-                <a href="#" class="forgot-pin">
+                <a href="#" class="forgot-pin" id="reset-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    Forgot PIN?
+                    Reset password
                 </a>
             </div>
         </div>
@@ -681,6 +680,10 @@
                 <div class="form-group">
                     <label for="parent-email">Email Address</label>
                     <input type="email" id="parent-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="parent-password">Password</label>
+                    <input type="password" id="parent-password" required placeholder="Minimum 6 characters">
                 </div>
                 <div class="form-group">
                     <label for="parent-phone">Phone Number (for verification)</label>
@@ -702,6 +705,10 @@
         <a href="index.html" class="back-to-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
     </div>
     
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Tab switching
@@ -755,9 +762,11 @@
                 });
             });
             
-            // PIN Login Implementation
+            // Login Implementation (email/password preferred, fallback to PIN)
             const loginSubmit = document.getElementById('login-submit');
             const loginError = document.getElementById('login-error');
+            const loginEmail = document.getElementById('login-email');
+            const loginPassword = document.getElementById('login-password');
             
             // Handle PIN input auto-focus and navigation
             
@@ -790,6 +799,34 @@
             
             // Login button click handler
             loginSubmit.addEventListener('click', function() {
+                // If email+password provided, prefer that flow
+                const email = loginEmail.value && loginEmail.value.trim();
+                const password = loginPassword.value && loginPassword.value.trim();
+
+                if (email || password) {
+                    // Use Auth.loginWithEmail
+                    loginSubmit.disabled = true;
+                    loginSubmit.textContent = 'Signing in...';
+                    loginError.textContent = '';
+
+                    Auth.loginWithEmail(email, password).then(result => {
+                        if (result.success) {
+                            alert('Login successful! Redirecting to home.');
+                            window.location.href = 'index.html';
+                        } else {
+                            loginError.textContent = result.error || 'Login failed';
+                            loginSubmit.disabled = false;
+                            loginSubmit.textContent = 'Login';
+                        }
+                    }).catch(err => {
+                        loginError.textContent = err.message || 'Login error';
+                        loginSubmit.disabled = false;
+                        loginSubmit.textContent = 'Login';
+                    });
+                    return;
+                }
+
+                // Otherwise use PIN fallback (existing behavior)
                 // Get entered PIN
                 let enteredPin = '';
                 pinInputs.forEach(input => {
@@ -838,27 +875,43 @@
                 }
             });
             
-            // Handle forgot PIN link
-            const forgotPinLink = document.querySelector('.forgot-pin');
-            forgotPinLink.addEventListener('click', function(e) {
+            // Handle reset link (password reset via Firebase preferred, fallback to PIN reset)
+            const resetLink = document.getElementById('reset-link');
+            resetLink.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+
+                const email = (document.getElementById('login-email')?.value || document.getElementById('parent-email')?.value || '').trim();
+
+                if (email && typeof FirebaseAuthWrapper !== 'undefined' && FirebaseAuthWrapper.sendPasswordResetEmail) {
+                    FirebaseAuthWrapper.sendPasswordResetEmail(email).then(() => {
+                        alert('Password reset email sent. Check your inbox.');
+                    }).catch(err => {
+                        // If Firebase fails, fall back to PIN flow
+                        console.warn('Password reset failed:', err && err.message);
+                        fallbackPinReset();
+                    });
+                    return;
+                }
+
+                // Fallback: generate new PIN if phone exists (legacy flow)
+                fallbackPinReset();
+            });
+
+            function fallbackPinReset() {
                 const parentInfo = JSON.parse(localStorage.getItem('parentInfo')) || {};
-                
+
                 if (!parentInfo.phone) {
                     loginError.textContent = 'No account found. Please register first.';
                     return;
                 }
-                
+
                 // Generate a new PIN
                 const newPin = Math.floor(100000 + Math.random() * 900000).toString();
                 localStorage.setItem('parentPin', newPin);
-                
-                // Alert the user
-                alert(`Your new PIN is: ${newPin}
 
-Please save this PIN to access the app.`);
-            });
+                // Alert the user
+                alert(`Your new PIN is: ${newPin}\n\nPlease save this PIN to access the app.`);
+            }
 
             
             // Registration form submission
@@ -891,7 +944,6 @@ Please save this PIN to access the app.`);
                 registerSubmit.textContent = 'Processing...';
                 registerError.textContent = '';
                 
-                // Save parent information to localStorage
                 const parentInfo = {
                     name: parentName,
                     email: parentEmail,
@@ -899,45 +951,34 @@ Please save this PIN to access the app.`);
                     childName: childName,
                     registrationDate: new Date().toISOString()
                 };
-                
-                // Generate a random 6-digit PIN
-                const pin = Math.floor(100000 + Math.random() * 900000).toString();
-                
-                // Save parent information to localStorage
-                localStorage.setItem('parentInfo', JSON.stringify(parentInfo));
-                localStorage.setItem('parentPin', pin);
-                localStorage.setItem('isRegistered', 'true');
-                
-                // Show success message with PIN
-                alert(`Registration successful! Your PIN is: ${pin}
 
-Please save this PIN to access the app.`);
-                
-                // Reset form state
-                registerSubmit.disabled = false;
-                registerSubmit.textContent = 'Register';
-                
-                // Switch to login tab
-                loginTab.click();
-                
-                // Simulate sending PIN via SMS (for demonstration purposes)
-                fetch('http://localhost:3000/api/send-pin', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        phoneNumber: parentPhone,
-                        pin: pin,
-                        childName: childName
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('SMS simulation response:', data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                const parentPassword = document.getElementById('parent-password').value;
+
+                // Use Auth.registerWithEmail (client-side sample)
+                registerSubmit.disabled = true;
+                registerSubmit.textContent = 'Processing...';
+                registerError.textContent = '';
+
+                Auth.registerWithEmail(parentInfo, parentPassword).then(result => {
+                    // result contains { success: true, pin }
+                    alert(`Registration successful! Your PIN is: ${result.pin}\n\nPlease save this PIN to access the app.`);
+
+                    registerSubmit.disabled = false;
+                    registerSubmit.textContent = 'Register';
+
+                    // Switch to login tab
+                    loginTab.click();
+
+                    // Simulate sending PIN via SMS (non-blocking)
+                    fetch('http://localhost:3000/api/send-pin', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phoneNumber: parentPhone, pin: result.pin, childName })
+                    }).catch(() => {});
+                }).catch(err => {
+                    registerError.textContent = err.message || 'Registration failed';
+                    registerSubmit.disabled = false;
+                    registerSubmit.textContent = 'Register';
                 });
             });
         });

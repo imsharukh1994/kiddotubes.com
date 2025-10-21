@@ -99,6 +99,11 @@ const Auth = {
     
     // Logout user
     logout: function() {
+        // If Firebase is available, sign out there too
+        if (typeof FirebaseAuthWrapper !== 'undefined' && FirebaseAuthWrapper.signOut) {
+            FirebaseAuthWrapper.signOut().catch(() => {});
+        }
+
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('accessExpiry');
         // We don't remove registration info so they can log back in
@@ -112,6 +117,108 @@ const Auth = {
         
         // Return the phone number for OTP verification
         return parentInfo.phone;
+    },
+
+    // Hash a password using SHA-256 (returns hex string)
+    hashPassword: async function(password) {
+        if (!password) return null;
+        // Use Web Crypto API
+        const enc = new TextEncoder();
+        const data = enc.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    },
+
+    // Register using email & password (client-side sample)
+    registerWithEmail: async function(parentInfo, password) {
+        // Prefer Firebase auth when initialized
+        if (typeof FirebaseAuthWrapper !== 'undefined' && FirebaseAuthWrapper && FirebaseAuthWrapper.register) {
+            try {
+                const res = await FirebaseAuthWrapper.register(parentInfo.email, password);
+                // On success, keep a minimal parentInfo locally (without passwordHash)
+                const toStore = Object.assign({}, parentInfo, { uid: res.user && res.user.uid });
+                localStorage.setItem('parentInfo', JSON.stringify(toStore));
+                localStorage.setItem('isRegistered', 'true');
+                // Generate and store a PIN for compatibility with existing flows/UI
+                const pin = Math.floor(100000 + Math.random() * 900000).toString();
+                localStorage.setItem('parentPin', pin);
+                return { success: true, uid: res.user && res.user.uid, pin };
+            } catch (err) {
+                // Fall back to local implementation on error
+                console.warn('Firebase register failed, falling back:', err && err.message);
+            }
+        }
+
+        if (!parentInfo || !parentInfo.email) {
+            throw new Error('parentInfo with email is required');
+        }
+        if (!password || password.length < 6) {
+            throw new Error('Password must be at least 6 characters');
+        }
+
+        const passwordHash = await this.hashPassword(password);
+        // Store passwordHash alongside parentInfo
+        const infoToStore = Object.assign({}, parentInfo, { passwordHash });
+        localStorage.setItem('parentInfo', JSON.stringify(infoToStore));
+        localStorage.setItem('isRegistered', 'true');
+
+        // Generate a random 6-digit PIN for backward compatibility (keeps existing flows)
+        const pin = Math.floor(100000 + Math.random() * 900000).toString();
+        localStorage.setItem('parentPin', pin);
+
+        return { success: true, pin };
+    },
+
+    // Login using email & password (client-side sample)
+    loginWithEmail: async function(email, password) {
+        // Try Firebase auth first (if available)
+        if (typeof FirebaseAuthWrapper !== 'undefined' && FirebaseAuthWrapper && FirebaseAuthWrapper.login) {
+            try {
+                const res = await FirebaseAuthWrapper.login(email, password);
+                // On successful Firebase login store minimal parentInfo stub
+                const stored = localStorage.getItem('parentInfo');
+                const parentInfo = stored ? JSON.parse(stored) : {};
+                parentInfo.email = email;
+                parentInfo.uid = res.user && res.user.uid;
+                localStorage.setItem('parentInfo', JSON.stringify(parentInfo));
+                const expiryTime = new Date().getTime() + (30 * 60 * 1000);
+                localStorage.setItem('accessExpiry', expiryTime);
+                localStorage.setItem('isLoggedIn', 'true');
+                // Mark as registered so legacy checks in the app pass
+                localStorage.setItem('isRegistered', 'true');
+                // Ensure a parentPin exists for compatibility with UI that checks its presence
+                if (!localStorage.getItem('parentPin')) {
+                    const pin = Math.floor(100000 + Math.random() * 900000).toString();
+                    localStorage.setItem('parentPin', pin);
+                }
+                return { success: true };
+            } catch (err) {
+                console.warn('Firebase login failed, falling back:', err && err.message);
+                // continue to fallback
+            }
+        }
+
+        const stored = localStorage.getItem('parentInfo');
+        if (!stored) return { success: false, error: 'No account found. Please register.' };
+
+        const parentInfo = JSON.parse(stored);
+        if (!parentInfo.email || parentInfo.email.toLowerCase() !== (email || '').toLowerCase()) {
+            return { success: false, error: 'No account found for that email' };
+        }
+
+        const passwordHash = await this.hashPassword(password);
+        if (!parentInfo.passwordHash || parentInfo.passwordHash !== passwordHash) {
+            return { success: false, error: 'Invalid email or password' };
+        }
+
+        // Set access timeout (30 minutes)
+        const expiryTime = new Date().getTime() + (30 * 60 * 1000);
+        localStorage.setItem('accessExpiry', expiryTime);
+        localStorage.setItem('isLoggedIn', 'true');
+
+        return { success: true };
     },
     
     // Extend session

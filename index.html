@@ -29,23 +29,11 @@
     <div class="app-container">
         <!-- Header Section -->
         <header>
-            <div class="logo-container" style="display: flex; align-items: center; gap: 8px;">
-                <div class="logo">
-                    <img src="assets/logos.png" alt="Kiddotubes Logo"
-                         style="height:72px;width:auto;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-right:0;">
-                </div>
-                <h1 style="font-size:2.2rem; margin:0; letter-spacing:-0.5px; font-family: 'Comic Sans MS', 'Comic Sans', cursive; font-weight: bold;">
-                  <span style="color:#ff5e5b;">K</span>
-                  <span style="color:#fbb13c;">i</span>
-                  <span style="color:#3ec300;">d</span>
-                  <span style="color:#00b2ff;">d</span>
-                  <span style="color:#ff5e5b;">o</span>
-                  <span style="color:#fbb13c;">t</span>
-                  <span style="color:#3ec300;">u</span>
-                  <span style="color:#00b2ff;">b</span>
-                  <span style="color:#ff5e5b;">e</span>
-                  <span style="color:#fbb13c;">s</span>
-                </h1>
+            <div class="logo-container">
+              <span class="logo">
+                <img src="assets/logo-transparent.png" alt="Kiddotube Logo" />
+              </span>
+              <h1>Kiddotube</h1>
             </div>
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="Search kid-friendly videos">
@@ -221,7 +209,7 @@
         <!-- Video Player Modal -->
         <div id="video-modal" class="modal">
             <div class="modal-content">
-                <span class="close-button">&times;</span>
+                <span class="close-button" role="button" aria-label="Close video" tabindex="0">&times;</span>
                 <div id="video-player"></div>
                 <h3 id="video-title"></h3>
             </div>
@@ -489,8 +477,23 @@
                 }
             }
             
-            // Initial UI update
-            updateAuthUI();
+            // If Firebase auth is available, wait for its state and sync localStorage; otherwise do initial update now
+            if (typeof FirebaseAuthWrapper !== 'undefined' && FirebaseAuthWrapper.onAuthStateChanged) {
+                FirebaseAuthWrapper.onAuthStateChanged(function(user) {
+                    if (user) {
+                        // Sync localStorage so Auth.isLoggedIn() returns true
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('accessExpiry', Date.now() + (30 * 60 * 1000));
+                    } else {
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('accessExpiry');
+                    }
+                    updateAuthUI();
+                });
+            } else {
+                // No Firebase available — do immediate UI update
+                updateAuthUI();
+            }
             
             // Add click handlers for video cards to check authentication
             const videoCards = document.querySelectorAll('.video-card');
