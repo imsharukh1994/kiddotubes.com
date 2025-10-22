@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout - Kiddotubes</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .checkout-container{max-width:720px;margin:48px auto;padding:28px;background:#fff;border-radius:12px;box-shadow:0 18px 40px rgba(16,24,40,0.08)}
+    .plan-title{font-size:1.5rem;font-weight:800;color:#1f2937;margin-bottom:8px}
+    .plan-price{font-size:1.3rem;color:#6c63ff;margin-bottom:18px}
+    .note{color:#444;margin-bottom:14px}
+    .pay-btn{display:inline-block;padding:12px 20px;background:linear-gradient(90deg,#6c63ff,#ff6b6b);color:#fff;border-radius:999px;text-decoration:none;font-weight:800}
+    .back-link{display:inline-block;margin-left:12px;color:#333;text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo-container">
+        <div class="logo"><img src="assets/logos.png" alt="Kiddotubes" style="height:48px"></div>
+      </div>
+    </header>
+
+    <main>
+      <div class="checkout-container">
+        <div id="checkout-content">
+          <div class="plan-title" id="plan-name">Selected Plan</div>
+          <div class="plan-price" id="plan-price">—</div>
+          <div class="note" id="plan-desc">Loading plan details…</div>
+
+          <a href="#" id="proceed-btn" class="pay-btn">Proceed to Payment</a>
+          <a href="index.html" class="back-link">← Back to plans</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const plan = (getQueryParam('plan') || 'free').toLowerCase();
+    const map = {
+      free: {name: 'Free + Ads', price: '$0.00', desc: 'Enjoy the full library with occasional ads.'},
+      subscription: {name: 'Subscription (Most Popular)', price: '$9.99/mo', desc: 'Ad-free experience with exclusive content and parental controls.'},
+      partner: {name: 'Partnership Inquiry', price: 'Contact us', desc: 'Start a conversation with our partnerships team.'}
+    };
+
+    const details = map[plan] || map.free;
+    document.getElementById('plan-name').textContent = details.name;
+    document.getElementById('plan-price').textContent = details.price;
+    document.getElementById('plan-desc').textContent = details.desc;
+
+    // Placeholder payment click
+    document.getElementById('proceed-btn').addEventListener('click', function(e){
+      e.preventDefault();
+      if(plan === 'partner'){
+        window.location.href = 'mailto:partnerships@kiddotubes.com?subject=Partnership%20Inquiry';
+        return;
+      }
+      alert('This is a placeholder. Next step: integrate a payment provider (Stripe/Checkout) to create a session and redirect.');
+    });
+  </script>
+</body>
+</html>
