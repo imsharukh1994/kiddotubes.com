@@ -1918,6 +1918,15 @@ flex-wrap: wrap;
     }
 }
 
+/* Ensure profile and subscription text is high-contrast and visible */
+.profile-main, .profile-main *,
+.profile-section, .profile-section *,
+#subscription-content, #subscription-content * {
+    color: #1f2937 !important; /* dark text */
+    opacity: 1 !important;
+}
+
+
 /* Tablets (481px to 768px) */
 @media only screen and (min-width: 481px) and (max-width: 768px) {
     .header {
