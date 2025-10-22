@@ -516,6 +516,17 @@ color: #fff;
     box-shadow: 0 10px 24px rgba(255, 107, 107, 0.08), 0 2px 6px rgba(2,6,23,0.06);
 }
 
+/* Ensure google buttons are not truncated by .register-btn rules */
+.google-btn {
+    max-width: 100% !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap;
+}
+
+/* If inside a narrow container, allow the google button to expand to fit text */
+.google-btn { min-width: 160px; }
+
 
 .nav-item[data-category="shows"] span {
     color: #FF4081;
