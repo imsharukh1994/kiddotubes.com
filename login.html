@@ -731,8 +731,21 @@
                 // Find the tab
                 const tab = document.querySelector(`.login-tab[data-tab="${tabName}"]`);
                 if (!tab) return;
-                
+                // Remove active from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Activate chosen tab and content
+                tab.classList.add('active');
+                const content = document.querySelector(`.login-content#${tabName}-content`);
+                if (content) content.classList.add('active');
             };
+
+            // If the page was opened with a hash (e.g., #register), show that tab
+            if (location.hash) {
+                const hash = location.hash.replace('#', '').trim();
+                if (hash) showTab(hash);
+            }
             
             const loginTab = document.querySelector('.login-tab[data-tab="login"]');
             const registerTab = document.querySelector('.login-tab[data-tab="register"]');
