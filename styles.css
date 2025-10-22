@@ -490,6 +490,32 @@ color: #fff;
     vertical-align: middle;
 }
 
+/* Google button pill style used on login/register */
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #fff;
+    color: #333;
+    border-radius: 999px;
+    border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 10px 22px rgba(99, 102, 241, 0.08), 0 2px 6px rgba(2,6,23,0.06);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.google-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(99, 102, 241, 0.10), 0 4px 10px rgba(2,6,23,0.08);
+}
+.google-btn img { width: 20px; height: 20px; }
+
+/* Slight variant for register button to add soft pink glow like the design */
+#google-register.google-btn {
+    box-shadow: 0 10px 24px rgba(255, 107, 107, 0.08), 0 2px 6px rgba(2,6,23,0.06);
+}
+
 
 .nav-item[data-category="shows"] span {
     color: #FF4081;
