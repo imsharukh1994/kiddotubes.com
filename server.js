@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -284,6 +285,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
 // Start server
 app.listen(port, () => {
     console.log(`Kiddotubes server running at http://localhost:${port}`);
+    console.log('STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? 'present' : 'missing');
+    console.log('PUBLIC_URL:', process.env.PUBLIC_URL || `http://localhost:${port}`);
 });
 
 // Client-side fetch example (to be used in your front-end code)
