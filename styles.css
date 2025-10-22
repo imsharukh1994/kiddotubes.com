@@ -398,6 +398,99 @@ color: #fff;
     background: linear-gradient(135deg, #FF9800, #FFEB3B);
 }
 
+/* Responsive tweaks for the login/register card and forms (mobile-first enhancements) */
+@media (max-width: 900px) {
+    .login-container, .login-card {
+        max-width: 460px;
+        margin: 20px auto;
+        padding: 22px !important;
+        border-radius: 20px !important;
+    }
+
+    .login-logo {
+        width: 84px;
+        height: 84px;
+    }
+
+    .login-container h1 {
+        font-size: 2rem;
+    }
+
+    .login-container h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Make the card fluid on very small screens */
+    .login-container {
+        width: 92vw;
+        max-width: 420px;
+        padding: 18px !important;
+        border-radius: 16px !important;
+    }
+
+    .login-card {
+        padding: 18px !important;
+    }
+
+    /* Tabs: larger tap targets and wrap if needed */
+    .login-tabs {
+        display: flex;
+        gap: 8px;
+        padding: 6px;
+    }
+
+    .login-tab {
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 0.95rem;
+    }
+
+    /* Make primary action buttons full width and easier to tap */
+    .submit-btn, .register-btn, .login-btn {
+        width: 100% !important;
+        padding: 14px 18px !important;
+        font-size: 1rem !important;
+        border-radius: 999px !important;
+    }
+
+    /* Google buttons stack vertically and expand */
+    #google-login, #google-register {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 12px 14px !important;
+        font-size: 0.95rem !important;
+        border-radius: 999px !important;
+    }
+
+    /* If both Google buttons are visible, stack them instead of side-by-side */
+    .login-content .google-group, .register-content .google-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Reduce decorative elements that may overflow */
+    .cartoon-character, .cartoon-animal, .cloud, .star {
+        display: none !important;
+    }
+
+    .login-container h1 {
+        font-size: 1.6rem !important;
+    }
+}
+
+/* Utility: ensure images and SVGs inside buttons scale properly */
+#google-login img, #google-register img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+
 .nav-item[data-category="shows"] span {
     color: #FF4081;
 }
