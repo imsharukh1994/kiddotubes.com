@@ -54,14 +54,33 @@
     document.getElementById('plan-price').textContent = details.price;
     document.getElementById('plan-desc').textContent = details.desc;
 
-    // Placeholder payment click
-    document.getElementById('proceed-btn').addEventListener('click', function(e){
+    // Proceed to payment: call server to create a checkout session
+    document.getElementById('proceed-btn').addEventListener('click', async function(e){
       e.preventDefault();
       if(plan === 'partner'){
         window.location.href = 'mailto:partnerships@kiddotubes.com?subject=Partnership%20Inquiry';
         return;
       }
-      alert('This is a placeholder. Next step: integrate a payment provider (Stripe/Checkout) to create a session and redirect.');
+
+      try {
+        const resp = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan })
+        });
+        const data = await resp.json();
+        if (data && data.url) {
+          // Redirect to Stripe Checkout or fallback URL
+          window.location.href = data.url;
+        } else if (data && data.error) {
+          alert('Error creating checkout session: ' + data.error);
+        } else {
+          alert('Unexpected response from server when creating checkout session.');
+        }
+      } catch (err) {
+        console.error('Checkout create error', err);
+        alert('Could not start checkout (see console for details).');
+      }
     });
   </script>
 </body>

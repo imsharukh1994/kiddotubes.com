@@ -233,6 +233,52 @@ app.post('/api/send-login-notification', async (req, res) => {
     }
 });
 
+// Stripe Checkout session creation
+app.post('/api/create-checkout-session', async (req, res) => {
+    try {
+        const { plan } = req.body || {};
+
+        const stripeSecret = process.env.STRIPE_SECRET_KEY;
+        if (!stripeSecret) {
+            return res.status(500).json({ error: 'Stripe secret key is not configured on the server.' });
+        }
+
+        // Dynamically import stripe to avoid loading when not configured
+        const Stripe = (await import('stripe')).default;
+        const stripe = new Stripe(stripeSecret, { apiVersion: '2022-11-15' });
+
+        // Map simple plans to amounts (in cents) for test/demo purposes
+        let line_items = [];
+        let success_url = `${process.env.PUBLIC_URL || `http://localhost:${port}`}/checkout-success.html`;
+        let cancel_url = `${process.env.PUBLIC_URL || `http://localhost:${port}`}/checkout-cancel.html`;
+
+        if (plan === 'subscription') {
+            // For demo: single payment representing subscription signup (in real integration use subscription products/prices)
+            line_items = [{ price_data: { currency: 'usd', product_data: { name: 'Kiddotubes Subscription (monthly)' }, unit_amount: 999 }, quantity: 1 }];
+        } else if (plan === 'free') {
+            return res.json({ url: `${process.env.PUBLIC_URL || '/'}?plan=free` });
+        } else if (plan === 'partner') {
+            return res.json({ url: `mailto:partnerships@kiddotubes.com?subject=Partnership%20Inquiry` });
+        } else {
+            // default to subscription
+            line_items = [{ price_data: { currency: 'usd', product_data: { name: 'Kiddotubes Subscription (monthly)' }, unit_amount: 999 }, quantity: 1 }];
+        }
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            mode: 'payment',
+            line_items,
+            success_url,
+            cancel_url
+        });
+
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error('Error creating Stripe checkout session:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Start server
 app.listen(port, () => {
     console.log(`Kiddotubes server running at http://localhost:${port}`);
