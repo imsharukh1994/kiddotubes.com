@@ -9,8 +9,23 @@
 <body>
   <div style="max-width:700px;margin:48px auto;padding:28px;background:#fff;border-radius:12px;box-shadow:0 18px 40px rgba(16,24,40,0.08);text-align:center;">
     <h1>Thank you!</h1>
-    <p>Your payment was successful. Your subscription will be activated shortly.</p>
-    <a href="index.html" class="plan-cta">Back to home</a>
+    <p id="success-msg">Your payment was successful. Your subscription has been activated.</p>
+    <a href="profile.html" id="to-profile" class="plan-cta">Go to Profile</a>
   </div>
+  <script>
+    // When Stripe redirects here it includes ?plan=...&session_id=...
+    const params = new URLSearchParams(location.search);
+    const plan = params.get('plan') || 'subscription';
+    // For demo: set subscription start and expiry (30 days)
+    const start = Date.now();
+    const expires = start + 30 * 24 * 60 * 60 * 1000;
+    const sub = { plan, start, expires };
+    try {
+      localStorage.setItem('subscription', JSON.stringify(sub));
+      document.getElementById('success-msg').textContent = 'Your payment was successful. Subscription active.';
+    } catch (e) {
+      console.warn('Could not save subscription locally', e);
+    }
+  </script>
 </body>
 </html>

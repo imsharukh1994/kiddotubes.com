@@ -249,8 +249,10 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
         // Map simple plans to amounts (in cents) for test/demo purposes
         let line_items = [];
-        let success_url = `${process.env.PUBLIC_URL || `http://localhost:${port}`}/checkout-success.html`;
-        let cancel_url = `${process.env.PUBLIC_URL || `http://localhost:${port}`}/checkout-cancel.html`;
+    let baseUrl = process.env.PUBLIC_URL || `http://localhost:${port}`;
+    // include plan and the Stripe session id placeholder so client can read session details if needed
+    let success_url = `${baseUrl.replace(/\/$/, '')}/checkout-success.html?plan=${encodeURIComponent(plan || 'subscription')}&session_id={CHECKOUT_SESSION_ID}`;
+    let cancel_url = `${baseUrl.replace(/\/$/, '')}/checkout-cancel.html`;
 
         if (plan === 'subscription') {
             // For demo: single payment representing subscription signup (in real integration use subscription products/prices)

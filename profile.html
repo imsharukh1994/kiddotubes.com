@@ -272,6 +272,20 @@
                             </form>
                         </div>
                         
+                        <!-- Subscription Section -->
+                        <div class="profile-section" id="subscription-section">
+                            <h2 class="section-title">Subscription</h2>
+                            <div id="subscription-content">
+                                <p id="no-sub">Current Plan: <strong>Free</strong></p>
+                                <div id="sub-details" style="display:none;">
+                                    <p>Plan: <strong id="sub-plan"></strong></p>
+                                    <p>Started: <strong id="sub-start"></strong></p>
+                                    <p>Expires: <strong id="sub-expires"></strong> (<span id="sub-days-left"></span> days left)</p>
+                                    <button id="manage-sub" class="btn btn-primary">Manage Subscription</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- Security Section -->
                         <div class="profile-section" id="security-section" style="display: none;">
                             <h2 class="section-title">Security</h2>
@@ -477,4 +491,32 @@
         });
     </script>
 </body>
+<script>
+    // Populate profile info and subscription details from localStorage
+    (function(){
+        try{
+            const parentEmail = localStorage.getItem('parentEmail') || document.getElementById('parent-email-display').textContent;
+            const parentName = localStorage.getItem('parentName') || document.getElementById('parent-name-display').textContent;
+            document.getElementById('parent-email-display').textContent = parentEmail;
+            document.getElementById('parent-name-display').textContent = parentName;
+
+            const raw = localStorage.getItem('subscription');
+            if (raw){
+                const sub = JSON.parse(raw);
+                const start = new Date(sub.start);
+                const expires = new Date(sub.expires);
+                const daysLeft = Math.max(0, Math.ceil((expires - Date.now()) / (24*60*60*1000)));
+                document.getElementById('sub-plan').textContent = sub.plan;
+                document.getElementById('sub-start').textContent = start.toLocaleDateString();
+                document.getElementById('sub-expires').textContent = expires.toLocaleDateString();
+                document.getElementById('sub-days-left').textContent = daysLeft;
+                document.getElementById('no-sub').style.display = 'none';
+                document.getElementById('sub-details').style.display = 'block';
+                document.getElementById('manage-sub').addEventListener('click', function(){
+                    window.location.href = 'checkout.html?plan=' + encodeURIComponent(sub.plan);
+                });
+            }
+        }catch(e){console.warn('Profile script error', e)}
+    })();
+</script>
 </html>
