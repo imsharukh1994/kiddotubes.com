@@ -651,6 +651,15 @@
                         <label for="login-password">Password</label>
                         <input type="password" id="login-password" placeholder="Password (min 6 chars)">
                     </div>
+                    <!-- Google sign-in button -->
+                    <div style="margin: 20px 0; display:flex; gap:12px;">
+                        <button id="google-login" class="submit-btn" type="button" style="background:#fff; color:#444; border:1px solid #e6e6e6;">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:20px; height:20px; margin-right:8px; vertical-align:middle;"> Sign in with Google
+                        </button>
+                        <button id="google-register" class="register-btn" type="button" style="background:#fff; color:#444; border:1px solid #e6e6e6;">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:20px; height:20px; margin-right:8px; vertical-align:middle;"> Register with Google
+                        </button>
+                    </div>
                     <p class="or-separator">— or —</p>
                     
                     <!-- PIN inputs removed: email/password is the preferred login method -->
@@ -734,6 +743,55 @@
                 loginContent.classList.add('active');
                 registerContent.classList.remove('active');
             });
+            // Google sign-in handlers
+            (function() {
+                const googleLoginBtn = document.getElementById('google-login');
+                const googleRegisterBtn = document.getElementById('google-register');
+
+                async function handleGoogleSignIn() {
+                    if (typeof FirebaseAuthWrapper === 'undefined' || !FirebaseAuthWrapper.signInWithGoogle) {
+                        alert('Google sign-in is not available. Make sure Firebase is configured.');
+                        return;
+                    }
+                    try {
+                        const result = await FirebaseAuthWrapper.signInWithGoogle();
+                        const user = result.user || {};
+                        const email = user.email || '';
+
+                        // Save minimal parentInfo
+                        const parentInfo = JSON.parse(localStorage.getItem('parentInfo') || '{}');
+                        parentInfo.email = email;
+                        parentInfo.uid = user.uid || parentInfo.uid;
+                        localStorage.setItem('parentInfo', JSON.stringify(parentInfo));
+                        localStorage.setItem('isRegistered', 'true');
+
+                        // Set session
+                        const expiryTime = new Date().getTime() + (30 * 60 * 1000);
+                        localStorage.setItem('accessExpiry', expiryTime);
+                        localStorage.setItem('isLoggedIn', 'true');
+
+                        // Send login notification if phone is present
+                        try {
+                            if (parentInfo && parentInfo.phone) {
+                                fetch('/api/send-login-notification', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ phoneNumber: parentInfo.phone, email })
+                                }).catch(() => {});
+                            }
+                        } catch (e) {}
+
+                        alert('Signed in successfully with Google. Redirecting...');
+                        window.location.href = 'index.html';
+                    } catch (err) {
+                        console.error('Google sign-in failed:', err);
+                        alert('Google sign-in failed: ' + (err && err.message));
+                    }
+                }
+
+                if (googleLoginBtn) googleLoginBtn.addEventListener('click', handleGoogleSignIn);
+                if (googleRegisterBtn) googleRegisterBtn.addEventListener('click', handleGoogleSignIn);
+            })();
             
             registerTab.addEventListener('click', function() {
                 registerTab.classList.add('active');

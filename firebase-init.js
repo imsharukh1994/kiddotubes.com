@@ -31,6 +31,12 @@ window.FirebaseAuthWrapper = {
     if (!window.firebase || !firebase.auth) return Promise.reject(new Error('Firebase not available'));
     return firebase.auth().signInWithEmailAndPassword(email, password);
   },
+  // Google sign-in using popup
+  signInWithGoogle: function() {
+    if (!window.firebase || !firebase.auth || !firebase.auth.GoogleAuthProvider) return Promise.reject(new Error('Firebase not available'));
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return firebase.auth().signInWithPopup(provider);
+  },
   signOut: function() {
     if (!window.firebase || !firebase.auth) return Promise.reject(new Error('Firebase not available'));
     return firebase.auth().signOut();
