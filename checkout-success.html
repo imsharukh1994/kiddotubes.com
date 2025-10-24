@@ -52,3 +52,37 @@
   </script>
 </body>
 </html>
+
+<!-- Feedback popup (Google Form) -->
+<div class="feedback-btn" id="feedbackBtn" aria-label="Feedback">
+  <img src="assets/mascot-removebg.png" alt="K" style="height:22px;border-radius:4px"> Feedback
+</div>
+<div class="feedback-modal-backdrop" id="feedbackBackdrop" role="dialog" aria-modal="true">
+  <div class="feedback-modal" role="document">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="assets/logos.png" alt="Kiddotubes" style="height:36px">
+        <div>
+          <div style="font-weight:800">Feedback</div>
+          <div style="font-size:0.9rem;color:#6b7280">We'd love your thoughts — it only takes a minute.</div>
+        </div>
+      </div>
+      <button class="close-x" id="feedbackClose">×</button>
+    </div>
+    <div class="modal-body">
+      <iframe class="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScWE2wW81euVye9YM8/viewform?embedded=true"></iframe>
+    </div>
+  </div>
+</div>
+<script>
+  (function(){
+    const btn = document.getElementById('feedbackBtn');
+    const backdrop = document.getElementById('feedbackBackdrop');
+    const close = document.getElementById('feedbackClose');
+    function open(){ backdrop.style.display='flex'; document.body.style.overflow='hidden'; }
+    function closeModal(){ backdrop.style.display='none'; document.body.style.overflow=''; }
+    btn && btn.addEventListener('click', open);
+    close && close.addEventListener('click', closeModal);
+    backdrop && backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
+  })();
+</script>
