@@ -97,7 +97,10 @@
             <div style="font-size:0.9rem;color:#6b7280">We'd love your thoughts — it only takes a minute.</div>
           </div>
         </div>
-        <button class="close-x" id="feedbackClose">×</button>
+        <div style="display:flex;gap:8px;align-items:center">
+          <a id="openFormNewTab" href="https://forms.gle/cWE2wW81euVye9YM8" target="_blank" rel="noopener" style="font-weight:700;color:#6c63ff;text-decoration:none">Open in new tab</a>
+          <button class="close-x" id="feedbackClose">×</button>
+        </div>
       </div>
       <div class="modal-body">
         <iframe class="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScWE2wW81euVye9YM8/viewform?embedded=true"></iframe>
@@ -105,16 +108,19 @@
     </div>
   </div>
   <script>
-    (function(){
+    document.addEventListener('DOMContentLoaded', function(){
       const btn = document.getElementById('feedbackBtn');
       const backdrop = document.getElementById('feedbackBackdrop');
       const close = document.getElementById('feedbackClose');
-      function open(){ backdrop.style.display='flex'; document.body.style.overflow='hidden'; }
-      function closeModal(){ backdrop.style.display='none'; document.body.style.overflow=''; }
-      btn && btn.addEventListener('click', open);
+      const openNew = document.getElementById('openFormNewTab');
+      if(btn) btn.style.display = 'flex';
+      function openModal(){ if(backdrop){ backdrop.style.display='flex'; document.body.style.overflow='hidden'; } }
+      function closeModal(){ if(backdrop){ backdrop.style.display='none'; document.body.style.overflow=''; } }
+      btn && btn.addEventListener('click', openModal);
       close && close.addEventListener('click', closeModal);
       backdrop && backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
-    })();
+      openNew && openNew.addEventListener('click', function(){ /* no-op, opens via anchor */ });
+    });
   </script>
 </body>
 </html>
