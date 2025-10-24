@@ -7,10 +7,28 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div style="max-width:700px;margin:48px auto;padding:28px;background:#fff;border-radius:12px;box-shadow:0 18px 40px rgba(16,24,40,0.08);text-align:center;">
-    <h1>Thank you!</h1>
-    <p id="success-msg">Your payment was successful. Your subscription has been activated.</p>
-    <a href="profile.html" id="to-profile" class="plan-cta">Go to Profile</a>
+  <div style="max-width:760px;margin:48px auto;padding:28px;background:#fff;border-radius:14px;box-shadow:0 22px 60px rgba(16,24,40,0.09);text-align:center;">
+    <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:12px;">
+      <img src="assets/logos.png" alt="Kiddotubes" style="height:64px;width:auto;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.06);">
+      <div style="text-align:left">
+        <div style="font-weight:800;color:#111;font-size:1.15rem;">Kiddotubes</div>
+        <div style="font-size:0.95rem;color:#6b7280;">Safe videos for kids — Premium</div>
+      </div>
+    </div>
+
+    <h1 style="margin-top:6px;margin-bottom:6px;color:#111;font-size:1.6rem">You're all set!</h1>
+    <p id="success-msg" style="color:#374151;margin-bottom:8px;">Thank you — your payment was successful and your subscription is active.</p>
+
+    <div id="sub-summary" style="margin:14px auto 18px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
+      <div style="background:#fbfbff;padding:10px 14px;border-radius:10px;font-weight:700;color:#374151;">Plan: <span id="summary-plan">—</span></div>
+      <div style="background:#fbfbff;padding:10px 14px;border-radius:10px;font-weight:700;color:#374151;">Started: <span id="summary-start">—</span></div>
+      <div style="background:#fbfbff;padding:10px 14px;border-radius:10px;font-weight:700;color:#374151;">Expires: <span id="summary-expires">—</span></div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="profile.html" id="to-profile" class="plan-cta" style="min-width:160px;">Go to Profile</a>
+      <a href="index.html" class="back-link" style="min-width:120px;display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;border:1px solid rgba(16,24,40,0.04);text-decoration:none;color:#374151;background:#fff;">Back to home</a>
+    </div>
   </div>
   <script>
     // When Stripe redirects here it includes ?plan=...&session_id=...
@@ -18,11 +36,16 @@
     const plan = params.get('plan') || 'subscription';
     // For demo: set subscription start and expiry (30 days)
     const start = Date.now();
-    const expires = start + 30 * 24 * 60 * 60 * 1000;
+    const expires = start + 30 * 24 * 60 * 60 * 1000; // 30 days demo
     const sub = { plan, start, expires };
     try {
       localStorage.setItem('subscription', JSON.stringify(sub));
-      document.getElementById('success-msg').textContent = 'Your payment was successful. Subscription active.';
+      document.getElementById('success-msg').textContent = 'Your payment was successful and your subscription is active.';
+      // populate summary
+      const fmt = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      document.getElementById('summary-plan').textContent = plan.replace(/-/g,' ');
+      document.getElementById('summary-start').textContent = fmt.format(new Date(start));
+      document.getElementById('summary-expires').textContent = fmt.format(new Date(expires));
     } catch (e) {
       console.warn('Could not save subscription locally', e);
     }
