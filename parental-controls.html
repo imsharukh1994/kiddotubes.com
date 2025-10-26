@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiddotubes - Parental Controls</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544" crossorigin="anonymous"></script>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-836763755"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-836763755');
+    </script>
+    
+    <style>
+        .controls-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .controls-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .controls-header h1 {
+            color: #6c63ff;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .controls-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .control-card {
+            background-color: #f9f9ff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(108, 99, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .control-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.2);
+        }
+        
+        .control-card h3 {
+            color: #6c63ff;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .control-card h3 i {
+            margin-right: 10px;
+            font-size: 1.6rem;
+        }
+        
+        .control-card p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .toggle-label {
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #6c63ff;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .time-limit-container {
+            margin-top: 20px;
+        }
+        
+        .time-limit-container select {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            color: #444;
+            cursor: pointer;
+        }
+        
+        .time-limit-container select:focus {
+            outline: none;
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+        
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: white;
+        }
+        
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-thumbnail {
+            width: 80px;
+            height: 45px;
+            border-radius: 6px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .history-details {
+            flex: 1;
+        }
+        
+        .history-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .history-time {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        
+        .save-button {
+            display: block;
+            width: 200px;
+            margin: 40px auto 20px;
+            padding: 12px 0;
+            background: linear-gradient(45deg, #6c63ff, #5a52d5);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+        
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        }
+        
+        .save-button:active {
+            transform: translateY(0);
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-to-home a {
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .back-to-home a i {
+            margin-right: 8px;
+        }
+        
+        .back-to-home a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>Kiddotubes</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search kid-friendly videos">
+                <button id="search-button">
+                    <i class="fas fa-search search-icon"></i>
+                </button>
+            </div>
+            <div class="user-actions">
+                <div class="profile-container">
+                    <i class="fas fa-user-circle profile-icon"></i>
+                    <div class="profile-dropdown">
+                        <div class="dropdown-item" id="account-option">
+                            <i class="fas fa-user"></i> Account
+                        </div>
+                        <div class="dropdown-item" id="settings-option">
+                            <i class="fas fa-cog"></i> Settings
+                        </div>
+                        <div class="dropdown-item" id="logout-option">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="controls-container">
+                <div class="controls-header">
+                    <h1>Parental Controls</h1>
+                    <p>Manage your child's viewing experience and set appropriate limits</p>
+                </div>
+                
+                <div class="controls-grid">
+                    <!-- Content Filtering -->
+                    <div class="control-card">
+                        <h3><i class="fas fa-shield-alt"></i> Content Filtering</h3>
+                        <p>Control what type of content your child can access based on age appropriateness.</p>
+                        
+                        <div class="toggle-container">
+                            <span class="toggle-label">Strict Mode (Ages 2-7)</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="strict-mode-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-container">
+                            <span class="toggle-label">Educational Focus</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="educational-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Time Limits -->
+                    <div class="control-card">
+                        <h3><i class="fas fa-clock"></i> Time Limits</h3>
+                        <p>Set daily time limits for how long your child can watch videos.</p>
+                        
+                        <div class="toggle-container">
+                            <span class="toggle-label">Enable Time Limits</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="time-limit-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="time-limit-container">
+                            <select id="time-limit-select" disabled>
+                                <option value="30">30 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="90">1.5 hours</option>
+                                <option value="120" selected>2 hours</option>
+                                <option value="180">3 hours</option>
+                                <option value="240">4 hours</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Watch History -->
+                    <div class="control-card">
+                        <h3><i class="fas fa-history"></i> Watch History</h3>
+                        <p>View what videos your child has been watching recently.</p>
+                        
+                        <div class="toggle-container">
+                            <span class="toggle-label">Receive Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notification-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="history-list" id="watch-history">
+                            <!-- Watch history will be populated here -->
+                            <div class="history-item">
+                                <img src="https://via.placeholder.com/80x45?text=Video" class="history-thumbnail" alt="Video thumbnail">
+                                <div class="history-details">
+                                    <div class="history-title">Educational Cartoon for Kids</div>
+                                    <div class="history-time">Today, 3:45 PM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Controls -->
+                    <div class="control-card">
+                        <h3><i class="fas fa-search"></i> Search Controls</h3>
+                        <p>Control your child's ability to search for content.</p>
+                        
+                        <div class="toggle-container">
+                            <span class="toggle-label">Allow Search</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="search-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-container">
+                            <span class="toggle-label">Safe Search Only</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="safe-search-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="save-button" id="save-controls">Save Settings</button>
+                
+                <div class="back-to-home">
+                    <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>About Kiddotubes</h3>
+                    <p>A safe video platform designed specifically for children, providing educational and entertaining content with parental controls.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="parental-controls.html">Parental Controls</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@kiddotubes.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-ad">
+                <!-- Fallback Footer Ad -->
+                <span class="ad-badge">Advertisement</span>
+                <a href="#" class="banner-ad-link">
+                    <img src="https://via.placeholder.com/728x90?text=Family+Friendly+Content" alt="Footer Advertisement" class="banner-ad-image">
+                </a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!Auth.isLoggedIn()) {
+                alert('Please log in to access parental controls.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get parent info
+            const parentInfo = Auth.getParentInfo();
+            if (!parentInfo) {
+                alert('Parent information not found. Please register again.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get UI elements
+            const strictModeToggle = document.getElementById('strict-mode-toggle');
+            const educationalToggle = document.getElementById('educational-toggle');
+            const timeLimitToggle = document.getElementById('time-limit-toggle');
+            const timeLimitSelect = document.getElementById('time-limit-select');
+            const notificationToggle = document.getElementById('notification-toggle');
+            const searchToggle = document.getElementById('search-toggle');
+            const safeSearchToggle = document.getElementById('safe-search-toggle');
+            const saveButton = document.getElementById('save-controls');
+            const watchHistoryContainer = document.getElementById('watch-history');
+            
+            // Load saved settings
+            const loadSettings = function() {
+                strictModeToggle.checked = localStorage.getItem('strictMode') !== 'false'; // Default to true
+                educationalToggle.checked = localStorage.getItem('educationalFocus') === 'true';
+                
+                const timeLimit = localStorage.getItem('timeLimit');
+                timeLimitToggle.checked = timeLimit !== null;
+                if (timeLimit) {
+                    timeLimitSelect.value = timeLimit;
+                    timeLimitSelect.disabled = false;
+                }
+                
+                notificationToggle.checked = localStorage.getItem('notifications') === 'true';
+                searchToggle.checked = localStorage.getItem('allowSearch') !== 'false'; // Default to true
+                safeSearchToggle.checked = localStorage.getItem('safeSearch') !== 'false'; // Default to true
+                
+                // Load watch history
+                loadWatchHistory();
+            };
+            
+            // Load watch history
+            const loadWatchHistory = function() {
+                const history = Auth.getWatchHistory();
+                
+                if (history.length === 0) {
+                    watchHistoryContainer.innerHTML = '<p style="padding: 15px; color: #777;">No watch history available.</p>';
+                    return;
+                }
+                
+                watchHistoryContainer.innerHTML = '';
+                
+                history.forEach(item => {
+                    const date = new Date(item.watchedAt);
+                    const formattedDate = formatDate(date);
+                    
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <img src="${item.thumbnail || 'https://via.placeholder.com/80x45?text=Video'}" class="history-thumbnail" alt="Video thumbnail">
+                        <div class="history-details">
+                            <div class="history-title">${item.title}</div>
+                            <div class="history-time">${formattedDate}</div>
+                        </div>
+                    `;
+                    
+                    watchHistoryContainer.appendChild(historyItem);
+                });
+            };
+            
+            // Format date
+            const formatDate = function(date) {
+                const now = new Date();
+                const diff = now - date;
+                
+                // If today
+                if (diff < 24 * 60 * 60 * 1000 && 
+                    date.getDate() === now.getDate() && 
+                    date.getMonth() === now.getMonth() && 
+                    date.getFullYear() === now.getFullYear()) {
+                    
+                    return `Today, ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+                }
+                
+                // If yesterday
+                const yesterday = new Date(now);
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (date.getDate() === yesterday.getDate() && 
+                    date.getMonth() === yesterday.getMonth() && 
+                    date.getFullYear() === yesterday.getFullYear()) {
+                    
+                    return `Yesterday, ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+                }
+                
+                // Otherwise show full date
+                return date.toLocaleDateString() + ', ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            };
+            
+            // Event listeners
+            timeLimitToggle.addEventListener('change', function() {
+                timeLimitSelect.disabled = !this.checked;
+            });
+            
+            saveButton.addEventListener('click', function() {
+                // Save settings to localStorage
+                localStorage.setItem('strictMode', strictModeToggle.checked);
+                localStorage.setItem('educationalFocus', educationalToggle.checked);
+                
+                if (timeLimitToggle.checked) {
+                    localStorage.setItem('timeLimit', timeLimitSelect.value);
+                } else {
+                    localStorage.removeItem('timeLimit');
+                }
+                
+                localStorage.setItem('notifications', notificationToggle.checked);
+                localStorage.setItem('allowSearch', searchToggle.checked);
+                localStorage.setItem('safeSearch', safeSearchToggle.checked);
+                
+                // Update parental controls in Auth
+                Auth.toggleParentalControls(notificationToggle.checked);
+                
+                alert('Settings saved successfully!');
+            });
+            
+            // Initialize
+            loadSettings();
+        });
+    </script>
+</body>
+</html>

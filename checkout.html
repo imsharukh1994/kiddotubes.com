@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout - Kiddotubes</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f7fafc;
+    }
+    .checkout-container {
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(16,24,40,0.08);
+    }
+    .plan-summary {
+      background: #f8f9ff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .plan-selector{
+      display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap
+    }
+    .plan-button{
+      padding:8px 12px;border-radius:12px;border:1px solid transparent;background:#fff;font-weight:700;color:#374151;cursor:pointer;box-shadow:0 2px 6px rgba(16,24,40,0.04)
+    }
+    .plan-button.active{background:linear-gradient(90deg,#6c63ff,#9b6bff);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(99,102,241,0.12)}
+    .plan-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+    .plan-price {
+      font-size: 1.3rem;
+      color: #6c63ff;
+      margin-bottom: 12px;
+    }
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .plan-features li {
+      margin: 8px 0;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plan-features li::before {
+      content: "✓";
+      color: #10b981;
+      font-weight: bold;
+    }
+    .form-section {
+      margin-bottom: 32px;
+    }
+    .form-section h3 {
+      color: #374151;
+      margin-bottom: 16px;
+    }
+    .form-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-group {
+      flex: 1;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #4b5563;
+      font-weight: 600;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+    #card-element {
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+    }
+    .pay-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: linear-gradient(90deg, #6c63ff, #ff6b6b);
+      color: #fff;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .pay-btn:hover {
+      transform: translateY(-2px);
+    }
+    .back-link {
+      display: inline-block;
+      margin-left: 16px;
+      color: #4b5563;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      color: #1f2937;
+    }
+    #payment-error {
+      color: #dc2626;
+      margin-top: 8px;
+      display: none;
+    }
+    .loading {
+      display: none;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo-container">
+        <div class="logo"><img src="assets/logos.png" alt="Kiddotubes" style="height:48px"></div>
+        <h1 style="margin: 0 0 0 12px; color: #ff4081;">Kiddotubes</h1>
+      </div>
+    </header>
+
+    <main>
+      <div class="checkout-container">
+        <div id="checkout-content">
+          <!-- Plan Summary -->
+          <div class="plan-summary">
+            <div class="plan-selector" role="tablist" aria-label="Choose plan">
+              <button class="plan-button" data-plan="basic" type="button">Basic</button>
+              <button class="plan-button" data-plan="family" type="button">Family</button>
+              <button class="plan-button" data-plan="premium" type="button">Premium</button>
+            </div>
+            <div class="plan-title" id="plan-name">Selected Plan</div>
+            <div class="plan-price" id="plan-price">—</div>
+            <ul class="plan-features" id="plan-features">
+              <!-- Features will be populated by JavaScript -->
+            </ul>
+          </div>
+
+          <!-- Billing Information -->
+          <form id="payment-form">
+            <div class="form-section">
+              <h3>Account Information</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="email">Email Address</label>
+                  <input type="email" id="email" class="form-input" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="password">Create Password</label>
+                  <input type="password" id="password" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="confirm-password">Confirm Password</label>
+                  <input type="password" id="confirm-password" class="form-input" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Billing Information</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="name">Full Name</label>
+                  <input type="text" id="name" class="form-input" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="address">Street Address</label>
+                  <input type="text" id="address" class="form-input" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="city">City</label>
+                  <input type="text" id="city" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="state">State</label>
+                  <input type="text" id="state" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="zip">ZIP Code</label>
+                  <input type="text" id="zip" class="form-input" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Payment Details</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="card-element">Credit or Debit Card</label>
+                  <div id="card-element"></div>
+                  <div id="payment-error"></div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="pay-btn" id="submit-button">
+              Complete Purchase
+              <span class="loading" id="spinner">Processing...</span>
+            </button>
+            <a href="premium-membership.html" class="back-link">← Back to plans</a>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Initialize Stripe and DOM elements
+    const stripe = Stripe('pk_test_51MMDtALeD8ObEp5eqWhiWufszFVnYCDvVFTvwHcaPSITwadgdfbTI0QJ3YU63TAJWwJ1ZESfAfdSsIaKISiyBs1V00TG1Gq0Jg');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    // DOM Elements
+    const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-button');
+    const spinner = document.getElementById('spinner');
+    const errorDisplay = document.getElementById('payment-error');
+
+    // Plan configurations
+    const plans = {
+      basic: {
+        name: 'Basic Plan',
+        price: '$4.99/mo',
+        features: [
+          'Ad-free viewing',
+          'Basic parental controls',
+          '1 profile',
+          'SD quality'
+        ]
+      },
+      family: {
+        name: 'Family Plan',
+        price: '$9.99/mo',
+        features: [
+          'Everything in Basic',
+          'Up to 3 profiles',
+          'Advanced parental controls',
+          'HD quality',
+          'Offline downloads'
+        ]
+      },
+      premium: {
+        name: 'Premium Plan',
+        price: '$12.99/mo',
+        features: [
+          'Everything in Family',
+          'Up to 6 profiles',
+          'Premium content access',
+          '4K Ultra HD quality',
+          'Priority support',
+          'Early access to new features'
+        ]
+      }
+    };
+
+    // Handle plan selection
+    let selectedPlan = 'family'; // Default plan
+    
+    function renderPlan(planKey) {
+      const plan = plans[planKey];
+      if (!plan) return;
+
+      // Update selected plan
+      selectedPlan = planKey;
+
+      // Update UI elements
+      document.getElementById('plan-name').textContent = plan.name;
+      document.getElementById('plan-price').textContent = plan.price;
+      document.getElementById('plan-features').innerHTML = plan.features
+        .map(feature => `<li>${feature}</li>`)
+        .join('');
+
+      // Clear any error message
+      const errorDisplay = document.getElementById('payment-error');
+      errorDisplay.style.display = 'none';
+
+      // Update active button state
+      document.querySelectorAll('.plan-button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.plan === planKey);
+      });
+
+      // Update URL
+      const url = new URL(window.location);
+      url.searchParams.set('plan', planKey);
+      history.replaceState({}, '', url);
+    }
+
+    // Set up plan button listeners
+    document.querySelectorAll('.plan-button').forEach(button => {
+      button.addEventListener('click', () => {
+        renderPlan(button.dataset.plan);
+      });
+    });
+
+    // Initialize with URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPlan = urlParams.get('plan') || 'family';
+    const PLAN_ALIASES = {
+      subscription: 'family',
+      standard: 'family',
+      family: 'family',
+      basic: 'basic',
+      premium: 'premium'
+    };
+    selectedPlan = PLAN_ALIASES[initialPlan] || 'family';
+    renderPlan(selectedPlan);
+
+    // Mark the corresponding button as active
+    const activeButton = document.querySelector(`.plan-button[data-plan="${selectedPlan}"]`);
+    if (activeButton) {
+      activeButton.classList.add('active');
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      // Ensure a plan is selected and valid
+      const currentPlan = plans[selectedPlan];
+      if (!currentPlan) {
+        errorDisplay.textContent = 'Please select a valid plan';
+        errorDisplay.style.display = 'block';
+        return;
+      }
+
+      // Validate passwords match
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (password !== confirmPassword) {
+        errorDisplay.textContent = 'Passwords do not match';
+        errorDisplay.style.display = 'block';
+        return;
+      }
+
+      // Disable form and show loading state
+      submitButton.disabled = true;
+      spinner.style.display = 'inline-block';
+      errorDisplay.style.display = 'none';
+
+      try {
+        const planPriceIds = {
+          basic: 'price_basic', // Replace with your actual Stripe price IDs
+          family: 'price_family',
+          premium: 'price_premium'
+        };
+
+        // Create a Checkout Session
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            name: document.getElementById('name').value,
+            plan: selectedPlan,
+            priceId: planPriceIds[selectedPlan],
+            customerInfo: {
+              email: document.getElementById('email').value,
+              name: document.getElementById('name').value,
+              address: {
+                line1: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                postal_code: document.getElementById('zip').value
+              }
+            }
+          })
+        });
+
+        const { url, error } = await response.json();
+        
+        if (error) {
+          throw { message: error };
+        }
+
+        // Redirect to Stripe Checkout URL
+        if (url) {
+          window.location.href = url;
+        } else {
+          throw { message: 'Failed to create checkout session' };
+        }
+
+      } catch (error) {
+        errorDisplay.textContent = error.message;
+        errorDisplay.style.display = 'block';
+        submitButton.disabled = false;
+        spinner.style.display = 'none';
+      }
+    });
+
+    // Handle card validation display
+    card.addEventListener('change', ({ error }) => {
+      if (error) {
+        errorDisplay.textContent = error.message;
+        errorDisplay.style.display = 'block';
+      } else {
+        errorDisplay.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
