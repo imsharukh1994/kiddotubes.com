@@ -279,6 +279,9 @@ function setupEventListeners() {
     closeButton.addEventListener('click', () => {
         videoModal.style.display = 'none';
         videoPlayer.innerHTML = '';
+        // cleanup orientation listeners and exit fullscreen if needed
+        try { removeVideoOrientationListeners(); } catch (e) { /* ignore */ }
+        try { exitVideoLandscapeMode(); } catch (e) { /* ignore */ }
     });
 
     // Close modal when clicking outside
@@ -286,6 +289,9 @@ function setupEventListeners() {
         if (e.target === videoModal) {
             videoModal.style.display = 'none';
             videoPlayer.innerHTML = '';
+            // cleanup orientation listeners and exit any landscape/fullscreen mode
+            try { removeVideoOrientationListeners(); } catch (err) { }
+            try { exitVideoLandscapeMode(); } catch (err) { }
         }
         if (e.target === parentControlModal) {
             parentControlModal.style.display = 'none';
@@ -982,8 +988,28 @@ function playVideo(video) {
     // Set video title
     videoTitle.textContent = video.title;
 
+    // Also add an overlay title on top of the video for better visibility
+    try {
+        // Remove any existing overlay first
+        const existing = videoPlayer.querySelector('.video-title-overlay');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'video-title-overlay';
+        overlay.textContent = video.title;
+        videoPlayer.appendChild(overlay);
+    } catch (e) {
+        console.warn('Could not create video title overlay', e);
+    }
+
     // Show video modal
     videoModal.style.display = 'block';
+    // Add orientation listeners so the player can go fullscreen on landscape
+    try {
+        addVideoOrientationListeners();
+    } catch (e) {
+        console.warn('Orientation listeners could not be added', e);
+    }
 
     // Log watched video
     logWatchedVideo(video);
@@ -1050,6 +1076,90 @@ function showWatchHistory() {
     // Show history modal
     historyModal.style.display = 'block';
 }
+
+/*
+ Orientation helpers for video playback
+ - When device orientation becomes landscape, attempt to make the iframe fullscreen.
+ - When returning to portrait or closing the modal, exit fullscreen and restore layout.
+*/
+
+let _videoOrientationHandler = null;
+
+function addVideoOrientationListeners() {
+    // If already added, skip
+    if (_videoOrientationHandler) return;
+
+    _videoOrientationHandler = function () {
+        try {
+            const isLandscape = window.matchMedia && window.matchMedia('(orientation: landscape)').matches;
+            if (isLandscape) {
+                enterVideoLandscapeMode();
+            } else {
+                exitVideoLandscapeMode();
+            }
+        } catch (e) {
+            console.warn('Orientation change handling error', e);
+        }
+    };
+
+    // Listen to orientationchange and resize for broader support
+    window.addEventListener('orientationchange', _videoOrientationHandler);
+    window.addEventListener('resize', _videoOrientationHandler);
+
+    // Run once to set initial state
+    _videoOrientationHandler();
+}
+
+function removeVideoOrientationListeners() {
+    if (!_videoOrientationHandler) return;
+    window.removeEventListener('orientationchange', _videoOrientationHandler);
+    window.removeEventListener('resize', _videoOrientationHandler);
+    _videoOrientationHandler = null;
+}
+
+async function enterVideoLandscapeMode() {
+    // Prefer requesting fullscreen on the iframe so native controls and rotation are handled by the browser
+    const iframe = videoPlayer.querySelector('iframe');
+    if (!iframe) return;
+
+    // If already fullscreen, nothing to do
+    if (document.fullscreenElement) return;
+
+    try {
+        if (iframe.requestFullscreen) {
+            await iframe.requestFullscreen();
+        } else if (videoModal.requestFullscreen) {
+            await videoModal.requestFullscreen();
+        } else {
+            // Fallback: apply a CSS class that makes the modal cover the viewport
+            videoModal.classList.add('landscape-fullscreen');
+            document.body.style.overflow = 'hidden';
+        }
+    } catch (err) {
+        // If requestFullscreen fails or is denied, use fallback CSS
+        videoModal.classList.add('landscape-fullscreen');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+async function exitVideoLandscapeMode() {
+    try {
+        if (document.fullscreenElement) {
+            await document.exitFullscreen();
+        }
+    } catch (e) {
+        // ignore
+    }
+
+    // Remove fallback class and restore scrolling
+    videoModal.classList.remove('landscape-fullscreen');
+    document.body.style.overflow = '';
+}
+
+// Helpers with try/catch wrappers called from other code
+function exitVideoLandscapeModeSafe() { try { exitVideoLandscapeMode(); } catch (e) {} }
+function removeVideoOrientationListenersSafe() { try { removeVideoOrientationListeners(); } catch (e) {} }
+
 
 // Show parent dashboard
 function showParentDashboard(activeTab = 'profile') {

@@ -604,6 +604,59 @@
             margin-top: 5px;
             min-height: 20px;
         }
+        
+        /* Responsive tweaks for small screens to avoid zoomed-in look */
+        @media (max-width: 420px) {
+            body {
+                overflow: auto; /* allow page to scroll normally on small devices */
+            }
+
+            /* Hide heavy decorative elements on very small screens to avoid layout overflow */
+            .cartoon-character,
+            .cartoon-animal,
+            .cloud,
+            .star {
+                display: none !important;
+            }
+
+            .login-container {
+                max-width: 360px;
+                padding: 16px;
+                margin: 12px;
+                border-radius: 18px;
+                box-shadow: 0 14px 36px rgba(108,99,255,0.12);
+                transform: none;
+            }
+
+            .login-container .login-card {
+                padding: 18px;
+                border-radius: 14px;
+                box-shadow: 0 12px 28px rgba(108,99,255,0.12);
+            }
+
+            .login-logo {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin-bottom: 12px;
+                border-width: 5px;
+            }
+
+            .login-logo i { font-size: 40px; }
+
+            .login-container h1 { font-size: 1.6rem; margin-bottom: 6px; }
+            .login-container h2 { font-size: 1.05rem; padding-bottom: 6px; }
+
+            .login-tabs { padding: 4px; }
+            .login-tab { padding: 8px 12px; font-size: 0.95rem; }
+
+            .form-group input { padding: 12px; font-size: 0.95rem; }
+            .pin-input { width: 44px; height: 50px; font-size: 20px; }
+
+            .submit-btn, .register-btn { padding: 12px; font-size: 16px; }
+
+            .back-to-home { margin-top: 18px; display: block; }
+        }
     </style>
 </head>
 <body>

@@ -113,6 +113,31 @@ header {
     align-items: center;
     font-weight: 800;
 }
+
+/* Video modal landscape fullscreen fallback */
+#video-modal.landscape-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 99999 !important;
+    background: #000 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+#video-modal.landscape-fullscreen #video-player {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#video-modal.landscape-fullscreen #video-player iframe {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
 .feedback-btn img{height:22px}
 .feedback-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:9998}
 .feedback-modal{width:min(980px,96vw);height:min(720px,86vh);background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.25);display:flex;flex-direction:column}
@@ -927,6 +952,28 @@ main {
     color: #333;
     font-weight: 700;
     text-align: center;
+}
+
+/* Overlay title placed on top of the video for better readability */
+.video-title-overlay {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    text-align: left;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    z-index: 9999;
+    line-height: 1.2;
+}
+
+@media (min-width: 900px) {
+    .video-title-overlay { font-size: 1.25rem; top: 18px; left: 18px; right: 18px; }
 }
 
 /* Parent Control Modal */
