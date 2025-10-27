@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiddotubes - Child Access</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="3" fill="%236c63ff" opacity="0.15"/></pattern></defs><rect width="100%" height="100%" fill="%23f0f8ff"/><rect width="100%" height="100%" fill="url(%23pattern)"/></svg>');
+            background-color: #f0f8ff;
+            font-family: 'Nunito', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .access-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.2);
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #6c63ff, #ff6b9b);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 2.5rem;
+        }
+        
+        h1 {
+            color: #6c63ff;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            color: #6c63ff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .pin-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px 0;
+        }
+        
+        .pin-input {
+            width: 55px;
+            height: 65px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #6c63ff;
+            transition: all 0.3s ease;
+        }
+        
+        .pin-input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            outline: none;
+        }
+        
+        .error-message {
+            color: #ff4081;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #6c63ff, #ff6b9b);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 25px;
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(108, 99, 255, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #6c63ff;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .back-link i {
+            margin-right: 8px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .timer-container {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .timer {
+            font-weight: 700;
+            color: #6c63ff;
+        }
+        
+        .resend-btn {
+            background: none;
+            border: none;
+            color: #6c63ff;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+        
+        .resend-btn:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+        
+        .child-info {
+            background-color: #f9f9ff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px dashed #ddd;
+        }
+        
+        .child-name {
+            font-weight: 700;
+            color: #6c63ff;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        /* Animation for the robot icon */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .logo i {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="access-container">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h1>Kiddotubes</h1>
+        </div>
+        
+        <h2>Child Access</h2>
+        <p>Enter the 6-digit access code sent to the parent's phone to allow your child to watch videos.</p>
+        
+        <div class="child-info">
+            <div class="child-name" id="child-name-display">Child Name</div>
+            <div>Ready to watch kid-friendly videos!</div>
+        </div>
+        
+        <div class="pin-container">
+            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" autofocus>
+            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        
+        <div class="error-message" id="access-error"></div>
+        
+        <button class="submit-btn" id="verify-access-btn">Verify Access Code</button>
+        
+        <div class="timer-container">
+            <div>Access code expires in: <span class="timer" id="expiry-timer">30:00</span></div>
+            <button class="resend-btn" id="resend-btn">Resend Access Code</button>
+        </div>
+        
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get parent info
+            const parentInfo = JSON.parse(localStorage.getItem('parentInfo')) || {};
+            
+            // Display child name
+            const childNameDisplay = document.getElementById('child-name-display');
+            if (parentInfo.childName) {
+                childNameDisplay.textContent = parentInfo.childName;
+            }
+            
+            // Handle PIN input
+            const pinInputs = document.querySelectorAll('.pin-input');
+            
+            pinInputs.forEach((input, index) => {
+                input.addEventListener('keyup', function(e) {
+                    // If a number is entered, move to the next input
+                    if (e.key >= 0 && e.key <= 9) {
+                        if (index < pinInputs.length - 1) {
+                            pinInputs[index + 1].focus();
+                        }
+                    }
+                    // If backspace is pressed, move to the previous input
+                    else if (e.key === 'Backspace') {
+                        if (index > 0) {
+                            pinInputs[index - 1].focus();
+                        }
+                    }
+                });
+            });
+            
+            // Verify access code
+            const verifyAccessBtn = document.getElementById('verify-access-btn');
+            const accessError = document.getElementById('access-error');
+            
+            verifyAccessBtn.addEventListener('click', function() {
+                // Get entered OTP
+                let enteredOtp = '';
+                pinInputs.forEach(input => {
+                    enteredOtp += input.value;
+                });
+                
+                // Check if OTP is complete
+                if (enteredOtp.length !== 6) {
+                    accessError.textContent = 'Please enter all 6 digits of the access code.';
+                    return;
+                }
+                
+                if (!parentInfo.phone) {
+                    accessError.textContent = 'No parent phone number found. Please register first.';
+                    return;
+                }
+                
+                // Show loading state
+                verifyAccessBtn.disabled = true;
+                verifyAccessBtn.textContent = 'Verifying...';
+                accessError.textContent = '';
+                
+                // Verify OTP
+                Auth.verifyOTP(parentInfo.phone, enteredOtp)
+                    .then(data => {
+                        // Set access timeout (30 minutes)
+                        const expiryTime = new Date().getTime() + (30 * 60 * 1000);
+                        localStorage.setItem('accessExpiry', expiryTime);
+                        localStorage.setItem('isLoggedIn', 'true');
+                        
+                        // Show success message
+                        alert('Access granted! Your child can now watch videos for the next 30 minutes.');
+                        
+                        // Redirect to index page
+                        window.location.href = 'index.html';
+                    })
+                    .catch(error => {
+                        accessError.textContent = error;
+                        pinInputs.forEach(input => input.value = '');
+                        pinInputs[0].focus();
+                    })
+                    .finally(() => {
+                        verifyAccessBtn.disabled = false;
+                        verifyAccessBtn.textContent = 'Verify Access Code';
+                    });
+            });
+            
+            // Resend access code
+            const resendBtn = document.getElementById('resend-btn');
+            
+            resendBtn.addEventListener('click', function() {
+                if (!parentInfo.phone) {
+                    accessError.textContent = 'No parent phone number found. Please register first.';
+                    return;
+                }
+                
+                // Show loading state
+                resendBtn.disabled = true;
+                resendBtn.textContent = 'Sending...';
+                accessError.textContent = '';
+                
+                // Request new OTP
+                Auth.requestOTP(parentInfo.phone, parentInfo.childName)
+                    .then(data => {
+                        // Reset OTP input fields
+                        pinInputs.forEach(input => input.value = '');
+                        pinInputs[0].focus();
+                        
+                        // Reset expiry timer
+                        startExpiryTimer();
+                        
+                        // Show success message
+                        alert('A new access code has been sent to the parent\'s phone.');
+                        
+                        // If simulated, show the OTP (for development only)
+                        if (data.simulated) {
+                            console.log('Simulated OTP resent. Check server logs for the code.');
+                        }
+                    })
+                    .catch(error => {
+                        accessError.textContent = error;
+                    })
+                    .finally(() => {
+                        resendBtn.disabled = false;
+                        resendBtn.textContent = 'Resend Access Code';
+                    });
+            });
+            
+            // Expiry timer
+            const expiryTimer = document.getElementById('expiry-timer');
+            let timerInterval;
+            
+            function startExpiryTimer() {
+                // Clear existing timer
+                clearInterval(timerInterval);
+                
+                // Set initial time (30 minutes)
+                let minutes = 30;
+                let seconds = 0;
+                
+                // Update timer display
+                function updateTimer() {
+                    expiryTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                // Initial display
+                updateTimer();
+                
+                // Start countdown
+                timerInterval = setInterval(function() {
+                    if (seconds > 0) {
+                        seconds--;
+                    } else if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        // Timer expired
+                        clearInterval(timerInterval);
+                        accessError.textContent = 'Access code has expired. Please request a new one.';
+                        pinInputs.forEach(input => {
+                            input.value = '';
+                            input.disabled = true;
+                        });
+                        verifyAccessBtn.disabled = true;
+                    }
+                    
+                    updateTimer();
+                }, 1000);
+            }
+            
+            // Start the expiry timer
+            startExpiryTimer();
+        });
+    </script>
+</body>
+</html>

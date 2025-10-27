@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Premium Membership</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Match homepage styles and fonts -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="ads.css">
+    <link rel="stylesheet" href="ad-fixes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="auth.js"></script>
+    <style>
+        body {
+            background: #f7fafc;
+            margin: 0;
+            font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+        }
+        .login-prompt {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            margin: 48px auto;
+            max-width: 400px;
+        }
+        .login-prompt h2 {
+            color: #374151;
+            margin-bottom: 16px;
+        }
+        .login-prompt p {
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+        .login-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ff4081;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 64, 129, 0.2);
+        }
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            padding: 24px 0 12px 0;
+            background: #fff;
+            box-shadow: 0 2px 12px #ffe06611;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-left: 32px;
+        }
+        .logo img {
+            height: 56px;
+            width: auto;
+            border-radius: 12px;
+            background: #fff;
+        }
+        .logo-container h1 {
+            font-size: 2em;
+            color: #ff4081;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .premium-container {
+            max-width: 540px;
+            margin: 48px auto 32px auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 32px #ffe06622;
+            padding: 36px 28px 32px 28px;
+            text-align: center;
+        }
+        .fancy-premium-card {
+            background: linear-gradient(135deg, #fff3e0 0%, #e8f5e9 100%);
+            border: 1px solid #ff9800;
+            box-shadow: 0 4px 24px rgba(255, 152, 0, 0.2);
+        }
+        .logo-main {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            object-fit: cover;
+            background: #fff;
+            box-shadow: 0 2px 16px #ffe06644;
+        }
+        .premium-container h1 {
+            color: #ff9800;
+            font-size: 2.2em;
+            margin-bottom: 18px;
+        }
+        .premium-features-section {
+            margin-bottom: 30px;
+        }
+        .premium-features-section h2 {
+            font-size: 1.25em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .premium-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .premium-features-list li {
+            font-size: 1.07em;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        .premium-pricing-tiers {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .price-card {
+            background: #fffbe6;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px #ffe06633;
+            padding: 24px 28px;
+            min-width: 240px;
+            text-align: center;
+            margin-bottom: 12px;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+        }
+        .price-card.popular {
+            border: 2px solid #ff9800;
+            background: #fff3e0;
+            transform: scale(1.05);
+        }
+        .price-card.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+        .badge {
+            background: #ff9800;
+            color: #fff;
+            font-size: 0.92em;
+            border-radius: 8px;
+            padding: 2px 8px;
+            position: absolute;
+            top: 13px;
+            right: 13px;
+        }
+        .plan-name {
+            font-weight: 600;
+            color: #ff9800;
+            font-size: 1.1em;
+        }
+        .price {
+            font-size: 1.35em;
+            font-weight: bold;
+            color: #333;
+            margin-top: 7px;
+        }
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #ff9800 60%, #ffe066 100%);
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            border-radius: 24px;
+            padding: 13px 32px;
+            font-size: 1.1em;
+            text-decoration: none;
+            box-shadow: 0 2px 8px #ff980055;
+            transition: background 0.2s, transform 0.2s;
+            cursor: pointer;
+            margin-top: 10px;
+            animation: pulse 1.8s infinite;
+        }
+        .fancy-cta {
+            background: #ff4081;
+            color: #fff;
+            font-weight: 700;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+            transition: background 0.3s, transform 0.3s;
+        }
+        .fancy-cta:hover {
+            background: #e63946;
+            transform: translateY(-2px) scale(1.05);
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 #ffe06655; }
+            70% { box-shadow: 0 0 0 10px #ffe06611; }
+            100% { box-shadow: 0 0 0 0 #ffe06655; }
+        }
+        @media (max-width: 700px) {
+            .premium-container {
+                margin: 24px 8px;
+                padding: 18px 6px 18px 6px;
+            }
+            .logo-container {
+                margin-left: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="assets/logos.png" alt="Kiddotubes Logo">
+                </div>
+                <h1>Kiddotubes</h1>
+            </div>
+            <div style="margin-left: auto; margin-right: 32px;" id="auth-buttons">
+                <!-- Auth buttons will be inserted here by JavaScript -->
+            </div>
+        </header>
+
+        <script>
+            // Check login status and show appropriate content
+            document.addEventListener('DOMContentLoaded', function() {
+                const mainContent = document.getElementById('subscription-content');
+                const loginPrompt = document.getElementById('login-prompt');
+                const authButtons = document.getElementById('auth-buttons');
+
+                function updateAuthButtons() {
+                    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    const parentInfo = JSON.parse(localStorage.getItem('parentInfo') || '{}');
+                    
+                    authButtons.innerHTML = isLoggedIn 
+                        ? `<span style="color: #374151; margin-right: 12px;">Welcome, ${parentInfo.name || 'User'}</span>
+                           <button onclick="handleLogout()" style="padding: 8px 16px; border-radius: 999px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer;">Logout</button>`
+                        : `<a href="login.html" style="text-decoration: none; color: #374151;">Login</a>`;
+                }
+
+                function handleLogout() {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('accessExpiry');
+                    window.location.href = 'login.html';
+                }
+
+                function showAppropriateContent() {
+                    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    if (mainContent) mainContent.style.display = isLoggedIn ? 'block' : 'none';
+                    if (loginPrompt) loginPrompt.style.display = isLoggedIn ? 'none' : 'block';
+                    updateAuthButtons();
+                }
+
+                // Check login status every time the page loads
+                showAppropriateContent();
+            });
+        </script>
+        <!-- Main Premium Content -->
+        <main>
+            <div class="premium-container fancy-premium-card">
+                <img src="assets/logos.png" alt="Kiddotubes Logo" class="logo-main">
+                <h1>Premium Membership</h1>
+                <div class="premium-features-section">
+                    <h2>Premium Features</h2>
+                    <ul class="premium-features-list">
+                        <li><span class="feature-icon" style="color:#ff9800;">🎬</span> <span class="feature-text">Ad-free videos</span></li>
+                        <li><span class="feature-icon" style="color:#ff9800;">⭐</span> <span class="feature-text">Exclusive content</span></li>
+                        <li><span class="feature-icon" style="color:#ff9800;">🔒</span> <span class="feature-text">Parental controls</span></li>
+                        <li><span class="feature-icon" style="color:#ff9800;">🕒</span> <span class="feature-text">Early access to new releases</span></li>
+                        <li><span class="feature-icon" style="color:#ff9800;">👨‍👩‍👧‍👦</span> <span class="feature-text">Family sharing</span></li>
+                    </ul>
+                </div>
+                <div class="premium-pricing-tiers">
+                    <div class="price-card">
+                        <div class="plan-name">Basic</div>
+                        <div class="price">$4.99/mo</div>
+                        <ul class="plan-features" style="list-style: none; padding: 0; margin: 15px 0;">
+                            <li>✓ Ad-free viewing</li>
+                            <li>✓ Basic parental controls</li>
+                            <li>✓ 1 profile</li>
+                            <li>✓ SD quality</li>
+                        </ul>
+                        <a href="/checkout.html?plan=basic" class="cta-button" style="padding: 10px 20px; font-size: 0.9em;">Choose Basic</a>
+                    </div>
+                    <div class="price-card popular">
+                        <div class="plan-name">Family</div>
+                        <div class="price">$9.99/mo</div>
+                        <div class="badge">Most Popular</div>
+                        <ul class="plan-features" style="list-style: none; padding: 0; margin: 15px 0;">
+                            <li>✓ Everything in Basic</li>
+                            <li>✓ Up to 3 profiles</li>
+                            <li>✓ Advanced parental controls</li>
+                            <li>✓ HD quality</li>
+                            <li>✓ Offline downloads</li>
+                        </ul>
+                        <a href="/checkout.html?plan=family" class="cta-button" style="padding: 10px 20px; font-size: 0.9em;">Choose Family</a>
+                    </div>
+                    <div class="price-card">
+                        <div class="plan-name">Premium</div>
+                        <div class="price">$12.99/mo</div>
+                        <ul class="plan-features" style="list-style: none; padding: 0; margin: 15px 0;">
+                            <li>✓ Everything in Family</li>
+                            <li>✓ Up to 6 profiles</li>
+                            <li>✓ Premium content access</li>
+                            <li>✓ 4K Ultra HD quality</li>
+                            <li>✓ Priority support</li>
+                            <li>✓ Early access to new features</li>
+                        </ul>
+                        <a href="/checkout.html?plan=premium" class="cta-button" style="padding: 10px 20px; font-size: 0.9em;">Choose Premium</a>
+                    </div>
+                </div>
+                <a href="login.html#register" class="cta-button fancy-cta">
+                    <span>Start Your Free Trial</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </main>
+        <!-- Footer Section (match homepage) -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logos.png" alt="Kiddotubes Logo" style="height:48px;width:auto;border-radius:12px;background:#fff;">
+                    <h2>Kiddotubes</h2>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>About</h3>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Our Mission</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Parents</h3>
+                        <ul>
+                            <li><a href="#">Safety Guide</a></li>
+                            <li><a href="#">Parental Controls</a></li>
+                            <li><a href="#">Content Policy</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Contact</h3>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Report Content</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-ad">
+                <span class="ad-badge">Advertisement</span>
+                <a href="#" class="banner-ad-link">
+                    <img src="https://via.placeholder.com/728x90?text=Family+Friendly+Content" alt="Footer Advertisement" class="banner-ad-image">
+                </a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

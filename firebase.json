@@ -1,7 +1,6 @@
 {
   "hosting": {
-    "site": "kiddotube-01",
-    "public": ".",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",

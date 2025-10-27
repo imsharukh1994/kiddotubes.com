@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiddotubes - My Profile</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5507783627988593"
+     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Profile layout improvements */
+        .profile-container {
+            max-width: 980px;
+            margin: 48px auto;
+            padding: 28px;
+            background-color: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 24px 60px rgba(16,24,40,0.08);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(16,24,40,0.04);
+        }
+
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#6c63ff,#9b8cff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            color: white;
+            font-size: 3.2rem;
+            box-shadow: 0 10px 30px rgba(108,99,255,0.14);
+        }
+
+        .profile-info h1 {
+            color: #1f2937;
+            margin: 0 0 6px 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .profile-info p {
+            color: #6b7280;
+            margin: 0 0 10px 0;
+            font-size: 0.98rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            background-color: #fbfbff;
+            padding: 8px 14px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            color: #374151;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .stat-item i { color: #6c63ff; margin-right: 8px; }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
+        }
+
+        .profile-sidebar {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid rgba(16,24,40,0.03);
+        }
+
+        .sidebar-menu { list-style: none; padding: 0; margin: 0 0 18px 0; }
+
+        .sidebar-menu li { margin-bottom: 8px; }
+
+        .sidebar-menu a {
+            display: flex; align-items: center; padding: 10px 12px; border-radius: 8px;
+            color: #374151; text-decoration: none; transition: all 0.18s ease;
+            font-weight: 700;
+        }
+
+        .sidebar-menu a:hover { background: linear-gradient(90deg, rgba(108,99,255,0.06), rgba(255,107,107,0.02)); color: #6c63ff; }
+
+        .sidebar-menu a.active { background: linear-gradient(90deg,#6c63ff,#ff6b6b); color: white; }
+
+        .sidebar-menu i { margin-right: 10px; width: 20px; text-align: center; }
+
+        .profile-main { background-color: #ffffff; border-radius: 12px; padding: 22px; box-shadow: 0 6px 20px rgba(16,24,40,0.03); }
+
+        .section-title { color: #6c63ff; margin-bottom: 14px; font-size: 1.1rem; font-weight: 800; }
+
+        .form-group { margin-bottom: 16px; }
+
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #374151; }
+
+        .form-group input { width: 100%; padding: 12px 14px; border: 1px solid rgba(16,24,40,0.06); border-radius: 10px; }
+
+        .form-group input:focus { border-color: #6c63ff; box-shadow: 0 6px 18px rgba(108,99,255,0.08); outline: none; }
+
+        .action-buttons { display:flex; gap:12px; margin-top: 20px; }
+
+        .btn { padding: 10px 18px; border-radius: 999px; font-weight: 800; cursor:pointer; border: none; }
+
+        .btn-primary { background: linear-gradient(90deg,#6c63ff,#ff6b6b); color: #fff; box-shadow: 0 10px 30px rgba(108,99,255,0.12); }
+
+        .btn-secondary { background: #f8fafc; color: #374151; border: 1px solid rgba(16,24,40,0.04); }
+
+        .pin-section { background-color: #fff7ed; border-radius: 12px; padding: 16px; margin-top: 20px; border: 1px dashed #ffd6a5; }
+
+        .pin-display { font-size: 1.6rem; letter-spacing: 8px; font-weight: 800; color: #6c63ff; text-align: center; margin: 12px 0; }
+
+        .premium-banner { background: linear-gradient(90deg,#ff6b6b,#ff9e53); border-radius: 12px; padding: 16px; margin-top: 18px; color: white; }
+
+        .premium-banner h3 { margin: 0 0 8px 0; font-size: 1.05rem; }
+
+        .premium-banner p { margin: 0 0 12px 0; opacity: 0.95; }
+
+        .premium-banner .btn { background: white; color: #ff6b6b; font-weight: 800; }
+
+        /* Subscription card styles */
+        .subscription-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            border: 1px solid rgba(108,99,255,0.1);
+            box-shadow: 0 8px 24px rgba(16,24,40,0.06);
+        }
+
+        .subscription-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(16,24,40,0.06);
+        }
+
+        .plan-badge {
+            background: linear-gradient(90deg,#6c63ff,#9b6bff);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .subscription-details {
+            margin-top: 16px;
+        }
+
+        .subscription-detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .detail-label {
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        .subscription-features {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(108,99,255,0.03);
+            border-radius: 12px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .feature-item i {
+            color: #6c63ff;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .profile-content { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; text-align: center; }
+            .profile-avatar { margin-right: 0; margin-bottom: 12px; }
+            .stat-item { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>Kiddotubes</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search kid-friendly videos">
+                <button id="search-button">
+                    <i class="fas fa-search search-icon"></i>
+                </button>
+            </div>
+            <div class="user-actions">
+                <div class="profile-container">
+                    <i class="fas fa-user-circle profile-icon"></i>
+                    <div class="profile-dropdown">
+                        <div class="dropdown-item" id="account-option">
+                            <i class="fas fa-user"></i> Account
+                        </div>
+                        <div class="dropdown-item" id="settings-option">
+                            <i class="fas fa-cog"></i> Settings
+                        </div>
+                        <div class="dropdown-item" id="logout-option">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="parent-name-display">Parent Name</h1>
+                        <p id="parent-email-display">parent@example.com</p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-child"></i>
+                                <span id="child-name-display">Child Name</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="join-date-display">Joined May 2025</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-crown"></i>
+                                <span id="plan-type-display">Premium Member</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-sidebar">
+                        <ul class="sidebar-menu">
+                            <li><a href="#" class="active"><i class="fas fa-user"></i> Account Information</a></li>
+                            <li><a href="#"><i class="fas fa-shield-alt"></i> Security</a></li>
+                            <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                            <li><a href="#"><i class="fas fa-lock"></i> Parental Controls</a></li>
+                            <li><a href="#"><i class="fas fa-history"></i> Watch History</a></li>
+                            <li><a href="#"><i class="fas fa-crown"></i> Subscription</a></li>
+                        </ul>
+
+                        <div class="subscription-card">
+                            <div class="subscription-header">
+                                <div class="plan-badge" id="current-plan-badge">Family Plan</div>
+                                <div class="plan-status">Active</div>
+                            </div>
+                            
+                            <div class="subscription-details">
+                                <div class="subscription-detail-item">
+                                    <span class="detail-label">Started</span>
+                                    <span class="detail-value" id="subscription-start">10/26/2025</span>
+                                </div>
+                                <div class="subscription-detail-item">
+                                    <span class="detail-label">Renewal</span>
+                                    <span class="detail-value" id="subscription-renewal">11/25/2025</span>
+                                </div>
+                                <div class="subscription-detail-item">
+                                    <span class="detail-label">Price</span>
+                                    <span class="detail-value" id="subscription-price">$9.99/month</span>
+                                </div>
+                            </div>
+
+                            <div class="subscription-features">
+                                <h4 style="margin:0 0 12px 0;color:#374151;">Your Plan Features</h4>
+                                <ul class="feature-list" id="plan-features">
+                                    <!-- Features will be populated by JavaScript -->
+                                </ul>
+                            </div>
+
+                            <div style="margin-top:20px;text-align:center;">
+                                <button class="btn btn-primary" onclick="window.location.href='premium-membership.html'">
+                                    Manage Subscription
+                                </button>
+                            </div>
+                        </div>
+                    </div>                    <div class="profile-main">
+                        <!-- Account Information Section -->
+                        <div class="profile-section" id="account-info-section">
+                            <h2 class="section-title">Account Information</h2>
+                            <form id="account-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="parent-name">Parent Name</label>
+                                        <input type="text" id="parent-name" placeholder="Your name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="parent-email">Email Address</label>
+                                        <input type="email" id="parent-email" placeholder="Your email">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="parent-phone">Phone Number</label>
+                                        <input type="tel" id="parent-phone" placeholder="Your phone number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="child-name">Child's Name</label>
+                                        <input type="text" id="child-name" placeholder="Child's name">
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Subscription Section -->
+                        <div class="profile-section" id="subscription-section">
+                            <h2 class="section-title">Subscription</h2>
+                            <div id="subscription-content">
+                                <p id="no-sub">Current Plan: <strong>Free</strong></p>
+                                <div id="sub-details" style="display:none;">
+                                    <p>Plan: <strong id="sub-plan"></strong></p>
+                                    <p>Started: <strong id="sub-start"></strong></p>
+                                    <p>Expires: <strong id="sub-expires"></strong> (<span id="sub-days-left"></span> days left)</p>
+                                    <button id="manage-sub" class="btn btn-primary">Manage Subscription</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Section -->
+                        <div class="profile-section" id="security-section" style="display: none;">
+                            <h2 class="section-title">Security</h2>
+                            <div class="pin-section">
+                                <h3>Your Access PIN</h3>
+                                <p>This PIN is required to access the app. Keep it secure and don't share it with your child.</p>
+                                <div class="pin-display" id="pin-hidden">
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                    <span class="pin-hidden"></span>
+                                </div>
+                                <div class="pin-display" id="pin-visible" style="display: none;"></div>
+                                <div class="action-buttons">
+                                    <button type="button" class="btn btn-secondary" id="toggle-pin">Show PIN</button>
+                                    <button type="button" class="btn btn-primary" id="reset-pin">Reset PIN</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- (duplicate subscription block removed to avoid conflicting IDs) -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>About Kiddotubes</h3>
+                    <p>A safe video platform designed specifically for children, providing educational and entertaining content with parental controls.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="parental-controls.html">Parental Controls</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@kiddotubes.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!Auth.isLoggedIn()) {
+                alert('Please log in to access your profile.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get parent info
+            const parentInfo = Auth.getParentInfo();
+            if (!parentInfo) {
+                alert('Parent information not found. Please register again.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Populate profile information
+            document.getElementById('parent-name-display').textContent = parentInfo.name;
+            document.getElementById('parent-email-display').textContent = parentInfo.email;
+            document.getElementById('child-name-display').textContent = parentInfo.childName;
+            
+            // Format join date
+            const joinDate = new Date(parentInfo.registrationDate);
+            const options = { year: 'numeric', month: 'long' };
+            document.getElementById('join-date-display').textContent = 'Joined ' + joinDate.toLocaleDateString('en-US', options);
+            
+            // Update subscription details
+            const subscriptionInfo = {
+                planType: localStorage.getItem('subscriptionPlan') || 'free',
+                startDate: localStorage.getItem('subscriptionStartDate'),
+                endDate: localStorage.getItem('subscriptionEndDate')
+            };
+
+            const planDetails = {
+                free: { name: 'Free Plan', price: '$0/month' },
+                basic: { name: 'Basic Plan', price: '$4.99/month' },
+                family: { name: 'Family Plan', price: '$9.99/month' },
+                premium: { name: 'Premium Plan', price: '$12.99/month' }
+            };
+
+            const plan = planDetails[subscriptionInfo.planType] || planDetails.free;
+            
+            // Update subscription display in profile
+            const subContent = document.getElementById('subscription-content');
+            const noSub = document.getElementById('no-sub');
+            const subDetails = document.getElementById('sub-details');
+            
+            if (subscriptionInfo.planType === 'free') {
+                noSub.style.display = 'block';
+                subDetails.style.display = 'none';
+            } else {
+                noSub.style.display = 'none';
+                subDetails.style.display = 'block';
+                document.getElementById('sub-plan').textContent = plan.name;
+                document.getElementById('sub-start').textContent = new Date(subscriptionInfo.startDate).toLocaleDateString();
+                document.getElementById('sub-expires').textContent = new Date(subscriptionInfo.endDate).toLocaleDateString();
+                
+                // Calculate days left
+                const daysLeft = Math.ceil((new Date(subscriptionInfo.endDate) - new Date()) / (1000 * 60 * 60 * 24));
+                document.getElementById('sub-days-left').textContent = daysLeft;
+            }
+            
+            // Populate form fields
+            document.getElementById('parent-name').value = parentInfo.name;
+            document.getElementById('parent-email').value = parentInfo.email;
+            document.getElementById('parent-phone').value = parentInfo.phone;
+            document.getElementById('child-name').value = parentInfo.childName;
+            
+            // Handle section navigation
+            const sectionLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
+            const sections = document.querySelectorAll('.profile-section');
+            
+            sectionLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    sectionLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => section.style.display = 'none');
+                    
+                    // Show selected section
+                    const sectionId = this.getAttribute('data-section') + '-section';
+                    document.getElementById(sectionId).style.display = 'block';
+                });
+            });
+            
+            // Handle subscription management
+            document.getElementById('manage-sub').addEventListener('click', () => {
+                window.location.href = 'premium-membership.html';
+            });
+            
+            // Handle PIN visibility toggle
+            const togglePinBtn = document.getElementById('toggle-pin');
+            const pinHidden = document.getElementById('pin-hidden');
+            const pinVisible = document.getElementById('pin-visible');
+            const storedPin = localStorage.getItem('parentPin');
+            
+            if (storedPin) {
+                pinVisible.textContent = storedPin;
+            }
+            
+            togglePinBtn.addEventListener('click', function() {
+                if (pinHidden.style.display !== 'none') {
+                    pinHidden.style.display = 'none';
+                    pinVisible.style.display = 'block';
+                    togglePinBtn.textContent = 'Hide PIN';
+                } else {
+                    pinHidden.style.display = 'block';
+                    pinVisible.style.display = 'none';
+                    togglePinBtn.textContent = 'Show PIN';
+                }
+            });
+            
+            // Handle PIN reset
+            const resetPinBtn = document.getElementById('reset-pin');
+            resetPinBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset your PIN? You will need to use the new PIN to access the app.')) {
+                    // Generate a new PIN
+                    const newPin = Math.floor(100000 + Math.random() * 900000).toString();
+                    localStorage.setItem('parentPin', newPin);
+                    pinVisible.textContent = newPin;
+                    
+                    // Show the PIN
+                    pinHidden.style.display = 'none';
+                    pinVisible.style.display = 'block';
+                    togglePinBtn.textContent = 'Hide PIN';
+                    
+                    alert(`Your PIN has been reset. Your new PIN is: ${newPin}`);
+                }
+            });
+            
+            // Handle account form submission
+            const accountForm = document.getElementById('account-form');
+            accountForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update parent info
+                const updatedInfo = {
+                    name: document.getElementById('parent-name').value.trim(),
+                    email: document.getElementById('parent-email').value.trim(),
+                    phone: document.getElementById('parent-phone').value.trim(),
+                    childName: document.getElementById('child-name').value.trim(),
+                    registrationDate: parentInfo.registrationDate
+                };
+                
+                localStorage.setItem('parentInfo', JSON.stringify(updatedInfo));
+                
+                // Update displayed info
+                document.getElementById('parent-name-display').textContent = updatedInfo.name;
+                document.getElementById('parent-email-display').textContent = updatedInfo.email;
+                document.getElementById('child-name-display').textContent = updatedInfo.childName;
+                
+                alert('Account information updated successfully!');
+            });
+        });
+    </script>
+</body>
+<script>
+    // Populate profile info and subscription details from localStorage
+    (function(){
+        try{
+            const parentEmail = localStorage.getItem('parentEmail') || document.getElementById('parent-email-display').textContent;
+            const parentName = localStorage.getItem('parentName') || document.getElementById('parent-name-display').textContent;
+            document.getElementById('parent-email-display').textContent = parentEmail;
+            document.getElementById('parent-name-display').textContent = parentName;
+
+            const raw = localStorage.getItem('subscription');
+            if (raw){
+                const sub = JSON.parse(raw);
+                const start = new Date(sub.start);
+                const expires = new Date(sub.expires);
+                const daysLeft = Math.max(0, Math.ceil((expires - Date.now()) / (24*60*60*1000)));
+                document.getElementById('sub-plan').textContent = sub.plan;
+                document.getElementById('sub-start').textContent = start.toLocaleDateString();
+                document.getElementById('sub-expires').textContent = expires.toLocaleDateString();
+                document.getElementById('sub-days-left').textContent = daysLeft;
+                document.getElementById('no-sub').style.display = 'none';
+                document.getElementById('sub-details').style.display = 'block';
+                document.getElementById('manage-sub').addEventListener('click', function(){
+                    window.location.href = 'checkout.html?plan=' + encodeURIComponent(sub.plan);
+                });
+            }
+        }catch(e){console.warn('Profile script error', e)}
+    })();
+</script>
+
+    <!-- Feedback popup (Google Form) -->
+    <div class="feedback-btn" id="feedbackBtn" aria-label="Feedback">
+        <img src="assets/mascot-removebg.png" alt="K" style="height:22px;border-radius:4px"> Feedback
+    </div>
+    <div class="feedback-modal-backdrop" id="feedbackBackdrop" role="dialog" aria-modal="true">
+        <div class="feedback-modal" role="document">
+            <div class="modal-header">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <img src="assets/logos.png" alt="Kiddotubes" style="height:36px">
+                    <div>
+                        <div style="font-weight:800">Feedback</div>
+                        <div style="font-size:0.9rem;color:#6b7280">We'd love your thoughts — it only takes a minute.</div>
+                    </div>
+                </div>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <a id="openFormNewTab" href="https://forms.gle/cWE2wW81euVye9YM8" target="_blank" rel="noopener" style="font-weight:700;color:#6c63ff;text-decoration:none">Open in new tab</a>
+                            <button class="close-x" id="feedbackClose">×</button>
+                        </div>
+            </div>
+            <div class="modal-body">
+                <iframe class="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScWE2wW81euVye9YM8/viewform?embedded=true"></iframe>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const btn = document.getElementById('feedbackBtn');
+            const backdrop = document.getElementById('feedbackBackdrop');
+            const close = document.getElementById('feedbackClose');
+            const openNew = document.getElementById('openFormNewTab');
+            if(btn) btn.style.display = 'flex';
+            function openModal(){ if(backdrop){ backdrop.style.display='flex'; document.body.style.overflow='hidden'; } }
+            function closeModal(){ if(backdrop){ backdrop.style.display='none'; document.body.style.overflow=''; } }
+            btn && btn.addEventListener('click', openModal);
+            close && close.addEventListener('click', closeModal);
+            backdrop && backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
+            openNew && openNew.addEventListener('click', function(){ /* open in new tab */ });
+        });
+    </script>
+</html>

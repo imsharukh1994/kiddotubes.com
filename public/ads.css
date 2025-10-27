@@ -1,0 +1,330 @@
+/* Advertisement Styles */
+.ad-section {
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.ad-section h3 {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 15px;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.ad-section h3:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #FF4081;
+    border-radius: 2px;
+}
+
+.ad-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.ad-card {
+    width: 300px;
+    height: 250px;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.ad-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.ad-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ad-content {
+    padding: 15px;
+    text-align: left;
+}
+
+.ad-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.ad-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.ad-button {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #FF4081;
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.ad-button:hover {
+    background-color: #e03070;
+    transform: scale(1.05);
+}
+
+.ad-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 64, 129, 0.9);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* Responsive Ads */
+@media (max-width: 768px) {
+    .ad-container {
+        gap: 15px;
+    }
+    
+    .ad-card {
+        width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 480px) {
+    .ad-card {
+        width: 100%;
+    }
+}
+
+/* Banner Ads */
+.banner-ad {
+    margin: 30px auto;
+    max-width: 970px;
+    position: relative;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.banner-ad .ad-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 64, 129, 0.9);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.banner-ad-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.banner-ad-link {
+    display: block;
+    transition: all 0.3s;
+}
+
+.banner-ad-link:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Sidebar Ads */
+.sidebar-ad {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-ad:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Premium Membership Ad Styling */
+.premium-ad {
+    background: linear-gradient(to bottom, #ffffff, #f8f9ff);
+    border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.premium-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(45deg, #6c63ff, #5a52d5);
+    color: white;
+    padding: 5px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 0 0 0 12px;
+    box-shadow: 0 2px 5px rgba(108, 99, 255, 0.3);
+    z-index: 2;
+}
+
+.sidebar-ad-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.sidebar-ad-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(45deg, #6c63ff, #5a52d5);
+    border-radius: 3px;
+}
+
+.premium-image-container {
+    position: relative;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-ad-image {
+    width: 100%;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.premium-image-container:hover .sidebar-ad-image {
+    transform: scale(1.05);
+}
+
+.premium-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(108, 99, 255, 0.3), transparent);
+    pointer-events: none;
+}
+
+.premium-features {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.premium-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.feature-icon {
+    color: #6c63ff;
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+.premium-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.new-price {
+    color: #6c63ff;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.sidebar-ad-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 15px;
+    background: linear-gradient(45deg, #6c63ff, #5a52d5);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+    margin-top: 10px;
+}
+
+.sidebar-ad-button:hover {
+    background: linear-gradient(45deg, #5a52d5, #4a43c8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
+}
+
+.sidebar-ad-button svg {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-ad-button:hover svg {
+    transform: translateX(3px);
+}

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Subscription - Kiddotubes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="auth.js"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f7fafc;
+            margin: 0;
+        }
+        .payment-container {
+            max-width: 800px;
+            margin: 48px auto;
+            padding: 32px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        }
+        .plan-summary {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .section-title {
+            color: #374151;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-weight: 600;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            border-color: #6c63ff;
+            outline: none;
+        }
+        #card-element {
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+        }
+        .submit-button {
+            background: linear-gradient(90deg, #ff4081, #ff6b6b);
+            color: #fff;
+            font-weight: 700;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 999px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 24px;
+            width: 100%;
+        }
+        .submit-button:hover {
+            transform: translateY(-2px);
+        }
+        .submit-button:disabled {
+            background: #e5e7eb;
+            cursor: not-allowed;
+        }
+        #payment-error {
+            color: #ef4444;
+            margin-top: 8px;
+            display: none;
+        }
+        .price-details {
+            margin: 24px 0;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            color: #4b5563;
+        }
+        .price-total {
+            border-top: 1px solid #e5e7eb;
+            margin-top: 8px;
+            padding-top: 16px;
+            font-weight: 700;
+            color: #111827;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="assets/logos.png" alt="Kiddotubes" style="height:48px">
+                </div>
+                <h1 style="color: #ff4081; margin: 0;">Kiddotubes</h1>
+            </div>
+        </header>
+
+        <main>
+            <div class="payment-container">
+                <h1 class="section-title">Complete Your Subscription</h1>
+                
+                <!-- Plan Summary -->
+                <div class="plan-summary">
+                    <h2 style="margin-top:0">Selected Plan: <span id="plan-name">—</span></h2>
+                    <div class="price-details">
+                        <div class="price-row">
+                            <span>Subscription Plan</span>
+                            <span id="plan-price">—</span>
+                        </div>
+                        <div class="price-row price-total">
+                            <span>Total</span>
+                            <span id="total-price">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <form id="payment-form">
+                    <div class="form-section">
+                        <h3>Billing Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="name">Full Name</label>
+                                <input type="text" id="name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input type="email" id="email" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="address">Billing Address</label>
+                                <input type="text" id="address" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="city">City</label>
+                                <input type="text" id="city" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="state">State</label>
+                                <input type="text" id="state" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="zip">ZIP Code</label>
+                                <input type="text" id="zip" class="form-input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Payment Method</h3>
+                        <div id="card-element"></div>
+                        <div id="payment-error"></div>
+                    </div>
+
+                    <button type="submit" id="submit-button" class="submit-button">
+                        Complete Purchase
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Stripe
+        const stripe = Stripe('your_publishable_key'); // Replace with your Stripe publishable key
+        const elements = stripe.elements();
+        const card = elements.create('card', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#424770',
+                    fontFamily: 'Nunito, sans-serif',
+                    '::placeholder': {
+                        color: '#aab7c4',
+                    },
+                },
+                invalid: {
+                    color: '#ef4444',
+                    iconColor: '#ef4444',
+                },
+            },
+        });
+
+        // Mount card element
+        card.mount('#card-element');
+
+        // Get plan details from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedPlan = urlParams.get('plan') || 'basic';
+
+        // Plan configuration
+        const plans = {
+            basic: {
+                name: 'Basic Plan',
+                price: 4.99,
+                features: ['Ad-free viewing', 'Basic parental controls', '1 profile', 'SD quality']
+            },
+            family: {
+                name: 'Family Plan',
+                price: 9.99,
+                features: ['Everything in Basic', 'Up to 3 profiles', 'Advanced parental controls', 'HD quality']
+            },
+            premium: {
+                name: 'Premium Plan',
+                price: 12.99,
+                features: ['Everything in Family', 'Up to 6 profiles', '4K Ultra HD', 'Priority support']
+            }
+        };
+
+        // Update page with plan details
+        const plan = plans[selectedPlan];
+        if (plan) {
+            document.getElementById('plan-name').textContent = plan.name;
+            document.getElementById('plan-price').textContent = `$${plan.price.toFixed(2)}/month`;
+            document.getElementById('total-price').textContent = `$${plan.price.toFixed(2)}/month`;
+        }
+
+        // Pre-fill user info if available
+        const parentInfo = JSON.parse(localStorage.getItem('parentInfo') || '{}');
+        if (parentInfo) {
+            document.getElementById('name').value = parentInfo.name || '';
+            document.getElementById('email').value = parentInfo.email || '';
+        }
+
+        // Handle form submission
+        const form = document.getElementById('payment-form');
+        const submitButton = document.getElementById('submit-button');
+        const errorElement = document.getElementById('payment-error');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            submitButton.disabled = true;
+            errorElement.style.display = 'none';
+
+            try {
+                // Create payment method
+                const { paymentMethod, error } = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: card,
+                    billing_details: {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        address: {
+                            line1: document.getElementById('address').value,
+                            city: document.getElementById('city').value,
+                            state: document.getElementById('state').value,
+                            postal_code: document.getElementById('zip').value
+                        }
+                    }
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+                // Submit to server
+                const response = await fetch('/api/create-subscription', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        paymentMethodId: paymentMethod.id,
+                        planId: selectedPlan,
+                        email: document.getElementById('email').value,
+                        name: document.getElementById('name').value
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.error) {
+                    throw { message: result.error };
+                }
+
+                // Handle subscription activation
+                const { subscriptionId, clientSecret } = result;
+                const { error: confirmError } = await stripe.confirmCardPayment(clientSecret);
+
+                if (confirmError) {
+                    throw confirmError;
+                }
+
+                // Save subscription info locally
+                localStorage.setItem('subscription', JSON.stringify({
+                    id: subscriptionId,
+                    plan: selectedPlan,
+                    startDate: new Date().toISOString()
+                }));
+
+                // Redirect to success page
+                window.location.href = 'checkout-success.html';
+
+            } catch (error) {
+                errorElement.textContent = error.message;
+                errorElement.style.display = 'block';
+                submitButton.disabled = false;
+            }
+        });
+
+        // Handle card element styling
+        card.addEventListener('change', ({ error }) => {
+            if (error) {
+                errorElement.textContent = error.message;
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
