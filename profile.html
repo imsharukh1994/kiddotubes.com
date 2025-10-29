@@ -401,270 +401,165 @@
             </div>
         </main>
         
-        <!-- Footer -->
-        <footer>
-            <div class="footer-content">
-                <div class="footer-section about">
-                    <h3>About Kiddotubes</h3>
-                    <p>A safe video platform designed specifically for children, providing educational and entertaining content with parental controls.</p>
-                </div>
-                <div class="footer-section links">
-                    <h3>Quick Links</h3>
+         <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo" style="display: flex; align-items: center; gap: 14px;">
+                <img src="assets/logos.png" alt="Kiddotubes Logo"
+                     style="height:56px;width:auto;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-right:0;">
+                <h2 style="font-size:1.7rem; margin:0; color:#2d3a4a; letter-spacing:1px;">Kiddotubes</h2>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>About</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="parental-controls.html">Parental Controls</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
-                <div class="footer-section contact">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> support@kiddotubes.com</p>
-                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
+                <div class="footer-column">
+                    <h3>Parents</h3>
+                    <ul>
+                        <li><a href="#">Safety Guide</a></li>
+                        <li><a href="#">Parental Controls</a></li>
+                        <li><a href="#">Content Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
-            </div>
-        </footer>
-    </div>
-    
-    <script src="auth.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in
-            if (!Auth.isLoggedIn()) {
-                alert('Please log in to access your profile.');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            // Get parent info
-            const parentInfo = Auth.getParentInfo();
-            if (!parentInfo) {
-                alert('Parent information not found. Please register again.');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            // Populate profile information
-            document.getElementById('parent-name-display').textContent = parentInfo.name;
-            document.getElementById('parent-email-display').textContent = parentInfo.email;
-            document.getElementById('child-name-display').textContent = parentInfo.childName;
-            
-            // Format join date
-            const joinDate = new Date(parentInfo.registrationDate);
-            const options = { year: 'numeric', month: 'long' };
-            document.getElementById('join-date-display').textContent = 'Joined ' + joinDate.toLocaleDateString('en-US', options);
-            
-            // Update subscription details
-            const subscriptionInfo = {
-                planType: localStorage.getItem('subscriptionPlan') || 'free',
-                startDate: localStorage.getItem('subscriptionStartDate'),
-                endDate: localStorage.getItem('subscriptionEndDate')
-            };
-
-            const planDetails = {
-                free: { name: 'Free Plan', price: '$0/month' },
-                basic: { name: 'Basic Plan', price: '$4.99/month' },
-                family: { name: 'Family Plan', price: '$9.99/month' },
-                premium: { name: 'Premium Plan', price: '$12.99/month' }
-            };
-
-            const plan = planDetails[subscriptionInfo.planType] || planDetails.free;
-            
-            // Update subscription display in profile
-            const subContent = document.getElementById('subscription-content');
-            const noSub = document.getElementById('no-sub');
-            const subDetails = document.getElementById('sub-details');
-            
-            if (subscriptionInfo.planType === 'free') {
-                noSub.style.display = 'block';
-                subDetails.style.display = 'none';
-            } else {
-                noSub.style.display = 'none';
-                subDetails.style.display = 'block';
-                document.getElementById('sub-plan').textContent = plan.name;
-                document.getElementById('sub-start').textContent = new Date(subscriptionInfo.startDate).toLocaleDateString();
-                document.getElementById('sub-expires').textContent = new Date(subscriptionInfo.endDate).toLocaleDateString();
-                
-                // Calculate days left
-                const daysLeft = Math.ceil((new Date(subscriptionInfo.endDate) - new Date()) / (1000 * 60 * 60 * 24));
-                document.getElementById('sub-days-left').textContent = daysLeft;
-            }
-            
-            // Populate form fields
-            document.getElementById('parent-name').value = parentInfo.name;
-            document.getElementById('parent-email').value = parentInfo.email;
-            document.getElementById('parent-phone').value = parentInfo.phone;
-            document.getElementById('child-name').value = parentInfo.childName;
-            
-            // Handle section navigation
-            const sectionLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
-            const sections = document.querySelectorAll('.profile-section');
-            
-            sectionLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active class from all links
-                    sectionLinks.forEach(l => l.classList.remove('active'));
-                    
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                    
-                    // Hide all sections
-                    sections.forEach(section => section.style.display = 'none');
-                    
-                    // Show selected section
-                    const sectionId = this.getAttribute('data-section') + '-section';
-                    document.getElementById(sectionId).style.display = 'block';
-                });
-            });
-            
-            // Handle subscription management
-            document.getElementById('manage-sub').addEventListener('click', () => {
-                window.location.href = 'premium-membership.html';
-            });
-            
-            // Handle PIN visibility toggle
-            const togglePinBtn = document.getElementById('toggle-pin');
-            const pinHidden = document.getElementById('pin-hidden');
-            const pinVisible = document.getElementById('pin-visible');
-            const storedPin = localStorage.getItem('parentPin');
-            
-            if (storedPin) {
-                pinVisible.textContent = storedPin;
-            }
-            
-            togglePinBtn.addEventListener('click', function() {
-                if (pinHidden.style.display !== 'none') {
-                    pinHidden.style.display = 'none';
-                    pinVisible.style.display = 'block';
-                    togglePinBtn.textContent = 'Hide PIN';
-                } else {
-                    pinHidden.style.display = 'block';
-                    pinVisible.style.display = 'none';
-                    togglePinBtn.textContent = 'Show PIN';
-                }
-            });
-            
-            // Handle PIN reset
-            const resetPinBtn = document.getElementById('reset-pin');
-            resetPinBtn.addEventListener('click', function() {
-                if (confirm('Are you sure you want to reset your PIN? You will need to use the new PIN to access the app.')) {
-                    // Generate a new PIN
-                    const newPin = Math.floor(100000 + Math.random() * 900000).toString();
-                    localStorage.setItem('parentPin', newPin);
-                    pinVisible.textContent = newPin;
-                    
-                    // Show the PIN
-                    pinHidden.style.display = 'none';
-                    pinVisible.style.display = 'block';
-                    togglePinBtn.textContent = 'Hide PIN';
-                    
-                    alert(`Your PIN has been reset. Your new PIN is: ${newPin}`);
-                }
-            });
-            
-            // Handle account form submission
-            const accountForm = document.getElementById('account-form');
-            accountForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Update parent info
-                const updatedInfo = {
-                    name: document.getElementById('parent-name').value.trim(),
-                    email: document.getElementById('parent-email').value.trim(),
-                    phone: document.getElementById('parent-phone').value.trim(),
-                    childName: document.getElementById('child-name').value.trim(),
-                    registrationDate: parentInfo.registrationDate
-                };
-                
-                localStorage.setItem('parentInfo', JSON.stringify(updatedInfo));
-                
-                // Update displayed info
-                document.getElementById('parent-name-display').textContent = updatedInfo.name;
-                document.getElementById('parent-email-display').textContent = updatedInfo.email;
-                document.getElementById('child-name-display').textContent = updatedInfo.childName;
-                
-                alert('Account information updated successfully!');
-            });
-        });
-    </script>
-</body>
-<script>
-    // Populate profile info and subscription details from localStorage
-    (function(){
-        try{
-            const parentEmail = localStorage.getItem('parentEmail') || document.getElementById('parent-email-display').textContent;
-            const parentName = localStorage.getItem('parentName') || document.getElementById('parent-name-display').textContent;
-            document.getElementById('parent-email-display').textContent = parentEmail;
-            document.getElementById('parent-name-display').textContent = parentName;
-
-            const raw = localStorage.getItem('subscription');
-            if (raw){
-                const sub = JSON.parse(raw);
-                const start = new Date(sub.start);
-                const expires = new Date(sub.expires);
-                const daysLeft = Math.max(0, Math.ceil((expires - Date.now()) / (24*60*60*1000)));
-                document.getElementById('sub-plan').textContent = sub.plan;
-                document.getElementById('sub-start').textContent = start.toLocaleDateString();
-                document.getElementById('sub-expires').textContent = expires.toLocaleDateString();
-                document.getElementById('sub-days-left').textContent = daysLeft;
-                document.getElementById('no-sub').style.display = 'none';
-                document.getElementById('sub-details').style.display = 'block';
-                document.getElementById('manage-sub').addEventListener('click', function(){
-                    window.location.href = 'checkout.html?plan=' + encodeURIComponent(sub.plan);
-                });
-            }
-        }catch(e){console.warn('Profile script error', e)}
-    })();
-</script>
-
-    <!-- Feedback popup (Google Form) -->
-    <div class="feedback-btn" id="feedbackBtn" aria-label="Feedback">
-        <img src="assets/mascot-removebg.png" alt="K" style="height:22px;border-radius:4px"> Feedback
-    </div>
-    <div class="feedback-modal-backdrop" id="feedbackBackdrop" role="dialog" aria-modal="true">
-        <div class="feedback-modal" role="document">
-            <div class="modal-header">
-                <div style="display:flex;align-items:center;gap:12px">
-                    <img src="assets/logos.png" alt="Kiddotubes" style="height:36px">
-                    <div>
-                        <div style="font-weight:800">Feedback</div>
-                        <div style="font-size:0.9rem;color:#6b7280">We'd love your thoughts — it only takes a minute.</div>
-                    </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Report Content</a></li>
+                    </ul>
                 </div>
-                        <div style="display:flex;gap:8px;align-items:center">
-                            <a id="openFormNewTab" href="https://forms.gle/cWE2wW81euVye9YM8" target="_blank" rel="noopener" style="font-weight:700;color:#6c63ff;text-decoration:none">Open in new tab</a>
-                            <button class="close-x" id="feedbackClose">×</button>
-                        </div>
-            </div>
-            <div class="modal-body">
-                <iframe class="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScWE2wW81euVye9YM8/viewform?embedded=true"></iframe>
             </div>
         </div>
-    </div>
+        <div class="footer-ad">
+            <!-- Fallback Footer Ad 
+            <span class="ad-badge">Advertisement</span>
+            <a href="#" class="banner-ad-link">
+                <img src="https://via.placeholder.com/728x90?text=Family+Friendly+Content" alt="Footer Advertisement" class="banner-ad-image">
+            </a>
+        </div> -->x
+        <div class="footer-bottom">
+            <p>&copy; 2025 Kiddotubes. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+                     <script>
+                    document.addEventListener('DOMContentLoaded', function(){
+                        const btn = document.getElementById('feedbackBtn');
+                        const backdrop = document.getElementById('feedbackBackdrop');
+                        const close = document.getElementById('feedbackClose');
+                        const openNew = document.getElementById('openFormNewTab');
+                        // Ensure button visible
+                        if(btn) btn.style.display = 'flex';
+                        function openModal(){ if(backdrop){ backdrop.style.display='flex'; document.body.style.overflow='hidden'; } }
+                        function closeModal(){ if(backdrop){ backdrop.style.display='none'; document.body.style.overflow=''; } }
+                        btn && btn.addEventListener('click', openModal);
+                        close && close.addEventListener('click', closeModal);
+                        backdrop && backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
+                        openNew && openNew.addEventListener('click', function(){ /* user opens new tab */ });
+                    });
+                </script>
+    <script src="ad-fallback.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function(){
-            const btn = document.getElementById('feedbackBtn');
-            const backdrop = document.getElementById('feedbackBackdrop');
-            const close = document.getElementById('feedbackClose');
-            const openNew = document.getElementById('openFormNewTab');
-            if(btn) btn.style.display = 'flex';
-            function openModal(){ if(backdrop){ backdrop.style.display='flex'; document.body.style.overflow='hidden'; } }
-            function closeModal(){ if(backdrop){ backdrop.style.display='none'; document.body.style.overflow=''; } }
-            btn && btn.addEventListener('click', openModal);
-            close && close.addEventListener('click', closeModal);
-            backdrop && backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
-            openNew && openNew.addEventListener('click', function(){ /* open in new tab */ });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle auth UI based on login status
+            const authButtons = document.getElementById('auth-buttons');
+            const profileContainer = document.getElementById('profile-container');
+            
+            function updateAuthUI() {
+                if (Auth.isLoggedIn()) {
+                    authButtons.style.display = 'none';
+                    profileContainer.style.display = 'block';
+                } else {
+                    authButtons.style.display = 'flex';
+                    profileContainer.style.display = 'none';
+                }
+            }
+            
+            // If Firebase auth is available, wait for its state and sync localStorage; otherwise do initial update now
+            if (typeof FirebaseAuthWrapper !== 'undefined' && FirebaseAuthWrapper.onAuthStateChanged) {
+                FirebaseAuthWrapper.onAuthStateChanged(function(user) {
+                    if (user) {
+                        // Sync localStorage so Auth.isLoggedIn() returns true
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('accessExpiry', Date.now() + (30 * 60 * 1000));
+                    } else {
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('accessExpiry');
+                    }
+                    updateAuthUI();
+                });
+            } else {
+                // No Firebase available — do immediate UI update
+                updateAuthUI();
+            }
+            
+            // Add click handlers for video cards to check authentication
+            const videoCards = document.querySelectorAll('.video-card');
+            videoCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Check if user is logged in before allowing video playback
+                    if (!Auth.isLoggedIn()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Ask if they want to login or register
+                        if (confirm('You need to log in or register to watch videos. Go to login page?')) {
+                            window.location.href = 'login.html';
+                        }
+                        return false;
+                    }
+                });
+            });
+            
+            // Set up dropdown menu item links
+            document.getElementById('account-option').addEventListener('click', function() {
+                window.location.href = 'profile.html';
+            });
+            
+            document.getElementById('parental-controls-option').addEventListener('click', function() {
+                window.location.href = 'parental-controls.html';
+            });
+            
+            document.getElementById('settings-option').addEventListener('click', function() {
+                window.location.href = 'profile.html#security';
+            });
+            
+            document.getElementById('logout-option').addEventListener('click', function() {
+                if (confirm('Are you sure you want to log out?')) {
+                    Auth.logout();
+                    alert('You have been logged out successfully.');
+                    window.location.reload();
+                }
+            });
+            
+            // Check session expiry periodically
+            setInterval(function() {
+                const wasLoggedIn = profileContainer.style.display === 'block';
+                if (wasLoggedIn && !Auth.isLoggedIn()) {
+                    // Update UI
+                    updateAuthUI();
+                    // Notify user
+                    alert('Your session has expired. You will need to log in again to watch videos.');
+                }
+            }, 60000); // Check every minute
         });
     </script>
-</html>
+
+        </div>
+       
