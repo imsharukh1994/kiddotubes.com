@@ -1,12 +1,13 @@
 // Firebase initialization for KiddoTube
 // Replace any placeholder values if your Firebase console shows different settings.
 const firebaseConfig = {
-  apiKey: "AIzaSyBnZk0qPZDiPpCxf6fJHR0Y-RBVMoal46E",
-  authDomain: "kiddotube-515c6.firebaseapp.com",
-  projectId: "kiddotube-515c6",
-  storageBucket: "kiddotube-515c6.appspot.com",
-  messagingSenderId: "169803341897",
-  appId: "1:169803341897:web:PLACEHOLDER"
+  apiKey: "AIzaSyDsX8GuCj3v1MDIUH3OoaDYoNy7BqEPR7o",
+  authDomain: "kiddotubes-85ae3.firebaseapp.com",
+  projectId: "kiddotubes",
+  storageBucket: "kiddotubes.firebasestorage.app",
+  messagingSenderId: "256759094376",
+  appId: "1:256759094376:web:177ebc8a7222f6e4ba6fdd",
+  measurementId: "G-SR9DYKS1J3"
 };
 
 if (typeof firebase !== 'undefined' && firebase && firebase.initializeApp) {

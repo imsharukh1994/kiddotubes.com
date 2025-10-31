@@ -657,9 +657,9 @@ async function loadVideos(query) {
             categorySpecificQuery = 'kids educational learning';
         }
         
-        // Make API request to YouTube Data API
+        // Make API request to backend proxy (uses YOUTUBE_API_KEY from .env)
         const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&key=${API_KEY}`
+            `/api/youtube/search?part=snippet&maxResults=20&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&safeSearch=strict&videoEmbeddable=true`
         );
 
         if (!response.ok) {

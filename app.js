@@ -1,11 +1,6 @@
 // YouTube API Key - Replace with your own API key
 const API_KEY = 'AIzaSyArSm2Ls9hs2KVYtKiZ53FLujCNXf-y7Us';
 
-// Twilio API configuration - Replace with your own credentials
-const TWILIO_ACCOUNT_SID = 'ACedd93a2a7a28036852c1a742dc573755';
-const TWILIO_AUTH_TOKEN = '25fb257aa463a404b90be9f5217b6e80';
-const TWILIO_PHONE_NUMBER = '+16203250194';
-
 // DOM Elements
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
@@ -279,6 +274,7 @@ function setupEventListeners() {
     closeButton.addEventListener('click', () => {
         videoModal.style.display = 'none';
         videoPlayer.innerHTML = '';
+        try { finalizeWatchTime(); } catch (e) { }
         // cleanup orientation listeners and exit fullscreen if needed
         try { removeVideoOrientationListeners(); } catch (e) { /* ignore */ }
         try { exitVideoLandscapeMode(); } catch (e) { /* ignore */ }
@@ -289,6 +285,7 @@ function setupEventListeners() {
         if (e.target === videoModal) {
             videoModal.style.display = 'none';
             videoPlayer.innerHTML = '';
+            try { finalizeWatchTime(); } catch (err) { }
             // cleanup orientation listeners and exit any landscape/fullscreen mode
             try { removeVideoOrientationListeners(); } catch (err) { }
             try { exitVideoLandscapeMode(); } catch (err) { }
@@ -657,9 +654,9 @@ async function loadVideos(query) {
             categorySpecificQuery = 'kids educational learning';
         }
         
-        // Make API request to YouTube Data API
+        // Make API request to backend proxy (uses YOUTUBE_API_KEY from .env)
         const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&key=${API_KEY}`
+            `/api/youtube/search?part=snippet&maxResults=20&q=${encodeURIComponent(categorySpecificQuery)}&relevanceLanguage=en${additionalParams}&type=video&safeSearch=strict&videoEmbeddable=true`
         );
 
         if (!response.ok) {
@@ -751,9 +748,11 @@ function displayVideos(videos) {
                 return;
             }
 
-            // Check if access is still valid
+            // If access is valid, still enforce time window/daily limit
             if (checkAccessValidity()) {
-                // Play video directly if access is still valid
+                if (!canWatchNow()) {
+                    return;
+                }
                 playVideo(selectedVideo);
                 return;
             }
@@ -895,6 +894,10 @@ function validatePin() {
             // Show parent dashboard with the specified tab
             showParentDashboard(activeTab);
         } else if (selectedVideo) {
+            // Enforce time window and daily limit
+            if (!canWatchNow()) {
+                return;
+            }
             // Play the video
             playVideo(selectedVideo);
             // Show a toast notification about the 30-minute limit
@@ -948,6 +951,71 @@ function checkAccessValidity() {
     
     const currentTime = new Date().getTime();
     return currentTime < parseInt(expiryTime);
+}
+
+// Helpers for parental time limits
+function getTodayKey() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+}
+
+function getUsedMinutesToday() {
+    const key = `watchUsed:${getTodayKey()}`;
+    const val = localStorage.getItem(key);
+    return val ? parseInt(val) || 0 : 0;
+}
+
+function addUsedMinutesToday(mins) {
+    const key = `watchUsed:${getTodayKey()}`;
+    const used = getUsedMinutesToday();
+    localStorage.setItem(key, String(used + Math.max(0, Math.floor(mins))));
+}
+
+function finalizeWatchTime() {
+    const startTsStr = localStorage.getItem('watchStartTs');
+    if (!startTsStr) return;
+    localStorage.removeItem('watchStartTs');
+    const startTs = parseInt(startTsStr);
+    if (!startTs || isNaN(startTs)) return;
+    const elapsedMs = Date.now() - startTs;
+    const mins = elapsedMs / 60000;
+    addUsedMinutesToday(mins);
+}
+
+function isWithinAllowedTimeWindow() {
+    const from = localStorage.getItem('watchTimeFrom'); // e.g., "08:00"
+    const to = localStorage.getItem('watchTimeTo');     // e.g., "20:30"
+    if (!from || !to) return true; // no restriction
+    const now = new Date();
+    const [fh, fm] = from.split(':').map(Number);
+    const [th, tm] = to.split(':').map(Number);
+    const fromMin = fh * 60 + fm;
+    const toMin = th * 60 + tm;
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+    if (toMin >= fromMin) {
+        return nowMin >= fromMin && nowMin <= toMin;
+    }
+    // overnight window (e.g., 20:00 to 06:00)
+    return nowMin >= fromMin || nowMin <= toMin;
+}
+
+function canWatchNow() {
+    if (!isWithinAllowedTimeWindow()) {
+        showToast('Watching is not allowed at this time.');
+        return false;
+    }
+    const limit = parseInt(localStorage.getItem('dailyWatchLimit')) || 0; // minutes
+    if (limit > 0) {
+        const used = getUsedMinutesToday();
+        if (used >= limit) {
+            showToast('Daily watch limit reached.');
+            return false;
+        }
+    }
+    return true;
 }
 
 // Show toast notification
@@ -1010,6 +1078,11 @@ function playVideo(video) {
     } catch (e) {
         console.warn('Orientation listeners could not be added', e);
     }
+
+    // Track start time for daily limit accounting
+    try {
+        localStorage.setItem('watchStartTs', String(Date.now()));
+    } catch (e) { }
 
     // Log watched video
     logWatchedVideo(video);
@@ -1490,6 +1563,7 @@ document.addEventListener('keydown', (e) => {
         if (videoModal.style.display === 'flex') {
             videoModal.style.display = 'none';
             videoPlayer.innerHTML = '';
+            try { finalizeWatchTime(); } catch (e2) {}
         }
         if (parentControlModal.style.display === 'flex') {
             parentControlModal.style.display = 'none';
