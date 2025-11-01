@@ -67,3 +67,12 @@ To enable SMS/WhatsApp notifications to parents:
 ## Note
 
 This is a frontend-only application. For a production environment, it's recommended to implement proper backend authentication and secure API key handling.
+
+<p align="center">
+  <a href="https://github.com/imsharukh1994/kiddotubes.com/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0">
+  </a>
+  <a href="https://imsharukh1994.github.io/kiddotubes.com/">
+    <img src="https://img.shields.io/badge/Live-Demo-brightgreen.svg" alt="Live Demo">
+  </a>
+</p>
